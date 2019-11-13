@@ -11,7 +11,7 @@ const BrowserWindow = electron.BrowserWindow
 
 //app.setName(config.productName)
 let mainWindow = null
-let newFrame = null
+
 function createWindow(){
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
