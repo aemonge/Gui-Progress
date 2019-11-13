@@ -6,7 +6,7 @@
   "main": "main.js",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
-    "electron": "^7.0.1"
+    "electron": "^7.1.1"
   },
   "scripts": {
     "start": "electron .",

@@ -11,6 +11,7 @@ const BrowserWindow = electron.BrowserWindow
 
 app.setName(config.productName)
 var mainWindow = null
+var newFrame = null
 app.on('ready', function () {
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
@@ -52,5 +53,15 @@ app.on('ready', function () {
     mainWindow = null
   })
 })
+
+function createNewFrame(){
+  newFrame=new BrowserWindow({
+    width: 400,
+    height: 330,
+    title: 'Create new Frame'
+
+  });
+  newFrame.loadURL(`file://${__dirname}/app/newFrame.html`)
+}
 
 app.on('window-all-closed', () => { app.quit() })
