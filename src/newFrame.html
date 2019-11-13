@@ -14,13 +14,29 @@
 
   </head>
 <body>
+  <h3>Configuración de Frame</h3>
 <form>
     <div class="row">
       <div class="col">
-        <input type="number" class="form-control" placeholder="Height">
+        <label>Nº de Filas</label>
+        <input type="number" class="form-control" placeholder="Filas">
       </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <label>Nº de Columnas</label>
+            <input type="radio" name="gender" value="80" checked> 80<br>
+        </div>
+    </div>
+    <div class="row">
       <div class="col">
-        <input type="text" class="form-control" placeholder="Last name">
+        <label>Color del frame</label>
+          <select name="select">
+              <option value="blanco" selected>Blanco</option>
+              <option value="rojo">Rojo</option> 
+              <option value="verde">Verde</option>
+              <option value="azul">Azul</option>
+            </select>
       </div>
     </div>
   </form>
