@@ -9,10 +9,10 @@ const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 
-app.setName(config.productName)
-var mainWindow = null
-var newFrame = null
-app.on('ready', function () {
+//app.setName(config.productName)
+let mainWindow = null
+let newFrame = null
+function createWindow(){
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
     width: 1024,
@@ -24,8 +24,8 @@ app.on('ready', function () {
       defaultEncoding: 'UTF-8'
     }
   })
-
-  mainWindow.loadURL(`file://${__dirname}/app/index.html`)
+  mainWindow.loadURL(`file://${__dirname}/src/index.html`)
+ // mainWindow.loadFile('index.html')
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
@@ -38,7 +38,6 @@ app.on('ready', function () {
       mainWindow.webContents.openDevTools()
     })
   }
-
   mainWindow.once('ready-to-show', () => {
     mainWindow.setMenu(null)
     mainWindow.show()
@@ -52,16 +51,29 @@ app.on('ready', function () {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
-})
 
-function createNewFrame(){
-  newFrame=new BrowserWindow({
-    width: 400,
-    height: 330,
-    title: 'Create new Frame'
-
-  });
-  newFrame.loadURL(`file://${__dirname}/app/newFrame.html`)
 }
+
+// Este método será llamado cuando Electron haya terminado
+// la inicialización y esté listo para crear ventanas del navegador.
+// Algunas APIs pueden usarse sólo después de que este evento ocurra.
+app.on('ready', createWindow)
+
+// Sal cuando todas las ventanas hayan sido cerradas.
+/*app.on('window-all-closed', () => {
+  // En macOS es común para las aplicaciones y sus barras de menú
+  // que estén activas hasta que el usuario salga explicitamente con Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})*/
+
+app.on('activate', () => {
+  // En macOS es común volver a crear una ventana en la aplicación cuando el
+  // icono del dock es clicado y no hay otras ventanas abiertas.
+  if (win === null) {
+    createWindow()
+  }
+})
 
 app.on('window-all-closed', () => { app.quit() })
