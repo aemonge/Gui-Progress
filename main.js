@@ -8,6 +8,8 @@ const os = require('os')
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
+//const shell= electron.shell
+const ipc = electron.ipcMain
 
 //app.setName(config.productName)
 let mainWindow = null
@@ -71,9 +73,13 @@ app.on('ready', createWindow)
 app.on('activate', () => {
   // En macOS es común volver a crear una ventana en la aplicación cuando el
   // icono del dock es clicado y no hay otras ventanas abiertas.
-  if (win === null) {
+  if (mainWindow === null) {
     createWindow()
   }
 })
 
 app.on('window-all-closed', () => { app.quit() })
+
+ipc.on('frame-information',function(event, arg){
+  mainWindow.webContents.send('frameInf',arg)
+})

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/css/frame.css">
+    <script src="../node_modules/interactjs/dist/interact.min.js"></script>
+
+  </head>
+<body>
+  <h3>Nueva variable</h3>
+<form>
+    <div class="row">
+        <div class="col">
+          <label>Nombre</label>
+          <input id='nombreVariable' type="text" class="form-control" placeholder="Nombre">
+        </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>Tipo de variable</label>
+          <select name="select">
+              <option value="blanco" selected>Integer</option>
+              <option value="rojo">Decimal</option> 
+              <option value="verde">Logical</option>
+              <option value="azul">Character</option>
+            </select>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <label>Label</label>
+          <input id='labelVariable' type="text" class="form-control" placeholder="Label">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <label>Valor Inicial</label>
+          <input id='valorInicial' type="text" class="form-control" placeholder="Valor Inicial">
+        </div>
+    </div>
+  </form>
+  <input id="btnAnyadirFrame" type="button" value="Add Frame">
+
+</body>
+<script src="../assets/js/newFrame.js"></script>
+
+</html>
