@@ -1,5 +1,6 @@
 'use strict'
 import Frame from './classFrame'
+import Progress from './classProgress.js'
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
@@ -16,6 +17,7 @@ const ipc=electron.ipcRenderer
 /*ventana crear Frame*/
 
 let winnewFrame=null
+let progress=new Progress();
 /*let newFrame=document.getElementById('crearFrame');
 
 newFrame.addEventListener('click', () => {
