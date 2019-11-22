@@ -17,7 +17,7 @@ let mainWindow = null
 function createWindow(){
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
-    width: 1024,
+    width: 1200,
     height: 768,
     title: config.productName,
     show: false,
@@ -83,3 +83,8 @@ app.on('window-all-closed', () => { app.quit() })
 ipc.on('frame-information',function(event, arg){
   mainWindow.webContents.send('frameInf',arg)
 })
+
+ipc.on('var-information',function(event, arg){
+  mainWindow.webContents.send('varInf',arg)
+})
+

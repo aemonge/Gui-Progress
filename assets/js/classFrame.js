@@ -1,6 +1,7 @@
 'use strict'
 import Variable from './classVar.js'
 export default class Frame{
+    idVar=0;
     constructor(){
         this.id=0;
         this.name=null;
@@ -35,3 +36,4 @@ export default class Frame{
     }
 
 };
+
