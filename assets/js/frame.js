@@ -96,7 +96,7 @@ interact('.dropzone').dropzone({
         }),
         interact.modifiers.snap({
           targets: [
-            interact.createSnapGrid({ x: 8, y: 24 })
+            interact.createSnapGrid({ x: 9, y: 24 })
           ],
           range: Infinity,
           relativePoints: [ { x: 0, y: 0 } ]

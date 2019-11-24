@@ -17,7 +17,7 @@ let mainWindow = null
 function createWindow(){
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
-    width: 1200,
+    width: 1280,
     height: 768,
     title: config.productName,
     show: false,
