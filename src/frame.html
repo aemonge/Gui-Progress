@@ -13,148 +13,126 @@
     
     
     <script src="../assets/js/frame.js"></script>
+    <script src="../assets/js/renderer.js"></script>
     <title>GUI-Progress</title>
   </head>
   <body>
-      <div class="header" id="header"></div>
-              <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-3 col-sm-3 placeholder">
+            <div class="row centered">
+              <a id='crearFrame' onclick="createNewFrame()" href="#" class="btn btn-info">
+                <i class="far fa-plus-square"></i>Nuevo Frame
+              </a>
+            </div>
+          </div>
+          <div class="col-6 col-sm-6 placeholder horizontalEqual">
+            <select id="frames" name="frames" class="btn btn-dark">
+              <option value="0">Seleccionar frame</option>
+            </select>
+            <div class="nav-link frameSelected editEnabled"></div>
+          </div>
+          <div class="col-3 col-sm-3 placeholder editEnabled">
+            <div class="row centered">
+                <a id="crearVar" onclick="createNewVar()" href="#" class="btn btn-info">
+                    <i class="far fa-plus-square"></i> Nueva Variable
+                </a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <hr/>
+        </div>
+          <div class="row editEnabled">
+            <div class="col-9 col-sm-9 placeholder"> 
+              <div class="row">
+                <div id="inner-dropzone" class="dropzone">
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                  #</br>
+                </div>
+              </div>
+              <div class="row">
+                <div id="varsMov">
+                </div>
+              </div>  
+            </div>
+            <div class="col-3 col-sm-3 placeholder">
+                
+                  <div id="vars" class = "text-center">
+                    <!-- EJEMPLO (NO BORRAR)
+                  <div class="card border-info mb-3 text-center">
+                      <div class="card-header">
+                        <a class="collapsed card-link text-center" data-toggle="collapse" href="#collapseFIRST">
+                        <h6 class="card-title text-dark"> <i class="far fa-edit"></i> Variable 1 </h6>
+                      </a>
+                      </div>
+                      <div id="collapseFIRST" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-left">
+                        
+                        <table class="table table-hover group table-striped">
+                          <tbody>   
+                            <tr>
+                            <td>Nombre:</td>
+                            <td>Value</td>
+                            </tr>
+                              
+                            <tr>
+                            <td>Tipo:</td>
+                            <td>Value</td>
+                            </tr>
+                        
+                            <tr>
+                            <td>Formato:</td>
+                            <td>Value</td>
+                            </tr>
+                            <tr>
+                            <td>Etiqueta:</td>
+                            <td>Value</td>
+                            </tr>
+                            <tr>
+                            <td>Valor inicial:</td>
+                            <td>Value</td>
+                            </tr>
+                          </tbody>
+                          </table>
+                        </div>   
+                        <div class="card-footer text-muted">
+                          <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>
+                        </div>                           
+                        <div class="card-footer text-muted">
+                          <a href="#" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>
+                        </div>                              
+                        </div>
+                    </div>
+                    -->
+                    <small>
+                        <div id="container" style="width:100%;">
+                        <div id="accordion" style="width:100%;">
+                    </small>
+                  </div>
+              </div>             
+          </div>
+        </div>
+      <footer>
+          <div class="container-fluid">
                   <div class="row">
-                   
-                    <div class="col-2 col-sm-2 placeholder">
-                        <div class="nav-link center">Panel de Frames</div>
-                        <hr/>
-                        <div class="row">
-                            <!--Incluir botones de añadir
-                            configuración de pantalla
-                            select de los objetos?-->
-                            <a id='crearFrame' onclick="createNewFrame()" class="btn btn-info btn-lg">
-                                <i class="fas fa-crop-alt"></i>Nuevo Frame
-                            </a>
-                            <div id="frames">
-                              <!--<div id="no-drop" class="drag-drop"> <a>#no-drop</a> </div>
-                              <div id="yes-drop" class="drag-drop"> #yes-drop </div>-->
-                            </div>
-                             
-                        </div>
-                        
-                    </div>
-                    <div class="col-8 col-sm-8 placeholder">
-                        <div class="nav-link center">Panel de Diseño</div> 
-                      <hr/>
-                      <div class="row">
-                        <div id="inner-dropzone" class="dropzone">
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                          #</br>
-                        </div>
-                        <div id="varsMov" class="row">
-                        </div>
-                      </div>  
-                    </div>
-                    <div class="col-2 col-sm-2 placeholder">
-                        <div class="nav-link center">Panel de Variables</div> 
-                      <hr/>
-                      <div class="row">
-                          <!--Incluir botones de añadir
-                          configuración de pantalla
-                          select de los objetos?-->
-                          <a id="crearVar" onclick="createNewVar()" class="btn btn-info btn-lg">
-                              <i class="far fa-plus-square"></i> Nueva Variable
-                          </a>
-                          <div id="vars">
-                            <!-- EJEMPLO (NO BORRAR)
-                          <div class="card border-info mb-3 text-center">
-                              <div class="card-header">
-                                <a class="collapsed card-link text-center" data-toggle="collapse" href="#collapseFIRST">
-                                <h6 class="card-title text-dark"> <i class="far fa-edit"></i> Variable 1 </h6>
-                              </a>
-                              </div>
-                              <div id="collapseFIRST" class="collapse" data-parent="#accordion">
-                                <div class="card-body text-left">
-                                
-                                <table class="table table-hover group table-striped">
-                                  <tbody>   
-                                    <tr>
-                                    <td>Nombre:</td>
-                                    <td>Value</td>
-                                   </tr>
-                                      
-                                    <tr>
-                                    <td>Tipo:</td>
-                                    <td>Value</td>
-                                   </tr>
-                                
-                                    <tr>
-                                    <td>Formato:</td>
-                                    <td>Value</td>
-                                   </tr>
-                                   <tr>
-                                    <td>Etiqueta:</td>
-                                    <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                    <td>Valor inicial:</td>
-                                    <td>Value</td>
-                                    </tr>
-                                  </tbody>
-                                  </table>
-                                </div>   
-                                <div class="card-footer text-muted">
-                                  <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>
-                                </div>                           
-                                <div class="card-footer text-muted">
-                                  <a href="#" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>
-                                </div>                              
-                               </div>
-                            </div>
-                            -->
-                            <small>
-                                <div id="container" style="width:100%; margin-left:5vw">
-                                <div id="accordion" style="width:100%;">
-                            </small></div>
-                            
-                          </div>
-                      </div>
-                      <!-- ELIMINAR MAS TARDE-->
-                      <div class="nav-link center">Panel Edición Variable</div>
-                      <hr/>
-                      <div class="row">
-                        
-                      </div>
                       
                   </div>
-                    </div>
-                    <div class="row">
-
-                    </div>
-                
-              </div>
+          </div>
+      </footer>
   </body>
-  <script src="../assets/js/renderer.js"></script>
-  <footer>
-        <div class="container-fluid">
-                <div class="row">
-                    
-                </div>
-        </div>
-  </footer>
-  <!---------------- HEADER------------------------->
-  <script>
-      $(document).ready(function () {
-        $('.header').load('./header.html');
-      });
-  </script>
 </html>

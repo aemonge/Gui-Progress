@@ -11,52 +11,60 @@
     <title>GUI-Progress</title>
   </head>
   <body>
-    <div class="header" id="header"></div>  
-
-  <div class="container-fluid">
-    <div class="row">
-      <main role="main" class="col-sm-8 col-md-12 pt-3">
-        <section class="row text-center placeholders">
-          <div class="col-6 col-sm-6 placeholder">
-            <a href="frame.html" class="btn btn-info btn-lg">
-                <i class="far fa-plus-square"></i>
-            </a>
-            <h4>Crear Plantilla</h4>
-            <span class="text-muted">Something else</span>
-          </div>
-          <div class="col-6 col-sm-6 placeholder">
-            <a href="#" class="btn btn-info btn-lg">
-                <i class="far fa-file"></i>
-            </a>
-            <h4>Abrir Archivo</h4>
-            <span class="text-muted">Something else</span>
-          </div>
-        </section>
-        <section class="row text-center placeholders">
-            <div class="col-6 col-sm-6 placeholder">
-              <a href="#" class="btn btn-info btn-lg">
-                  <i class="fas fa-info-circle"></i>
-              </a>
-              <h4>Información</h4>
-              <div class="text-muted">Something else</div>
-            </div>
-            <div class="col-6 col-sm-6 placeholder">
-              <a href="#" class="btn btn-info btn-lg">
-                  <i class="fas fa-sign-out-alt"></i>
-              </a>
-              <h4>Salir</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </section>
-      </main>
+      <div class="header" id="header"></div>
+    <div id="index">  
+      <div class="container-fluid">
+        <div class="row">
+          <main role="main" class="col-sm-8 col-md-12 pt-3">
+            <section class="row text-center placeholders">
+              <div class="col-6 col-sm-6 placeholder">
+                <a onclick="crearPlantilla()" href="#" class="btn btn-info btn-lg">
+                    <i class="far fa-plus-square"></i>
+                </a>
+                <h4>Crear Plantilla</h4>
+                <span class="text-muted">Something else</span>
+              </div>
+              <div class="col-6 col-sm-6 placeholder">
+                <a href="#" class="btn btn-info btn-lg">
+                    <i class="far fa-file"></i>
+                </a>
+                <h4>Abrir Archivo</h4>
+                <span class="text-muted">Something else</span>
+              </div>
+            </section>
+            <section class="row text-center placeholders">
+                <div class="col-6 col-sm-6 placeholder">
+                  <a href="#" class="btn btn-info btn-lg">
+                      <i class="fas fa-info-circle"></i>
+                  </a>
+                  <h4>Información</h4>
+                  <div class="text-muted">Something else</div>
+                </div>
+                <div class="col-6 col-sm-6 placeholder">
+                  <a href="#" class="btn btn-info btn-lg">
+                      <i class="fas fa-sign-out-alt"></i>
+                  </a>
+                  <h4>Salir</h4>
+                  <span class="text-muted">Something else</span>
+                </div>
+              </section>
+          </main>
+        </div>
+      </div>
     </div>
-  </div>
+    <div id="designer"></div>
   </body>
   <script src="../assets/js/renderer.js"></script>
   <!---------------- HEADER------------------------->
   <script>
       $(document).ready(function () {
         $('.header').load('./header.html');
+      });
+  </script>
+  <!---------------- DESIGNER FRAME ------------------->
+  <script>
+      $(document).ready(function () {
+        $('#designer').load('./frame.html');
       });
   </script>
 </html>

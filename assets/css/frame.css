@@ -1,52 +1,86 @@
 #outer-dropzone {
-    height: 400px;
-  }
+  height: 400px;
+}
   
-  #inner-dropzone {
-    height: 460;
-  }
-  
-  .dropzone {
-    background-color: #ccc;
-    border: dashed 4px transparent;
-    border-radius: 4px;
-    margin: auto;
-    /*padding: 10px; */
-    width: 800px; /* cada columna 8px */
-    transition: background-color 0.3s;
-  }
-  
-  .drop-active {
-    border-color: #aaa;
-  }
-  
-  .drop-target {
-    background-color: #29e;
-    border-color: #fff;
-    border-style: solid;
-  }
-  
-  .drag-drop {
-    display: inline-block;
-    min-width: 40px;
-    padding: 2em 0.5em;
-  
-    color: #fff;
-    background-color: #29e;
-    border: solid 2px #fff;
-  
-    touch-action: none;
-    -webkit-transform: translate(0px, 0px);
-            transform: translate(0px, 0px);
-  
-    transition: background-color 0.3s;
-  }
-  
-  .drag-drop.can-drop {
-    color: #000;
-    background-color: #4e4;
-  }
-  
-  hr {
-      background-color: #17a2b8;;
-  }
+#inner-dropzone {
+  height: 460;
+}
+
+.dropzone {
+  background-color: #ccc;
+  border: dashed 4px transparent;
+  border-radius: 4px;
+  margin: auto;
+  /*padding: 10px; */
+  width: 800px; /* cada columna 10px */
+  transition: background-color 0.3s;
+}
+#varsMov{
+  margin: auto;
+  margin-top: 2%;
+  width: 800px; 
+}
+
+.drop-active {
+  border-color: #aaa;
+}
+
+.drop-target {
+  background-color: #29e;
+  border-color: #fff;
+  border-style: solid;
+}
+
+.drag-drop {
+  display: inline-block;
+  min-width: 40px;
+  padding: 2em 0.5em;
+
+  color: #fff;
+  background-color: #29e;
+  border: solid 2px #fff;
+
+  touch-action: none;
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+
+  transition: background-color 0.3s;
+}
+
+.drag-drop.can-drop {
+  color: #000;
+  background-color: #4e4;
+}
+
+hr {
+    background-color: #17a2b8;;
+}
+.formOption{
+  padding-left:10%;
+  padding-right:10%;
+  padding-top:1%;
+  padding-bottom: 1%;
+}
+.formOption input{
+  width:100%;
+}
+.formOption select{
+  width:100%;
+}
+.noPadding{
+  padding-top: 1%;
+}
+.centered{
+  display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.horizontalEqual{
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+}
+.vl {
+  border-left: 2px solid black;
+  height: 100%;
+}

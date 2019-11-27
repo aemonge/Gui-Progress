@@ -13,35 +13,45 @@
     <!--<script src="../assets/js/renderer.js"></script>-->
 
   </head>
-<body>
-  <h3>Configuración de Frame</h3>
-<form>
-    <div class="row">
-        <div class="col">
-          <label>Nombre</label>
-          <input id='nombreFrame' type="text" class="form-control" placeholder="Nombre">
-        </div>
-      </div>
-    <div class="row">
-        <div class="col">
-          <label>Nº de Columnas</label>
-            <input type="radio" value="80" checked> 80<br>
-        </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label>Color del frame</label>
-          <select name="select">
-              <option value="blanco" selected>Blanco</option>
-              <option value="rojo">Rojo</option> 
-              <option value="verde">Verde</option>
-              <option value="azul">Azul</option>
+<body class="noPadding">
+  <form>
+      <table class="table table-hover group table-striped">
+        <tbody>   
+          <tr class="formOption">
+          <td>Nombre</td>
+          <td>
+          <input id='nombreFrame' type="text" placeholder="f_frame1">
+          </td>
+          </tr>
+            
+          <tr class="formOption">
+          <td>Borde</td>
+          <td>
+            <select name="bordeFrame">
+              <option value="bordeNo">No</option>
+              <option value="bordeSi">Si</option>  
             </select>
-      </div>
-    </div>
-  </form>
-  <input id="btnAnyadirFrame" type="button" value="Add Frame">
-
+          </td>
+          </tr>
+      
+          <tr class="formOption">
+          <td>Etiquetas</td>
+          <td>
+            <select name="etiquetaFrame">
+              <option value="etiquetaFila">En fila</option>
+              <option value="etiquetaColumna">En columna</option>
+            </select>
+          </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <input id="btnAnyadirFrame" type="button"  class="btn btn-info" value="Crear Frame">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </form>  
+  
 </body>
 <script src="../assets/js/newFrame.js"></script>
 
