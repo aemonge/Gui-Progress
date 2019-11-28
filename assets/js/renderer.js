@@ -11,7 +11,8 @@ const path = require('path')
 const BrowserWindow = electron.remote.BrowserWindow
 const remote=electron.remote
 const ipc=electron.ipcRenderer
-
+let pathProgress = path.join(__dirname,'../assets/js/classProgress.js')
+const classProgress = require(pathProgress)
 
 var nFrames=0;
 var nVars=0;
@@ -49,9 +50,15 @@ function createNewFrame(){
     })
 }
 
-  function crearPlantilla(){
-    $('#index').hide();
-    $('#designer').show();
-    $('.headerOptions').show();
-  }
+function crearPlantilla(){
+  $('#index').hide();
+  $('#designer').show();
+  $('.headerOptions').show();
+  //Creamos nueva clase progress
+  let nuevaPlantilla = new classProgress.Progress();
+  console.log(nuevaPlantilla);
+}
+function exit(){
+  window.close();
+}
   

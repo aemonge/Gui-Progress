@@ -1,18 +1,25 @@
 'use strict'
+let pathVar = path.join(__dirname,'../js/classVar.js')
+const classVar = require(pathVar)
 
 class Frame {
-    idVar=0;
-    constructor(id,name,color){
-        this.id=id;
+    //Borde booleano si o no
+    /*Etiquetas = 0 side-label
+                = 1 column-label
+                = 2 no-label
+    */
+    constructor(id,name,borde,etiqueta){
+        this.idVar=0; // inicializamos ids variables
+        this.id=id;  // mi id me viene dado de la clase Progress
         this.name=name;
-        this.rows=16;
-        this.cols=80;
-        this.color=color;
-        this.vars=[];
+        this.borde=borde;
+        this.etiqueta=etiqueta;
+        this.vars=[]; //inicializamos array de variables
     }
-
-    set putVar(variable){
-        this.vars.push(variable);
+    addVariable(name, type, format, label, initial){
+        let newVar = new Variable(this.idVar,name, type, format, label, initial);
+        vars.push(newVar);
+        this.idVar ++;
     }
 
     get getFrame(){
@@ -28,7 +35,6 @@ class Frame {
     }
 
 }
-
 module.exports = {
     Frame:Frame
 }
