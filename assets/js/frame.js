@@ -157,7 +157,7 @@ interact('.dropzone').dropzone({
   function createNewVar(){
     winnewFrame=new BrowserWindow({ 
       width: 400,
-      height: 330,
+      height: 390,
       webPreferences: {
         nodeIntegration: true,
         defaultEncoding: 'UTF-8'
@@ -226,9 +226,8 @@ interact('.dropzone').dropzone({
     }
     else{
       $('.frameSelected').empty();
-      $('.frameSelected').append('<label>'+id+'</label>');
-      $('.frameSelected').append('<label> Editable futuramente</label>');
-    $('.editEnabled').show();
+      $('.frameSelected').append(' <a href="#" class="card-link"><h6 class="text-dark"><i class="far fa-edit"></i> '+id+'</h6></a>');
+      $('.editEnabled').show();
     }
     
 });
