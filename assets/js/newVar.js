@@ -14,7 +14,16 @@ const ipc=electron.ipcRenderer
 const btnAnyadirVar=document.getElementById('btnAnyadirVar');
 
 btnAnyadirVar.addEventListener('click',function(){
-  ipc.send('var-information',document.getElementById('nombreVariable').value)
+  var e = document.getElementById("tipoVar");
+  var tipo = e.options[e.selectedIndex].value;
+  let varInfo = {
+    nombre: document.getElementById('nombreVariable').value,
+    tipo: tipo,
+    label: document.getElementById('labelVariable').value,
+    initial: document.getElementById('valorInicial').value,
+    format:document.getElementById('formato').value
+  }
+  ipc.send('var-information',varInfo)
   var window=remote.getCurrentWindow()
   window.close()
 })

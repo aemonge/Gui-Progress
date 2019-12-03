@@ -148,12 +148,11 @@ interact('.dropzone').dropzone({
   
 
   ipc.on('frameInf', function(event, arg){
-    $('#frames').append('<option value= "frame'+nFrames+'">Frame '+arg['nombre']+'</option>');
-    console.log(arg);
+    
     //<a id= "frame'+nFrames+'" onclick="seleccionarFrame("frame'+nFrames+'")">Frame'+nFrames+' </a>
-    nFrames++;
-    let framePrueba = new classFrame.Frame(nFrames,arg['nombre'],arg['borde'],arg['posicion']);
-    console.log(framePrueba);
+    nuevaPlantilla.addFrame(arg['nombre'],arg['borde'],arg['posicion']); 
+    $('#frames').append('<option value= "'+nuevaPlantilla.lastAsignedId()+'">'+arg['nombre']+'</option>');
+    //console.log(nuevaPlantilla);
   })
 
   function createNewVar(){
@@ -178,47 +177,50 @@ interact('.dropzone').dropzone({
 
   ipc.on('varInf', function(event, arg){
     //vars.innerHTML +='<a id="variable'+nVars+'" class="btn btn-info btn-lg">Variable'+nVars+'</a>';
+    let e = document.getElementById("frames");
+    let idFrame = e.options[e.selectedIndex].value;
+    nuevaPlantilla.addVartoFrame(idFrame,arg);
+    //console.log(nuevaPlantilla);
     vars.innerHTML += '<div class="card border-info mb-3 text-center">\
                               <div class="card-header">\
-                                <a id="variable'+nVars+' class="collapsed card-link text-center" data-toggle="collapse" href="#collapse'+nVars+'">\
-                                <h6 class="card-title text-dark"> <i class="far fa-edit"></i> Variable'+nVars+'</h6>\
+                                <a id="'+arg["nombre"]+' class="collapsed card-link text-center" data-toggle="collapse" href="#collapse'+arg["nombre"]+'">\
+                                <h6 class="card-title text-dark"> <i class="far fa-edit"></i>'+arg["nombre"]+'</h6>\
                               </a>\
                               </div>\
-                              <div id="collapse'+nVars+'" class="collapse" data-parent="#accordion">\
+                              <div id="collapse'+arg["nombre"]+'" class="collapse" data-parent="#accordion">\
                                 <div class="card-body text-left">\
                                 <table class="table table-hover group table-striped">\
                                   <tbody>\
                                     <tr>\
                                     <td>Nombre:</td>\
-                                    <td>Value</td>\
+                                    <td>'+arg["nombre"]+'</td>\
                                    </tr>\
                                     <tr>\
                                     <td>Tipo:</td>\
-                                    <td>Value</td>\
+                                    <td>'+arg["tipo"]+'</td>\
                                    </tr>\
                                     <tr>\
                                     <td>Formato:</td>\
-                                    <td>Value</td>\
+                                    <td>'+arg["format"]+'</td>\
                                    </tr>\
                                    <tr>\
                                     <td>Etiqueta:</td>\
-                                    <td>Value</td>\
+                                    <td>'+arg["label"]+'</td>\
                                     </tr>\
                                     <tr>\
                                     <td>Valor inicial:</td>\
-                                    <td>Value</td>\
+                                    <td>'+arg["initial"]+'</td>\
                                     </tr>\
                                   </tbody>\
                                 </table>\
                               </div> </div> </div>';
-    $('#collapse'+nVars).append('<div class="card-footer text-muted">\
+    $('#collapse'+arg["nombre"]).append('<div class="card-footer text-muted">\
                                   <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>\
                                 </div>');
-    $('#collapse'+nVars).append('<div class="card-footer text-muted">\
+    $('#collapse'+arg["nombre"]).append('<div class="card-footer text-muted">\
                                   <a href="#" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>\
                                 </div>');  
-    varsMov.innerHTML +='<div id="yes-drop" class="drag-drop"> variable'+ nVars +'</div>';
-    nVars++;
+    varsMov.innerHTML +='<div id="yes-drop" class="drag-drop">'+ arg["nombre"] +'</div>';
   })
   //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
   $(document).on('change', '#frames', function(event) {

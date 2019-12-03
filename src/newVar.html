@@ -64,11 +64,12 @@
         <tr class="formOption">
         <td>Tipo de variable</td>
         <td>
-          <select name="select">
-            <option value="Integer">Integer</option>
-            <option value="Decimal">Decimal</option> 
-            <option value="Logical">Logical</option>
-            <option value="Character">Character</option>
+          <select id="tipoVar" name="select">
+            <option value="integer">Integer</option>
+            <option value="decimal">Decimal</option> 
+            <option value="logical">Logical</option>
+            <option value="character">Character</option>
+            <option value="date">Date</option>
           </select>
         </td>
         </tr>
@@ -79,6 +80,12 @@
               <input id='labelVariable' type="text" class="form-control" placeholder="Variable 1">
             </td>
         </tr>
+        <tr class="formOption">
+          <td>Formato</td>
+          <td>
+            <input id='formato' type="text" class="form-control">
+          </td>
+      </tr>
         <tr class="formOption">
             <td>Valor Inicial</td>
             <td>

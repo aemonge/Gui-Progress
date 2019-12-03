@@ -10,9 +10,25 @@ class Variable{
         this.initial=initial;
     }
     
-    get getVar(){
+    getVar(){
         return this;
     }
+    getNombre(){
+        return this.name;
+    }
+    getTipo(){
+        return this.type;
+    }
+    getFormato(){
+        return this.format;
+    }
+    getLabel(){
+        return this.label;
+    }
+    getInitial(){
+        return this.initial;
+    }
+
 }
 module.exports = {
     Variable:Variable

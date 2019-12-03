@@ -1,0 +1,10 @@
+
+define temp-table tt_frame_a no-undo 
+   field lvi_numCoches as integer
+   field lvc_coche1 as character
+. 
+define frame frame_a 
+   lvi_numCoches label "Numero de Coches" init "4" format "<<<<" at row 0 column 0 
+   lvc_coche1 label "Primer Coche" init "BMW" format "x(8)" at row 0 column 0 
+with side-labels no-box. 
+update lvi_numCoches lvc_coche1 with frame frame_a. 
