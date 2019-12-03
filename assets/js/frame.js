@@ -148,10 +148,12 @@ interact('.dropzone').dropzone({
   
 
   ipc.on('frameInf', function(event, arg){
-    $('#frames').append('<option value= "frame'+nFrames+'">Frame'+nFrames+'</option>');
+    $('#frames').append('<option value= "frame'+nFrames+'">Frame '+arg['nombre']+'</option>');
+    console.log(arg);
     //<a id= "frame'+nFrames+'" onclick="seleccionarFrame("frame'+nFrames+'")">Frame'+nFrames+' </a>
     nFrames++;
-    let framePrueba = new classFrame.Frame("0","caca","rojo");
+    let framePrueba = new classFrame.Frame(nFrames,arg['nombre'],arg['borde'],arg['posicion']);
+    console.log(framePrueba);
   })
 
   function createNewVar(){
