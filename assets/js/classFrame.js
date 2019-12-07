@@ -16,11 +16,11 @@ class Frame {
         this.name=name;
         this.borde=borde;
         this.etiqueta=etiqueta;
-        this.vars=[]; //inicializamos array de variables
+        this.vars= new Map(); //inicializamos map de variables
     }
     addVariable(name, type, format, label, initial){
         let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
-        this.vars.push(newVar);
+        this.vars.set(this.idVar,newVar);
         this.idVar ++;
     }
 
@@ -39,16 +39,11 @@ class Frame {
     getEtiqueta(){
         return this.etiqueta;
     }
-    /*
-    getVar(id){
-        for(let i=0;i<this.vars.length();i++){
-            if(this.vars[i]['id']==id){
-                return this.var[i];
-            }
-        }
+    editData(newData){
+        this.name=newData.name;
+        this.borde=newData.borde;
+        this.etiqueta=newData.etiqueta;
     }
-    */
-
 }
 module.exports = {
     Frame:Frame

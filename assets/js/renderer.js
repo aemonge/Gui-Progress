@@ -33,7 +33,7 @@ $(() => {
 function createNewFrame(){
     winnewFrame=new BrowserWindow({ 
       width: 400,
-      height: 330,
+      height: 393,
       webPreferences: {
         nodeIntegration: true,
         defaultEncoding: 'UTF-8'

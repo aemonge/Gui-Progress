@@ -14,6 +14,7 @@
 
   </head>
 <body class="noPadding">
+  <!-- 
   <form>
       <table class="table table-hover group table-striped">
         <tbody>   
@@ -51,7 +52,32 @@
         </tbody>
       </table>
   </form>  
-  
+  -->
+  <div class="form-sec">
+    <form>
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input id='nombreFrame' class="form-control" type="text" placeholder="f_frame1">
+        </div>
+        <div class="form-group">
+          <label>Borde:</label>
+          <select id="bordeFrame" class="form-control" name="bordeFrame">
+            <option value="0">No</option>
+            <option value="1">Si</option>  
+          </select>
+        </div>       
+        <div class="form-group">
+          <label>Etiquetas:</label>
+          <select id="etiqueFrame" class="form-control" name="etiquetaFrame">
+            <option value="0">En fila</option>
+            <option value="1">En columna</option>
+          </select>
+        </div>
+      <div class="text-center">
+        <input id="btnAnyadirFrame" type="button"  class="btn btn-info" value="Crear Frame">
+      </div>
+    </form>
+    </div>
 </body>
 <script src="../assets/js/newFrame.js"></script>
 

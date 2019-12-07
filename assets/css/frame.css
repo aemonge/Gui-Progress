@@ -15,11 +15,15 @@
   width: 800px; /* cada columna 10px */
   transition: background-color 0.3s;
 }
+/*
 #varsMov{
   margin: auto;
   margin-top: 2%;
   width: 800px; 
-}
+  background-color: black;
+  display:flex;
+  flex-direction: column;
+}*/
 
 .drop-active {
   border-color: #aaa;
@@ -33,42 +37,30 @@
 
 .drag-drop {
   display: inline-block;
+  /*
   min-width: 40px;
   padding: 2em 0.5em;
-
-  color: #fff;
+  */
+  padding: 0%;
+  /*
   background-color: #29e;
+  
   border: solid 2px #fff;
-
+  */
   touch-action: none;
   -webkit-transform: translate(0px, 0px);
           transform: translate(0px, 0px);
 
   transition: background-color 0.3s;
 }
-
+/*
 .drag-drop.can-drop {
   color: #000;
   background-color: #4e4;
-}
+} */
 
 hr {
     background-color: #17a2b8;;
-}
-.formOption{
-  padding-left:10%;
-  padding-right:10%;
-  padding-top:1%;
-  padding-bottom: 1%;
-}
-.formOption input{
-  width:100%;
-}
-.formOption select{
-  width:100%;
-}
-.noPadding{
-  padding-top: 1%;
 }
 .centered{
   display: flex;
@@ -143,4 +135,24 @@ h2 {
 }
 #index a{
   text-decoration:none;
+}
+.frameSelected{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+.btnFrame{
+  padding: 0.5%;
+  width: 100%;
+}
+.noPadding{
+  padding-top: 0%;
+}
+.form-sec{
+  width:100%; 
+  height: 393;
+  background:#ccc; 
+  padding:5%; 
+  background: #f8f9fa;
+  box-shadow: 0 0 4px #ccc;
 }

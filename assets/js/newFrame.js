@@ -17,11 +17,11 @@ btnAnyadirFrame.addEventListener('click',function(){
   var e = document.getElementById("bordeFrame");
   var border = e.options[e.selectedIndex].value;
   e=document.getElementById("etiqueFrame");
-  var posic= e.options[e.selectedIndex].value;
+  var etiqueta= e.options[e.selectedIndex].value;
   let frameInfo = {
     nombre: document.getElementById('nombreFrame').value,
     borde: border,
-    posicion: posic
+    etiqueta: etiqueta
   }
   ipc.send('frame-information',frameInfo/*document.getElementById('nombreFrame').value*/)
   var window=remote.getCurrentWindow()

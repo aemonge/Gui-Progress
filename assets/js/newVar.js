@@ -17,8 +17,8 @@ btnAnyadirVar.addEventListener('click',function(){
   var e = document.getElementById("tipoVar");
   var tipo = e.options[e.selectedIndex].value;
   let varInfo = {
-    nombre: document.getElementById('nombreVariable').value,
-    tipo: tipo,
+    name: document.getElementById('nombreVariable').value,
+    type: tipo,
     label: document.getElementById('labelVariable').value,
     initial: document.getElementById('valorInicial').value,
     format:document.getElementById('formato').value
