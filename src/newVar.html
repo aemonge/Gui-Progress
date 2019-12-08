@@ -12,45 +12,8 @@
     <script src="../node_modules/interactjs/dist/interact.min.js"></script>
 
   </head>
-<!--
-<body>
-  <h3>Nueva variable</h3>
-<form>
-    <div class="row">
-        <div class="col">
-          <label>Nombre</label>
-          <input id='nombreVariable' type="text" class="form-control" placeholder="Nombre">
-        </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label>Tipo de variable</label>
-          <select name="select">
-              <option value="blanco" selected>Integer</option>
-              <option value="rojo">Decimal</option> 
-              <option value="verde">Logical</option>
-              <option value="azul">Character</option>
-            </select>
-      </div>
-    </div>
-    <div class="row">
-        <div class="col">
-          <label>Label</label>
-          <input id='labelVariable' type="text" class="form-control" placeholder="Label">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-          <label>Valor Inicial</label>
-          <input id='valorInicial' type="text" class="form-control" placeholder="Valor Inicial">
-        </div>
-    </div>
-  </form>
-  <input id="btnAnyadirVar" type="button" value="Add Frame">
-
-</body>
--->
 <body class="noPadding">
+  <!--
   <form>
     <table class="table table-hover group table-striped">
       <tbody>   
@@ -100,6 +63,40 @@
       </tbody>
     </table>
   </form>  
+-->
+<div class="form-sec">
+  <form>
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input id='nombreVariable' type="text" class="form-control" placeholder="Var1">
+      </div>
+      <div class="form-group">
+        <label>Tipo de variable:</label>
+        <select id="tipoVar" class="form-control" name="select">
+          <option value="integer">Integer</option>
+          <option value="decimal">Decimal</option> 
+          <option value="logical">Logical</option>
+          <option value="character">Character</option>
+          <option value="date">Date</option>
+        </select>
+      </div>       
+      <div class="form-group">
+        <label>Label:</label>
+        <input id='labelVariable' type="text" class="form-control" placeholder="Variable 1">
+      </div>
+      <div class="form-group" id="lugarFormat">
+        <label>Formato:</label>
+        <input id='formato' type="text" class="form-control">
+      </div>
+      <div class="form-group" id="lugarInit">
+        <label>Valor Inicial:</label>
+        <input id='valorInicial' type="text" class="form-control" placeholder="0">
+      </div>
+    <div class="text-center">
+      <input id="btnAnyadirVar" type="button"  class="btn btn-info" value="Crear Variable">
+    </div>
+  </form>
+</div>
 </body>
 <script src="../assets/js/newVar.js"></script>
 

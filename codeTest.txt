@@ -1,11 +1,3 @@
 
-define temp-table tt_f_frame1 no-undo 
-   field var1 as character
-   field var2 as integer
-. 
-define frame f_frame1
-   /* INICIO_CAMPOS */ 
-   var1 label "Coche" init "BMW" format "x(20)" at row 0 column 0 
-   var2 label "Numero de coches" init 0 format ">>>." at row 0 column 0 
-with side-labels no-box. 
-update var1 var2 with frame f_frame1. 
+
+update

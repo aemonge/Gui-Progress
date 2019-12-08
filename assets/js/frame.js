@@ -148,17 +148,17 @@ interact('.dropzone').dropzone({
   
 
   ipc.on('frameInf', function(event, arg){
-    nuevaPlantilla.addFrame(arg['nombre'],arg['borde'],arg['etiqueta']); 
-    $('#frames').append('<option value= "'+nuevaPlantilla.lastAsignedId()+'">'+arg['nombre']+'</option>');
+    let idFrame = nuevaPlantilla.addFrame(arg['nombre'],arg['borde'],arg['etiqueta']); 
+    $('#frames').append('<option value= "'+idFrame+'">'+arg['nombre']+'</option>');
     $("#frames option:selected").removeAttr("selected");
-    $('#frames option[value="'+nuevaPlantilla.lastAsignedId()+'"]').attr("selected",true);
-    cargarFrame(nuevaPlantilla.lastAsignedId());
+    $('#frames option[value="'+idFrame+'"]').attr("selected",true);
+    cargarFrame(idFrame);
   })
 
   function createNewVar(){
     winnewFrame=new BrowserWindow({ 
       width: 400,
-      height: 390,
+      height: 565,
       webPreferences: {
         nodeIntegration: true,
         defaultEncoding: 'UTF-8'
@@ -179,7 +179,8 @@ interact('.dropzone').dropzone({
     //vars.innerHTML +='<a id="variable'+nVars+'" class="btn btn-d btn-lg">Variable'+nVars+'</a>';
     let e = document.getElementById("frames");
     let idFrame = e.options[e.selectedIndex].value;
-    nuevaPlantilla.addVartoFrame(idFrame,arg);
+    let idVar = nuevaPlantilla.addVartoFrame(idFrame,arg);
+    arg.id=idVar;
     addVisualVar(arg);
     //console.log(nuevaPlantilla);
   })
@@ -193,6 +194,14 @@ function borrarFrame(id){
   $('#frames option[value="'+id+'"]').remove();
   $('#frames option[value="0"]').attr("selected",true);
   $('.editEnabled').hide();
+}
+function borrarVariable(idVar){
+  console.log("antes de borrar:",nuevaPlantilla);
+  let idFrame = $("#frames option:selected").attr('value');
+  nuevaPlantilla.deleteVariable(idFrame,idVar);
+  $('#vars').empty();
+  cargarPanelVar(idFrame);
+  console.log("tras borrar:",nuevaPlantilla);
 }
 function cargarFrame(idFrame){
   if(idFrame == 0){
@@ -210,8 +219,6 @@ function cargarFrame(idFrame){
 function cargarPanelEdicionFrame(idFrame){
   
   let frame = nuevaPlantilla.getFrame(idFrame);
-  console.log("Plantilla: ", nuevaPlantilla);
-  console.log("al cargar panel: ", frame);
   $("#eNombreFrame").val(frame["name"]);
 
   //Creamos de nuevo los select para evitar conflictos con el seleccionado
@@ -280,11 +287,11 @@ function addVisualVar(infoVar){
         </tbody>\
       </table>\
     </div> </div> </div>');
-  $('#collapse'+infoVar["name"]).append('<div class="card-footer text-muted">\
+  $('#collapse'+infoVar["id"]).append('<div class="card-footer text-muted">\
         <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>\
       </div>');
-  $('#collapse'+infoVar["name"]).append('<div class="card-footer text-muted">\
-        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>\
+  $('#collapse'+infoVar["id"]).append('<div class="card-footer text-muted">\
+        <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>\
       </div>');  
 } 
 function modificarFrame(idFrame){

@@ -11,13 +11,11 @@ class Progress{
         let newFrame = new classFrame.Frame(this.idFrames,name,borde,etiqueta);
         this.frames.set(this.idFrames,newFrame);
         this.idFrames ++;
-    }
-    lastAsignedId(){
         return this.idFrames -1;
     }
     addVartoFrame(idFrame,varInfo){
         let frame = this.frames.get(parseInt(idFrame));
-        frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial']);
+        return frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial']);
     }
     getFrames(){
         return this.frames;
@@ -27,6 +25,9 @@ class Progress{
     }
     deleteFrame(idFrame){
         this.frames.delete(parseInt(idFrame));
+    }
+    deleteVariable(idFrame, idVar){
+        this.frames.get(parseInt(idFrame)).deleteVariable(idVar);
     }
     editFrame(idFrame, newData){
         let frame = this.frames.get(parseInt(idFrame));

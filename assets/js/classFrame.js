@@ -7,8 +7,7 @@ class Frame {
                 = 1 Sí
     */
     /*Etiquetas = 0 side-label
-                = 1 column-label
-                = 2 no-label
+                = 1 no-label
     */
     constructor(id,name,borde,etiqueta){
         this.idVar=1; // inicializamos ids variables
@@ -22,6 +21,7 @@ class Frame {
         let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
         this.vars.set(this.idVar,newVar);
         this.idVar ++;
+        return  this.idVar -1;
     }
 
     getFrame(){
@@ -43,6 +43,9 @@ class Frame {
         this.name=newData.name;
         this.borde=newData.borde;
         this.etiqueta=newData.etiqueta;
+    }
+    deleteVariable(idVar){
+        this.vars.delete(parseInt(idVar));
     }
 }
 module.exports = {

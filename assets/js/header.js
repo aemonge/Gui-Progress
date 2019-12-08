@@ -21,7 +21,7 @@ $(() => {
             frame += "side-labels ";
         }
         else if(elemF.getEtiqueta() == 1){
-            frame += "column-labels ";
+            frame += "no-label ";
         }
         if(elemF.getBorde() == 0) {
             frame += "no-box. ";
@@ -33,9 +33,14 @@ $(() => {
     });
     
    tempTable += frame +"\n"+ update;
-   let fs = require('fs');
+   return tempTable;
+   
+}
+function guardarPlantilla(){
+    let code = generateCode();
+    let fs = require('fs');
 
-    fs.writeFile("codeTest.txt", tempTable, function(err) {
+    fs.writeFile("codeTest.txt", code, function(err) {
         if (err) {
             alert(err);
         }
@@ -43,4 +48,15 @@ $(() => {
         alert("El archivo codeTest.txt fue creado correctamente");
     });
 }
- 
+ function viewCode(){
+    //$('#designer').hide();
+    //$('#code').show();
+    let code = generateCode();
+    let count = (code.match(/(?:\r\n|\r|\n)/g) || []).length;
+    //code = code.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    code = code.split("\n").join(" <br> ");
+    $('#codeView').html(code);
+    for(let i = 1; i<= count; i++){
+        $('.line-numbers').append(''+i+'<br>')
+    }
+ }

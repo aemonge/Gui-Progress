@@ -28,6 +28,7 @@ newFrame.addEventListener('click', () => {
 $(() => {
    $(".headerOptions").hide();
    $('#designer').hide();
+   $('#code').hide();
 });
   
 function createNewFrame(){
