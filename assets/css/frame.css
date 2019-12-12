@@ -15,15 +15,20 @@
   width: 800px; /* cada columna 10px */
   transition: background-color 0.3s;
 }
-/*
+
 #varsMov{
-  margin: auto;
+  background-color: #ccc;
+  border: dashed 4px transparent;
+  border-radius: 4px;
+  margin:auto;
   margin-top: 2%;
-  width: 800px; 
-  background-color: black;
+  /*padding: 10px; */
+  width: 800px; /* cada columna 10px */
+  transition: background-color 0.3s;
+  padding : 2%;
   display:flex;
   flex-direction: column;
-}*/
+}
 
 .drop-active {
   border-color: #aaa;

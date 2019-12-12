@@ -11,32 +11,32 @@ $(() => {
  * applies to this demo as well so it doesn't have to be repeated. */
 // target elements with the "draggable" class
 interact('.draggable')
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    // enable autoScroll
-    autoScroll: true,
+.draggable({
+  // enable inertial throwing
+  inertia: true,
+  // keep the element within the area of it's parent
+  modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true
+    })
+  ],
+  // enable autoScroll
+  autoScroll: true,
 
-    // call this function on every dragmove event
-    onmove: dragMoveListener,
-    // call this function on every dragend event
-    onend: function (event) {
-      var textEl = event.target.querySelector('p')
+  // call this function on every dragmove event
+  onmove: dragMoveListener,
+  // call this function on every dragend event
+  onend: function (event) {
+    var textEl = event.target.querySelector('p')
 
-      textEl && (textEl.textContent =
-        'moved a distance of ' +
-        (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                   Math.pow(event.pageY - event.y0, 2) | 0))
-          .toFixed(2) + 'px')
-    }
-  })
+    textEl && (textEl.textContent =
+      'moved a distance of ' +
+      (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                  Math.pow(event.pageY - event.y0, 2) | 0))
+        .toFixed(2) + 'px')
+  }
+})
 
 function dragMoveListener (event) {
   var target = event.target
@@ -46,13 +46,13 @@ function dragMoveListener (event) {
 
   // translate the element
   target.style.webkitTransform =
-    target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)'
+  target.style.transform =
+    'translate(' + x + 'px, ' + y + 'px)'
 
   // update the posiion attributes
   target.setAttribute('data-x', x)
   target.setAttribute('data-y', y)
-}
+  }
 
 // this is used later in the resizing and gesture demos
 window.dragMoveListener = dragMoveListener
@@ -93,29 +93,29 @@ interact('.dropzone').dropzone({
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
     }
+})
+var x = 0; var y = 0
+interact('.drag-drop')
+  .draggable({
+    
+    modifiers: [
+      interact.modifiers.restrictRect({
+        //restriction: 'parent',
+        endOnly: true
+      }),
+      interact.modifiers.snap({
+        targets: [
+          interact.createSnapGrid({ x: 9, y: 24 })
+        ],
+        range: Infinity,
+        relativePoints: [ { x: 0, y: 0 } ]
+      })
+    ],
+    inertia: true,
+    //autoScroll: true,
+    // dragMoveListener from the dragging demo above
+    onmove: dragMoveListener
   })
-  var x = 0; var y = 0
-  interact('.drag-drop')
-    .draggable({
-      
-      modifiers: [
-        interact.modifiers.restrictRect({
-          //restriction: 'parent',
-          endOnly: true
-        }),
-        interact.modifiers.snap({
-          targets: [
-            interact.createSnapGrid({ x: 9, y: 24 })
-          ],
-          range: Infinity,
-          relativePoints: [ { x: 0, y: 0 } ]
-        })
-      ],
-      inertia: true,
-      //autoScroll: true,
-      // dragMoveListener from the dragging demo above
-      onmove: dragMoveListener
-    })
 
 
   /*interact(element)
@@ -146,41 +146,126 @@ interact('.dropzone').dropzone({
         'translate(' + x + 'px, ' + y + 'px)'
   })*/
   
-  btnAnyadirFrame.addEventListener('click',function(){
-    let e = document.getElementById("bordeFrame");
-    var border = e.options[e.selectedIndex].value;
-    e=document.getElementById("etiqueFrame");
-    var etiqueta= e.options[e.selectedIndex].value;
-    let frameInfo = {
-      nombre: document.getElementById('nombreFrame').value,
-      borde: border,
-      etiqueta: etiqueta
-    }
-    let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
-    $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
-    $("#frames option:selected").removeAttr("selected");
-    $('#frames option[value="'+idFrame+'"]').attr("selected",true);
-    cargarFrame(idFrame);
-    $('#nombreFrame').val("");
-  })
-
-  btnAnyadirVar.addEventListener('click',function(){
-    let varInfo = {
+btnAnyadirFrame.addEventListener('click',function(){
+  let e = document.getElementById("bordeFrame");
+  var border = e.options[e.selectedIndex].value;
+  e=document.getElementById("etiqueFrame");
+  var etiqueta= e.options[e.selectedIndex].value;
+  let frameInfo = {
+    nombre: document.getElementById('nombreFrame').value,
+    borde: border,
+    etiqueta: etiqueta
+  }
+  let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
+  $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
+  $("#frames option:selected").removeAttr("selected");
+  $('#frames option[value="'+idFrame+'"]').attr("selected",true);
+  cargarFrame(idFrame);
+  $('#nombreFrame').val("");
+})
+//AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
+$(document).on('change', '#frames', function(event) {
+  let id = $("#frames option:selected").attr('value');
+  cargarFrame(id);  
+});
+btnAnyadirVar.addEventListener('click',function(){
+  let tipo = $("#tipoVar option:selected").attr('value');
+  let varInfo
+  if(tipo == "integer" || tipo == "decimal" || tipo=="character"){
+    varInfo = {
       name: document.getElementById('nombreVariable').value,
-      type: $("#tipoVar option:selected").attr('value'),
+      type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
       format:document.getElementById('formato').value
     }
-    let idFrame = $("#frames option:selected").attr('value');
-    let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
-    varInfo.id=idVar;
-    addVisualVar(varInfo);
-  })
-  //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
-  $(document).on('change', '#frames', function(event) {
-    let id = $("#frames option:selected").attr('value');
-    cargarFrame(id);  
+  }
+  else if(tipo=="logical"){
+    varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: "",
+      format: $("#fLogical option:selected").attr('value')
+    }
+  }
+  else if(tipo=="date"){
+    varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: document.getElementById('valorInicial').value,
+      format: $("#fDate option:selected").attr('value')
+    }
+  }
+  
+  let idFrame = $("#frames option:selected").attr('value');
+  let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
+  varInfo.id=idVar;
+  addVisualVar(varInfo);
+})
+//AL CAMBIAR DE FORMATO DE VAR AJUSTAMOS EL FORMATO Y EL INIT
+$(document).on('change', '#tipoVar', function(event) {
+  let tipo = $("#tipoVar option:selected").attr('value');
+  //siempre nos cargamos el formato y el init y lo cargamos como debamos en función del tipo
+  $('#lugarFormat').empty();
+  $('#lugarFormatYear').empty();
+  $('#lugarInit').empty();
+  if(tipo == "integer" || tipo == "decimal"){// ponemos inicio = 0, dejamos el formato vacío por el momento
+    $('#lugarFormat').append('<label>Formato:</label>');
+    $('#lugarFormat').append('<input id="formato" type="text" class="form-control">');
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="0">');
+  }
+  else if(tipo=="character"){// Dejamos el formato vacío por el momento, por defecto ponemos 8
+    $('#lugarFormat').append('<label>Longitud caracter (Format):</label>');
+    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" placeholder="8">');
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="abcdefg1">');
+  }
+  else if(tipo=="date"){ // Añadimos opción de year en 2 o 4 digitos y escribimos todos los formatos en un select
+    $('#lugarFormatYear').append('<label>Formato año:</label>');
+    $('#lugarFormatYear').append('<select id="fYear" class="form-control" name="selectAño">\
+                                  <option value="2Digitos">2 dígitos (yy)</option>\
+                                  <option value="4Digitos">4 dígitos (yyyy)</option></select>');
+    $('#lugarFormat').append('<label>Formato:</label>');
+    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
+                              <option value="mm/dd/yy">mm/dd/yy</option>\
+                              <option value="dd/mm/yy">dd/mm/yy</option>\
+                              <option value="yy/mm/dd">yy/mm/dd</option></select>');
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
+  }
+  else if(tipo=="logical"){
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<select id="fLogical" class="form-control">\
+                            <option value="false">No seleccionado (False)</option>\
+                            <option value="true">Seleccionado (True)</option></select>');
+  }
+});
+//AL CAMBIAR DE FORMATO DE AÑO AJUSTAMOS EL FORMATO Y EL INIT
+$(document).on('change', '#fYear', function(event) {
+  let format = $("#fYear option:selected").attr('value');
+  $('#lugarFormat').empty();
+  $('#lugarInit').empty();
+  if(format =="2Digitos"){
+    $('#lugarFormat').append('<label>Formato:</label>');
+    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
+                              <option value="mm/dd/yy">mm/dd/yy</option>\
+                              <option value="dd/mm/yy">dd/mm/yy</option>\
+                              <option value="yy/mm/dd">yy/mm/dd</option></select>');
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
+  }
+  else if(format =="4Digitos"){
+    $('#lugarFormat').append('<label>Formato:</label>');
+    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
+                              <option value="mm/dd/yyyy">mm/dd/yyyy</option>\
+                              <option value="dd/mm/yyyy">dd/mm/yyyy</option>\
+                              <option value="yyyy/mm/dd">yyyy/mm/dd</option></select>');
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
+  }
 });
 function borrarFrame(id){
   nuevaPlantilla.deleteFrame(id);
@@ -245,13 +330,13 @@ function cargarPanelVar(idFrame){
   }
 }
 function addVisualVar(infoVar){
+  createVisualDraggable(infoVar);
+
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header">\
       <a id="'+infoVar["name"]+' class="collapsed card-link text-center" data-toggle="collapse" href="#collapse'+infoVar["id"]+'">\
       <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
       </a>\
-      <h6 class="card-subtitle"> <i class="fas fa-arrows-alt"></i> Arrastrable: </h6>\
-      <div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar" type="text" value="'+infoVar["initial"]+'" class="field left" size="8"readonly></div>\
     </div>\
     <div id="collapse'+infoVar["id"]+'" class="collapse" data-parent="#accordion">\
       <div class="card-body text-left">\
@@ -287,6 +372,22 @@ function addVisualVar(infoVar){
         <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>\
       </div>');  
 } 
+function createVisualDraggable(infoVar){
+  let stringDiv;
+  let tipo = infoVar["type"];
+  if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
+    stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></div>';
+  }
+  else if(tipo=="logical"){
+    if(infoVar["format"] == "true"){
+      stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></div>';
+    }
+    else{
+      stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></div>';
+    }
+  }
+  $("#varsMov").append(stringDiv);
+}
 function modificarFrame(idFrame){
   let e = document.getElementById("eBordeFrame");
   let border = e.options[e.selectedIndex].value;
