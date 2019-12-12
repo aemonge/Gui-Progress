@@ -21,7 +21,7 @@
       <div class="row">
         <div class="col-3 col-sm-3 placeholder">
           <div class="row centered horizontalEqual">
-            <a id='crearFrame' onclick="createNewFrame()" href="#" class="btn btn-info">
+            <a id='crearFrame' data-toggle="modal" data-target="#modalNewFrame" href="#" class="btn btn-info">
               <i class="far fa-plus-square"></i>Nuevo Frame
             </a>
           </div>
@@ -34,10 +34,48 @@
         </div>
         <div class="col-3 col-sm-3 placeholder editEnabled">
           <div class="row centered horizontalEqual">
-              <a id="crearVar" onclick="createNewVar()" href="#" class="btn btn-info">
+              <a id="crearVar" data-toggle="modal" data-target="#modalNewVar" href="#" class="btn btn-info">
                   <i class="far fa-plus-square"></i> Nueva Variable
               </a>
           </div>
+        </div>
+      </div>
+       <!-- Modal new Frame-->
+     <div id="modalNewFrame" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Crear Frame</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-sec">
+              <form>
+                <div class="form-group">
+                  <label>Nombre:</label>
+                  <input id='nombreFrame' class="form-control" type="text" placeholder="f_frame1">
+                </div>
+                <div class="form-group">
+                  <label>Borde:</label>
+                  <select id="bordeFrame" class="form-control" name="bordeFrame">
+                    <option value="0">No</option>
+                    <option value="1">Si</option>  
+                  </select>
+                </div>       
+                <div class="form-group">
+                  <label>Etiquetas:</label>
+                  <select id="etiqueFrame" class="form-control" name="etiquetaFrame">
+                    <option value="0">En fila</option>
+                    <option value="1">Sin etiquetas</option>
+                  </select>
+                </div>
+                <div class="text-center">
+                  <input id="btnAnyadirFrame" type="button"  class="btn btn-info" data-dismiss="modal" value="Crear Frame">
+                </div>
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="row">
@@ -77,54 +115,7 @@
             </div>  
           </div>
           <div class="col-3 col-sm-3 placeholder">
-              
                 <div id="vars" class = "text-center">
-                  <!-- EJEMPLO (NO BORRAR)
-                <div class="card border-info mb-3 text-center">
-                    <div class="card-header">
-                      <a class="collapsed card-link text-center" data-toggle="collapse" href="#collapseFIRST">
-                      <h6 class="card-title text-dark"> <i class="far fa-edit"></i> Variable 1 </h6>
-                    </a>
-                    </div>
-                    <div id="collapseFIRST" class="collapse" data-parent="#accordion">
-                      <div class="card-body text-left">
-                      
-                      <table class="table table-hover group table-striped">
-                        <tbody>   
-                          <tr>
-                          <td>Nombre:</td>
-                          <td>Value</td>
-                          </tr>
-                            
-                          <tr>
-                          <td>Tipo:</td>
-                          <td>Value</td>
-                          </tr>
-                      
-                          <tr>
-                          <td>Formato:</td>
-                          <td>Value</td>
-                          </tr>
-                          <tr>
-                          <td>Etiqueta:</td>
-                          <td>Value</td>
-                          </tr>
-                          <tr>
-                          <td>Valor inicial:</td>
-                          <td>Value</td>
-                          </tr>
-                        </tbody>
-                        </table>
-                      </div>   
-                      <div class="card-footer text-muted">
-                        <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>
-                      </div>                           
-                      <div class="card-footer text-muted">
-                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>
-                      </div>                              
-                      </div>
-                  </div>
-                  -->
                   <small>
                       <div id="container" style="width:100%;">
                       <div id="accordion" style="width:100%;">
@@ -169,6 +160,7 @@
 
       </div>
     </div>
+    <!-- Modal Code -->
     <div id="modalCode" class=" modal window">
         <div class="topbar">
             <div class="window-title">codeTest.p</div>
@@ -181,25 +173,53 @@
             </code>
         </div>
     </div>
-    <!--
-    <div id="modalCode" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header topbar">
-              <h4 class="modal-title">Code View</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body content">
-                  <div class="line-numbers">1 2 3 4 5
-                    </div>
-                    <code class="code prettyprint lan-css" id ="codeView">
-                    </code>
-            </div>
+    
+     <!-- Modal new Var-->
+    <div id="modalNewVar" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Crear variable</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
-  
+          <div class="modal-body form-sec">
+            <form>
+              <div class="form-group">
+                <label>Nombre:</label>
+                <input id='nombreVariable' type="text" class="form-control" placeholder="Var1">
+              </div>
+              <div class="form-group">
+                <label>Tipo de variable:</label>
+                <select id="tipoVar" class="form-control" name="select">
+                  <option value="integer">Integer</option>
+                  <option value="decimal">Decimal</option> 
+                  <option value="logical">Logical</option>
+                  <option value="character">Character</option>
+                  <option value="date">Date</option>
+                </select>
+              </div>       
+              <div class="form-group">
+                <label>Label:</label>
+                <input id='labelVariable' type="text" class="form-control" placeholder="Variable 1">
+              </div>
+              <div class="form-group" id="lugarFormat">
+                <label>Formato:</label>
+                <input id='formato' type="text" class="form-control">
+              </div>
+              <div class="form-group" id="lugarInit">
+                <label>Valor Inicial:</label>
+                <input id='valorInicial' type="text" class="form-control" placeholder="0">
+              </div>
+              <div class="text-center">
+                <input id="btnAnyadirVar" type="button"  class="btn btn-info" data-dismiss="modal" value="Crear Variable">
+              </div>
+            </form>
+          </div>
         </div>
+
       </div>
-    -->
+    </div>
      <footer>
       <div class="container-fluid">
               <div class="row">

@@ -146,43 +146,36 @@ interact('.dropzone').dropzone({
         'translate(' + x + 'px, ' + y + 'px)'
   })*/
   
-
-  ipc.on('frameInf', function(event, arg){
-    let idFrame = nuevaPlantilla.addFrame(arg['nombre'],arg['borde'],arg['etiqueta']); 
-    $('#frames').append('<option value= "'+idFrame+'">'+arg['nombre']+'</option>');
+  btnAnyadirFrame.addEventListener('click',function(){
+    let e = document.getElementById("bordeFrame");
+    var border = e.options[e.selectedIndex].value;
+    e=document.getElementById("etiqueFrame");
+    var etiqueta= e.options[e.selectedIndex].value;
+    let frameInfo = {
+      nombre: document.getElementById('nombreFrame').value,
+      borde: border,
+      etiqueta: etiqueta
+    }
+    let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
+    $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
     $("#frames option:selected").removeAttr("selected");
     $('#frames option[value="'+idFrame+'"]').attr("selected",true);
     cargarFrame(idFrame);
+    $('#nombreFrame').val("");
   })
 
-  function createNewVar(){
-    winnewFrame=new BrowserWindow({ 
-      width: 400,
-      height: 565,
-      webPreferences: {
-        nodeIntegration: true,
-        defaultEncoding: 'UTF-8'
-      }
-    });
-    winnewFrame.loadURL(`file://${__dirname}/newVar.html`);
-    winnewFrame.on('close',function(){winnewFrame=null});
-    //winnewFrame.show();
-    winnewFrame.once('ready-to-show', () => {
-      winnewFrame.setMenu(null)
-      winnewFrame.show()
-    })
-  }
-  const vars= document.getElementById('vars');
-  const varsMov=document.getElementById('varsMov');
-
-  ipc.on('varInf', function(event, arg){
-    //vars.innerHTML +='<a id="variable'+nVars+'" class="btn btn-d btn-lg">Variable'+nVars+'</a>';
-    let e = document.getElementById("frames");
-    let idFrame = e.options[e.selectedIndex].value;
-    let idVar = nuevaPlantilla.addVartoFrame(idFrame,arg);
-    arg.id=idVar;
-    addVisualVar(arg);
-    //console.log(nuevaPlantilla);
+  btnAnyadirVar.addEventListener('click',function(){
+    let varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: $("#tipoVar option:selected").attr('value'),
+      label: document.getElementById('labelVariable').value,
+      initial: document.getElementById('valorInicial').value,
+      format:document.getElementById('formato').value
+    }
+    let idFrame = $("#frames option:selected").attr('value');
+    let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
+    varInfo.id=idVar;
+    addVisualVar(varInfo);
   })
   //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
   $(document).on('change', '#frames', function(event) {
@@ -234,7 +227,7 @@ function cargarPanelEdicionFrame(idFrame){
   $("#lugarEtiqueta").append("<label>Etiquetas:</label>");
   $("#lugarEtiqueta").append('<select id="eEtiqueFrame" class="form-control" name="etiquetaFrame"></select>');
   $("#eEtiqueFrame").append('<option value="0">En fila</option>');
-  $("#eEtiqueFrame").append('<option value="1">En columna</option>'); 
+  $("#eEtiqueFrame").append('<option value="1">Sin etiquetas</option>'); 
   $('#eEtiqueFrame option[value='+frame["etiqueta"]+']').attr("selected",true);
   //Botón guardar
   $("#btnEditarFrame").removeAttr("onclick");

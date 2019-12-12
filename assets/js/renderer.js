@@ -30,24 +30,6 @@ $(() => {
    $('#designer').hide();
    $('#code').hide();
 });
-  
-function createNewFrame(){
-    winnewFrame=new BrowserWindow({ 
-      width: 400,
-      height: 393,
-      webPreferences: {
-        nodeIntegration: true,
-        defaultEncoding: 'UTF-8'
-      }
-    });
-    winnewFrame.loadURL(`file://${__dirname}/newFrame.html`);
-    winnewFrame.on('close',function(){winnewFrame=null});
-    //winnewFrame.show();
-    winnewFrame.once('ready-to-show', () => {
-      winnewFrame.setMenu(null)
-      winnewFrame.show()
-    })
-}
 
 function crearPlantilla(){
   $('#index').hide();
