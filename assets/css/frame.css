@@ -83,8 +83,9 @@ hr {
 #vars{
   width:90%;
 }
-#index a{
-  text-decoration:none;
+
+#frames{
+  border: 1px solid #ccc;
 }
 .frameSelected{
   display: flex;
@@ -169,6 +170,11 @@ hr {
   display: block;
   font-size: .8em;
   font-family: 'lato', helvetica, sans-serif;
+}
+#editVarBtn{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 /* INDEX */
 .section-title {
@@ -287,5 +293,8 @@ hr {
 .single-service p {
 	font-size: 15px;
 	line-height: 1.8;
+}
+#index a{
+  text-decoration:none;
 }
 /* FIN INDEX */

@@ -30,6 +30,9 @@ class Frame {
     getVariables(){
         return this.vars;
     }
+    getVariable(idVar){
+        return this.vars.get(parseInt(idVar));
+    }
     getNombre(){
         return this.name;
     }

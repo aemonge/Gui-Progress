@@ -185,8 +185,8 @@ btnAnyadirVar.addEventListener('click',function(){
       name: document.getElementById('nombreVariable').value,
       type: tipo,
       label: document.getElementById('labelVariable').value,
-      initial: "",
-      format: $("#fLogical option:selected").attr('value')
+      initial: $("#fLogical option:selected").attr('value'),
+      format: ""
     }
   }
   else if(tipo=="date"){
@@ -274,12 +274,12 @@ function borrarFrame(id){
   $('.editEnabled').hide();
 }
 function borrarVariable(idVar){
-  console.log("antes de borrar:",nuevaPlantilla);
+  
   let idFrame = $("#frames option:selected").attr('value');
   nuevaPlantilla.deleteVariable(idFrame,idVar);
   $('#vars').empty();
+  $('.var'+idVar+'').remove(); // Borro el arrastrable
   cargarPanelVar(idFrame);
-  console.log("tras borrar:",nuevaPlantilla);
 }
 function cargarFrame(idFrame){
   if(idFrame == 0){
@@ -331,14 +331,74 @@ function cargarPanelVar(idFrame){
 }
 function addVisualVar(infoVar){
   createVisualDraggable(infoVar);
-
+  createEditPanel(infoVar["id"]);
+} 
+function createVisualDraggable(infoVar){
+  let stringDiv;
+  let tipo = infoVar["type"];
+  if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
+    stringDiv = '<div id="yes-drop" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
+  }
+  else if(tipo=="logical"){
+    if(infoVar["format"] == "true"){
+      stringDiv = '<div id="yes-drop" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+    }
+    else{
+      stringDiv = '<div id="yes-drop" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+    }
+  }
+  $("#varsMov").append(stringDiv);
+}
+function createEditPanel(idVar){
+  let idFrame = $("#frames option:selected").attr('value');
+  let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+  $("#vars").empty();
+  /* PRUEBA CON FORM NO BORRAR
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header">\
-      <a id="'+infoVar["name"]+' class="collapsed card-link text-center" data-toggle="collapse" href="#collapse'+infoVar["id"]+'">\
       <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-      </a>\
     </div>\
-    <div id="collapse'+infoVar["id"]+'" class="collapse" data-parent="#accordion">\
+      <div class="card-body text-left form-sec">\
+      <form>\
+        <div class="form-group">\
+          <label>Nombre:</label>\
+          <input id="eNombreVariable" type="text" class="form-control NombreVariable" placeholder="Var1">\
+        </div>\
+        <div class="form-group">\
+          <label>Tipo de variable:</label>\
+          <select id="eTipoVar" class="form-control tipoVar" name="select">\
+            <option value="integer">Integer</option>\
+            <option value="decimal">Decimal</option> \
+            <option value="logical">Logical</option>\
+            <option value="character">Character</option>\
+            <option value="date">Date</option>\
+          </select>\
+        </div>       \
+        <div class="form-group">\
+          <label>Label:</label>\
+          <input id="eLabelVariable" type="text" class="form-control labelVariable" placeholder="Variable 1">\
+        </div>\
+        <div class="form-group lugarFormatYear" id="eLugarFormatYear">\
+        </div>\
+        <div class="form-group lugarFormat" id="eLugarFormat">\
+          <label>Formato:</label>\
+          <input id="eFormato" type="text" class="form-control formato">\
+        </div>\
+        <div class="form-group lugarInit" id="eLugarInit">\
+          <label>Valor Inicial:</label>\
+          <input id="eValorInicial" type="text" class="form-control valorInicial" placeholder="0">\
+        </div>\
+        <div id ="editVarBtn" class="text-center">\
+        </div>\
+      </form>\
+    </div>\
+  </div>');
+  */
+  
+  $("#vars").append('<div class="card border-d mb-3 text-center">\
+    <div class="card-header">\
+      <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
+    </div>\
       <div class="card-body text-left">\
       <table class="table table-hover group table-striped">\
         <tbody>\
@@ -364,29 +424,12 @@ function addVisualVar(infoVar){
           </tr>\
         </tbody>\
       </table>\
-    </div> </div> </div>');
-  $('#collapse'+infoVar["id"]).append('<div class="card-footer text-muted">\
-        <a href="#" class="btn btn-sm btn-info"><i class="far fa-save"></i> Guardar Cambios </a>\
-      </div>');
-  $('#collapse'+infoVar["id"]).append('<div class="card-footer text-muted">\
-        <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btn btn-sm btn-info"><i class="fas fa-trash-alt"></i> Borrar </a>\
-      </div>');  
-} 
-function createVisualDraggable(infoVar){
-  let stringDiv;
-  let tipo = infoVar["type"];
-  if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
-    stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></div>';
-  }
-  else if(tipo=="logical"){
-    if(infoVar["format"] == "true"){
-      stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></div>';
-    }
-    else{
-      stringDiv = '<div id="yes-drop" class="drag-drop"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></div>';
-    }
-  }
-  $("#varsMov").append(stringDiv);
+      <div id ="editVarBtn" class="text-center"></div>\
+    </div>\
+  </div>');
+ 
+  $('#editVarBtn').append(' <a href="#" class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
+  $('#editVarBtn').append(' <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar </h6></a>');
 }
 function modificarFrame(idFrame){
   let e = document.getElementById("eBordeFrame");
