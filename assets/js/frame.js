@@ -87,7 +87,7 @@ interact('.dropzone').dropzone({
       // remove the drop feedback style
       event.target.classList.remove('drop-target')
       event.relatedTarget.classList.remove('can-drop')
-      event.relatedTarget.textContent = 'Dragged out'
+      //event.relatedTarget.textContent = 'Dragged out'
     },
     ondrop: function (event) {
       //event.relatedTarget.textContent = 'Dropped'
@@ -103,6 +103,20 @@ interact('.dropzone').dropzone({
       //$("#movend").append(divmov);
       var objcln=objeto.cloneNode(true);
       $('#movend').append(objcln);
+      posx=parseInt(objeto.getAttribute('data-x'));
+      posy=parseInt(objeto.getAttribute('data-y'));
+
+      var x1=posx+objeto.offsetLeft;
+      var y1=posy+objeto.offsetTop;
+      posx=0;
+      posy=0;
+      // translate the element
+      objcln.style.webkitTransform =
+      objcln.style.transform =
+        'translate(' + x1 + 'px, ' + y1 + 'px)'
+      // update the posiion attributes
+      objcln.setAttribute('data-x', x1)
+      objcln.setAttribute('data-y', y1)
       objeto.parentNode.removeChild(objeto);
       console.log('nueva cordenadas izquierda:',objeto.offsetLeft,' nueva coordenadas superiores:',objeto.offsetTop);
       //console.log(varid);

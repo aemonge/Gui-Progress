@@ -29,6 +29,10 @@
   display:flex;
   flex-direction: column;
 }
+#movend{
+  position: relative;
+}
+
 
 .drop-active {
   border-color: #aaa;
@@ -42,8 +46,8 @@
 
 .drag-drop {
   display: inline-block;
-  /*
-  min-width: 40px;
+  
+  /*min-width: 40px;
   padding: 2em 0.5em;
   */
   padding: 0%;
