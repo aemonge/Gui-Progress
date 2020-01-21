@@ -9,6 +9,7 @@ $(() => {
 
 let posx=0;
 let posy=0;
+let oldx=0;
 
 /* The dragging code for '.draggable' from the demo above
  * applies to this demo as well so it doesn't have to be repeated. */
@@ -95,36 +96,41 @@ interact('.dropzone').dropzone({
       //console.log('eventdx:',event.dx);
       var target = event.relatedTarget;
       var varid=target.getAttribute('id');
-      var varvar=target.getAttribute('var');
+      var movido=target.getAttribute('movido');
       var objeto=document.getElementById(varid);
       console.log('cordenadas izquierda:',objeto.offsetLeft,' coordenadas superiores:',objeto.offsetTop);
       //var divmov='<div id="'+varid+'" class="'+varvar+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
-      var divmov='<div id="'+varid+'"></div>'
+      //var divmov='<div id="'+varid+'"></div>'
       //$("#movend").append(divmov);
-      var objcln=objeto.cloneNode(true);
-      $('#movend').append(objcln);
-      posx=parseInt(objeto.getAttribute('data-x'));
-      posy=parseInt(objeto.getAttribute('data-y'));
+      if(movido==0){
+        var objcln=objeto.cloneNode(true);
+        $('#movend').append(objcln);
+        posx=parseInt(objeto.getAttribute('data-x'));
+        posy=parseInt(objeto.getAttribute('data-y'));
 
-      var x1=posx+objeto.offsetLeft;
-      var y1=posy+objeto.offsetTop;
-      posx=0;
-      posy=0;
-      // translate the element
-      objcln.style.webkitTransform =
-      objcln.style.transform =
-        'translate(' + x1 + 'px, ' + y1 + 'px)'
-      // update the posiion attributes
-      objcln.setAttribute('data-x', x1)
-      objcln.setAttribute('data-y', y1)
-      objeto.parentNode.removeChild(objeto);
-      console.log('nueva cordenadas izquierda:',objeto.offsetLeft,' nueva coordenadas superiores:',objeto.offsetTop);
+        var x1=posx+objeto.offsetLeft-objcln.offsetLeft;
+        var y1=posy+objeto.offsetTop+objcln.offsetTop;
+        //oldx=posx;
+        //posx=0;
+        //posy=0;
+        // translate the element
+        objcln.style.webkitTransform =
+        objcln.style.transform =
+          'translate(' + x1 + 'px, ' + y1 + 'px)'
+        // update the posiion attributes
+        objcln.setAttribute('data-x', x1)
+        objcln.setAttribute('data-y', y1)
+        objcln.setAttribute('movido',1)
+        objeto.parentNode.removeChild(objeto);
+        console.log('nueva cordenadas izquierda:',objcln.offsetLeft,' nueva coordenadas superiores:',objcln.offsetTop);
       //console.log(varid);
       //let idFrame = $("#frames option:selected").attr('value');
       //let variable=nuevaPlantilla.getVariableByKey(idFrame,varid);
       
       //variable.setPosition(posx,posy);
       //console.log(variable);
+      }
+      
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
@@ -375,14 +381,14 @@ function createVisualDraggable(infoVar){
   let stringDiv;
   let tipo = infoVar["type"];
   if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
-    stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
+    stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
   }
   else if(tipo=="logical"){
     if(infoVar["format"] == "true"){
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
     }
     else{
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
     }
   }
   $("#varsMov").append(stringDiv);
