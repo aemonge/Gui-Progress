@@ -33,6 +33,10 @@ class Progress{
         let frame = this.frames.get(parseInt(idFrame));
         frame.editData(newData);
     }
+    getVariableByKey(idFrame,keyVar){
+        let frame=this.frames.get(parseInt(idFrame));
+        return frame.getVariable(keyVar);
+    }
 }
 module.exports = {
     Progress:Progress

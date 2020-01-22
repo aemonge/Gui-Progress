@@ -8,6 +8,8 @@ class Variable{
         this.format=format;
         this.label=label;
         this.initial=initial;
+        this.posx=0;
+        this.posy=0;
     }
     
     getVar(){
@@ -28,7 +30,17 @@ class Variable{
     getInitial(){
         return this.initial;
     }
-
+    getPosition(){
+        position={
+            x:this.posx,
+            y:this.posy
+        }
+        return position;
+    }
+    setPosition(x,y){
+        this.posx=x;
+        this.posy=y;
+    }
 }
 module.exports = {
     Variable:Variable
