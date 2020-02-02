@@ -37,7 +37,28 @@ $(() => {
    
 }
 function guardarPlantilla(){
+    /*
+        ENLACE PARA DIALOG
+        https://es.ourcodeworld.com/articulos/leer/41/como-escoger-leer-guardar-eliminar-o-crear-un-archivo-con-electron-framework
+    */
+    var app = require('electron').remote; 
+    var dialog = app.dialog;
     let code = generateCode();
+    let fs = require('fs');
+    dialog.showSaveDialog((fileName) =>{
+        if (fileName === undefined){
+             console.log("No guardaste el archivo");
+             return;
+        }
+        fs.writeFile(fileName, code, function(err) {
+            if (err) {
+                alert(err);
+            }
+            alert("El archivo codeTest.txt fue creado correctamente");
+        });
+    });
+    // CODIGO ANTIGUO QUE GUARDA DIRECTAMENTE
+    /* 
     let fs = require('fs');
 
     fs.writeFile("codeTest.txt", code, function(err) {
@@ -47,6 +68,7 @@ function guardarPlantilla(){
 
         alert("El archivo codeTest.txt fue creado correctamente");
     });
+    */
 }
  function viewCode(){
     //$('#designer').hide();

@@ -47,13 +47,14 @@
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Crear Frame</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <button type="button" class="close" onclick="borrarMensajeErrorFrame()" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body form-sec">
               <form>
                 <div class="form-group">
                   <label>Nombre:</label>
                   <input id='nombreFrame' class="form-control" type="text" placeholder="f_frame1">
+                  <span class="errorFrame errorMessage"></span>
                 </div>
                 <div class="form-group">
                   <label>Borde:</label>
@@ -70,7 +71,7 @@
                   </select>
                 </div>
                 <div class="text-center">
-                  <input id="btnAnyadirFrame" type="button"  class="btn btn-info" data-dismiss="modal" value="Crear Frame">
+                  <input id="btnAnyadirFrame" type="button"  class="btn btn-info"  value="Crear Frame">
                 </div>
               </form>
             </div>
@@ -112,12 +113,6 @@
             </div>
             <div class="row">
               <div id="varsMov">
-                  <!-- EJEMPLO DIV ARRASTRABLE
-                  <div id="yes-drop" class="drag-drop">
-                    <label class ="labelVar">Coche:</label>
-                    <input class ="inputVar" type="text" value="3" class="field left" size="8"readonly >
-                  </div>
-                -->
               </div>
             </div>  
           </div>
@@ -138,12 +133,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Editar frame</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="borrarMensajeErrorFrame()" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body form-sec">
             <div class="form-group">
               <label>Nombre:</label>
               <input id='eNombreFrame' class="form-control" type="text">
+              <span class="errorFrame errorMessage"></span>
             </div>
             <div class="form-group" id="lugarBorde">
               <label>Borde:</label>
@@ -160,7 +156,7 @@
               </select>
             </div>
             <div class="text-center">
-                <a href="#" id="btnEditarFrame" class="btn btn-sm btn-info"  data-dismiss="modal" ><i class="far fa-save" ></i> Guardar Cambios </a>
+                <a href="#" id="btnEditarFrame" class="btn btn-sm btn-info" ><i class="far fa-save" ></i> Guardar Cambios </a>
             </div>
           </div>
         </div>
@@ -192,6 +188,7 @@
           </div>
           <div class="modal-body form-sec">
             <form>
+              <span class="errorVar errorMessage"></span>
               <div class="form-group">
                 <label>Nombre:</label>
                 <input id='nombreVariable' type="text" class="form-control" placeholder="Var1">
@@ -221,7 +218,7 @@
                 <input id='valorInicial' type="text" class="form-control" placeholder="0">
               </div>
               <div class="text-center">
-                <input id="btnAnyadirVar" type="button"  class="btn btn-info" data-dismiss="modal" value="Crear Variable">
+                <input id="btnAnyadirVar" type="button"  class="btn btn-info" value="Crear Variable">
               </div>
             </form>
           </div>

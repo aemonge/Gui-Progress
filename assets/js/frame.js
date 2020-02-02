@@ -1,5 +1,6 @@
 
 let pathFrame = path.join(__dirname,'../assets/js/classFrame.js')
+const validation=require(path.join(__dirname,'../assets/js/validation.js'));
 const classFrame = require(pathFrame)
 
 $(() => {
@@ -208,13 +209,31 @@ btnAnyadirFrame.addEventListener('click',function(){
     borde: border,
     etiqueta: etiqueta
   }
-  let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
-  $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
-  $("#frames option:selected").removeAttr("selected");
-  $('#frames option[value="'+idFrame+'"]').attr("selected",true);
-  cargarFrame(idFrame);
-  $('#nombreFrame').val("");
+
+  validation.validateNewFrame(frameInfo, function(message) { 
+    $('.errorFrame').empty();
+    if ("Ok" === message) {
+      let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
+      //seleccionamos frame para mostrar
+      $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
+      $("#frames option:selected").removeAttr("selected");
+      $('#frames option[value="'+idFrame+'"]').attr("selected",true);
+      //cargamos datos del frame
+      cargarFrame(idFrame);
+      $('#nombreFrame').val("");
+      cerrarModal("#modalNewFrame");
+    } else {
+      //mostramos mensaje de error
+      $('.errorFrame').append(message);
+    }
+  })
 })
+function cerrarModal(idModal){
+  $(idModal).modal('hide');//ocultamos el modal
+  $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll
+  $('.modal-backdrop').remove();//eliminamos el backdrop del modal
+
+}
 //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
 $(document).on('change', '#frames', function(event) {
   let id = $("#frames option:selected").attr('value');
@@ -222,7 +241,7 @@ $(document).on('change', '#frames', function(event) {
 });
 btnAnyadirVar.addEventListener('click',function(){
   let tipo = $("#tipoVar option:selected").attr('value');
-  let varInfo
+  let varInfo;
   if(tipo == "integer" || tipo == "decimal" || tipo=="character"){
     varInfo = {
       name: document.getElementById('nombreVariable').value,
@@ -250,11 +269,20 @@ btnAnyadirVar.addEventListener('click',function(){
       format: $("#fDate option:selected").attr('value')
     }
   }
-  
   let idFrame = $("#frames option:selected").attr('value');
-  let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
-  varInfo.id=idVar;
-  addVisualVar(varInfo);
+  validation.validateNewVar(varInfo,idFrame, function(message) { 
+    $('.errorVar').empty();
+    if ("Ok" === message) {
+      let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
+      varInfo.id=idVar;
+      addVisualVar(varInfo);
+      cerrarModal("#modalNewVar");
+      console.log(nuevaPlantilla);
+    } else {
+      //mostramos mensaje de error
+      $('.errorVar').append(message);
+    }
+  })
 })
 //AL CAMBIAR DE FORMATO DE VAR AJUSTAMOS EL FORMATO Y EL INIT
 $(document).on('change', '#tipoVar', function(event) {
@@ -324,6 +352,7 @@ function borrarFrame(id){
   $('#frames option[value="'+id+'"]').remove();
   $('#frames option[value="0"]').attr("selected",true);
   $('.editEnabled').hide();
+  $("#varsMov").empty();
 }
 function borrarVariable(idVar){
   
@@ -372,6 +401,7 @@ function cargarPanelEdicionFrame(idFrame){
 }
 function cargarPanelVar(idFrame){
   $("#vars").empty();
+  /*
   $("#vars").append('<small><div id="container" style="width:100%;"><div id="accordion" style="width:100%;"></small>');
   let frame = nuevaPlantilla.getFrame(idFrame);
   let mapIter = frame.getVariables().entries();
@@ -380,6 +410,7 @@ function cargarPanelVar(idFrame){
     addVisualVar(value[1]);
     value = mapIter.next().value;
   }
+  */
 }
 function addVisualVar(infoVar){
   createVisualDraggable(infoVar);
@@ -402,6 +433,8 @@ function createVisualDraggable(infoVar){
   $("#varsMov").append(stringDiv);
 }
 function createEditPanel(idVar){
+  // CAMBIAR
+  /* No es necesario, simplemente rellenar los campos en el panel de variable ya existente */
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
   $("#vars").empty();
@@ -493,7 +526,20 @@ function modificarFrame(idFrame){
     borde: border,
     etiqueta: etiqueta
   }
-  nuevaPlantilla.editFrame(idFrame, newData);
-  $("#frames option:selected").text(document.getElementById('eNombreFrame').value);
-  cargarPanelEdicionFrame(idFrame);
+  let frameInfoOld = nuevaPlantilla.getFrame(idFrame);
+  validation.validateEditFrame(frameInfoOld, newData, function(message) { 
+    $('.errorFrame').empty();
+    if ("Ok" === message) {
+      nuevaPlantilla.editFrame(idFrame, newData);
+      $("#frames option:selected").text(document.getElementById('eNombreFrame').value);
+      cargarPanelEdicionFrame(idFrame);
+      cerrarModal("#modalFrameEdit");
+    } else {
+      //mostramos mensaje de error
+      $('.errorFrame').append(message);
+    }
+  })
 }   
+function borrarMensajeErrorFrame(){
+  $('.errorFrame').empty();
+}

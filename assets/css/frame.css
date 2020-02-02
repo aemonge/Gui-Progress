@@ -302,3 +302,7 @@ hr {
   text-decoration:none;
 }
 /* FIN INDEX */
+
+.errorMessage{
+  color: red;
+}
