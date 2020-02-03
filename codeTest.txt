@@ -1,16 +1,8 @@
 
-define temp-table tt_a no-undo 
-   field  as integer
-   field wtgsrg as integer
+define temp-table tt_ no-undo 
+   field bbfg as integer
 . 
-define temp-table tt_b no-undo 
-   field bn as integer
-. 
-define frame a 
-    label "" init "" format "" at row 0 column 0 
-   wtgsrg label "" init "" format "" at row 0 column 0 
-with side-labels .define frame b 
-   bn label "" init "" format "" at row 0 column 0 
-with side-labels .
-update  wtgsrg with frame a. 
- bn with frame b. 
+define frame  
+   bbfg label "ghj"jghjgj"" init "" format "" at row 0 column 0 
+with side-labels no-box. 
+update bbfg with frame . 

@@ -97,9 +97,13 @@ interact('.dropzone').dropzone({
       //console.log('eventdx:',event.dx);
       var target = event.relatedTarget;
       var varid=target.getAttribute('id');
+      var zone = document.getElementById('inner-dropzone');
       var movido=target.getAttribute('movido');
       var objeto=document.getElementById(varid);
+      var variable=null;
       console.log('cordenadas izquierda:',objeto.offsetLeft,' coordenadas superiores:',objeto.offsetTop);
+      
+      console.log('zona iz:', zone.offsetLeft,' zona top:',zone.offsetTop);
       //var divmov='<div id="'+varid+'" class="'+varvar+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
       //var divmov='<div id="'+varid+'"></div>'
       //$("#movend").append(divmov);
@@ -108,12 +112,11 @@ interact('.dropzone').dropzone({
         $('#movend').append(objcln);
         posx=parseInt(objeto.getAttribute('data-x'));
         posy=parseInt(objeto.getAttribute('data-y'));
+        console.log('zona iz:', zone.offsetLeft,' zona top:',zone.offsetTop);
 
         var x1=posx+objeto.offsetLeft-objcln.offsetLeft;
         var y1=posy+objeto.offsetTop+objcln.offsetTop;
-        //oldx=posx;
-        //posx=0;
-        //posy=0;
+        
         // translate the element
         objcln.style.webkitTransform =
         objcln.style.transform =
@@ -127,18 +130,27 @@ interact('.dropzone').dropzone({
       //console.log(varid);
         let idFrame = $("#frames option:selected").attr('value');
         let key= objcln.getAttribute("key")
-        let variable=nuevaPlantilla.getVariableByKey(idFrame,key);
+        variable=nuevaPlantilla.getVariableByKey(idFrame,key);
       
         variable.setPosition(x1,y1);
-        console.log(variable);
+        
+        objeto=document.getElementById(varid);
+        posx=x1;
+        posy=y1;
       }else{
         let idFrame = $("#frames option:selected").attr('value');
         let key= objeto.getAttribute("key")
-        let variable=nuevaPlantilla.getVariableByKey(idFrame,key);
+        variable=nuevaPlantilla.getVariableByKey(idFrame,key);
       
         variable.setPosition(posx,posy);
-        console.log(variable);
+        //console.log(variable);
       }
+      //calculo columna y fila
+      var col=Math.round((objeto.offsetLeft+posx-zone.offsetLeft)/9);
+      var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/24);
+      console.log('fila:',fil,'col:',col);
+      variable.setFilaCol(fil,col);
+      console.log(variable);
       
     },
     ondropdeactivate: function (event) {

@@ -10,6 +10,8 @@ class Variable{
         this.initial=initial;
         this.posx=0;
         this.posy=0;
+        this.fila=0;
+        this.columna=0;
     }
     
     getVar(){
@@ -40,6 +42,17 @@ class Variable{
     setPosition(x,y){
         this.posx=x;
         this.posy=y;
+    }
+    setFilaCol(x,y){
+        this.fila=x;
+        this.columna=y;
+    }
+    getFilaCol(){
+        position={
+            x:this.fila,
+            y:this.columna
+        }
+        return position;
     }
 }
 module.exports = {
