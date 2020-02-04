@@ -12,6 +12,7 @@ class Variable{
         this.posy=0;
         this.fila=0;
         this.columna=0;
+        this.movido=0;
     }
     
     getVar(){
@@ -53,6 +54,12 @@ class Variable{
             y:this.columna
         }
         return position;
+    }
+    getMovido(){
+        return this.movido;
+    }
+    setMovido(){
+        this.movido=1;
     }
 }
 module.exports = {

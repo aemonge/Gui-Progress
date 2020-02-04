@@ -131,7 +131,7 @@ interact('.dropzone').dropzone({
         let idFrame = $("#frames option:selected").attr('value');
         let key= objcln.getAttribute("key")
         variable=nuevaPlantilla.getVariableByKey(idFrame,key);
-      
+        variable.setMovido();      
         variable.setPosition(x1,y1);
         
         objeto=document.getElementById(varid);
@@ -230,6 +230,7 @@ btnAnyadirFrame.addEventListener('click',function(){
       $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
       $("#frames option:selected").removeAttr("selected");
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
+      vaciarVariables();
       //cargamos datos del frame
       cargarFrame(idFrame);
       $('#nombreFrame').val("");
@@ -240,6 +241,12 @@ btnAnyadirFrame.addEventListener('click',function(){
     }
   })
 })
+function vaciarVariables(){
+   //borramos datos del frame anterior
+  $('#movend').empty();
+  $('#varsMov').empty();
+}
+
 function cerrarModal(idModal){
   $(idModal).modal('hide');//ocultamos el modal
   $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll
@@ -249,6 +256,7 @@ function cerrarModal(idModal){
 //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
 $(document).on('change', '#frames', function(event) {
   let id = $("#frames option:selected").attr('value');
+  vaciarVariables();
   cargarFrame(id);  
 });
 btnAnyadirVar.addEventListener('click',function(){
@@ -413,36 +421,60 @@ function cargarPanelEdicionFrame(idFrame){
 }
 function cargarPanelVar(idFrame){
   $("#vars").empty();
-  /*
+  
   $("#vars").append('<small><div id="container" style="width:100%;"><div id="accordion" style="width:100%;"></small>');
   let frame = nuevaPlantilla.getFrame(idFrame);
   let mapIter = frame.getVariables().entries();
   let value = mapIter.next().value;
   while(value != undefined) {
+    console.log('variables: ', value);
+    
     addVisualVar(value[1]);
     value = mapIter.next().value;
   }
-  */
+
 }
 function addVisualVar(infoVar){
   createVisualDraggable(infoVar);
   createEditPanel(infoVar["id"]);
-} 
+}
+
 function createVisualDraggable(infoVar){
   let stringDiv;
   let tipo = infoVar["type"];
+  
+  
   if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
-    stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
+    stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
   }
   else if(tipo=="logical"){
     if(infoVar["format"] == "true"){
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
     }
     else{
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="0"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
     }
   }
-  $("#varsMov").append(stringDiv);
+  if(infoVar["movido"]==1){
+    $("#movend").append(stringDiv);
+    if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
+      let datx=(infoVar["fila"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(infoVar["name"]).offsetLeft;
+      let daty=(infoVar["columna"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(infoVar["name"]).offsetTop;
+      document.getElementById(infoVar["name"]).setAttribute('data-x', datx);
+      document.getElementById(infoVar["name"]).setAttribute('data-y', daty);
+      // translate the element
+      document.getElementById(infoVar["name"]).style.webkitTransform =
+      document.getElementById(infoVar["name"]).style.transform =
+        'translate(' + datx + 'px, ' + daty + 'px)'
+    }
+
+
+  }else{
+    $("#varsMov").append(stringDiv);
+  }
+
+  
+  
 }
 function createEditPanel(idVar){
   // CAMBIAR
