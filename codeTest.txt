@@ -1,8 +1,17 @@
+ 
+/* @@TT */
+ define temp-table tt_f1 no-undo  
+    field v1 as integer 
+    field v2 as integer 
+ .
+/* /@@TT */
 
-define temp-table tt_ no-undo 
-   field bbfg as integer
-. 
-define frame  
-   bbfg label "ghj"jghjgj"" init "" format "" at row 0 column 0 
-with side-labels no-box. 
-update bbfg with frame . 
+/* @@F */   
+ define frame f1 
+ 	/* @@V */ 
+    v1 label "v1" init "" format "" at row 9 column2  
+    v2 label "v2" init "" format "" at row 0 column0 
+    /* /@@V */  
+ with side-labels no-box.  
+
+/* /@@F */  

@@ -55,6 +55,12 @@ class Variable{
         }
         return position;
     }
+    getFila(){
+        return this.fila;
+    }
+    getColumna(){
+        return this.columna;
+    }
     getMovido(){
         return this.movido;
     }

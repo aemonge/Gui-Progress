@@ -295,6 +295,8 @@ btnAnyadirVar.addEventListener('click',function(){
     if ("Ok" === message) {
       let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
       varInfo.id=idVar;
+      let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
+      varInfo.movido=obj.movido;
       addVisualVar(varInfo);
       cerrarModal("#modalNewVar");
       console.log(nuevaPlantilla);
@@ -442,6 +444,7 @@ function addVisualVar(infoVar){
 function createVisualDraggable(infoVar){
   let stringDiv;
   let tipo = infoVar["type"];
+
   
   
   if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
@@ -458,8 +461,8 @@ function createVisualDraggable(infoVar){
   if(infoVar["movido"]==1){
     $("#movend").append(stringDiv);
     if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
-      let datx=(infoVar["fila"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(infoVar["name"]).offsetLeft;
-      let daty=(infoVar["columna"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(infoVar["name"]).offsetTop;
+      let datx=(infoVar["columna"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(infoVar["name"]).offsetLeft;
+      let daty=(infoVar["fila"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(infoVar["name"]).offsetTop;
       document.getElementById(infoVar["name"]).setAttribute('data-x', datx);
       document.getElementById(infoVar["name"]).setAttribute('data-y', daty);
       // translate the element

@@ -7,12 +7,14 @@ $(() => {
     let frame = "";
     let update = "update";
 
+
+
     nuevaPlantilla.getFrames().forEach(function (elemF, indexF, array) {
         tempTable += "define temp-table tt_" + elemF.getNombre() + " no-undo \n";
         frame += "define frame " + elemF.getNombre() + " \n";
         elemF.getVariables().forEach(function (elemV, indexV, array) {
             tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo() + "\n";
-            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel() + '" init "' + elemV.getInitial() +'" format "' + elemV.getFormato() +'" at row 0 column 0 \n';
+            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel() + '" init "' + elemV.getInitial() +'" format "' + elemV.getFormato() +'" at row '+elemV.getFila()+' column'+elemV.getColumna()+' \n';
             update += " " + elemV.getNombre();
         });
         tempTable += ". \n";
