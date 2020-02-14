@@ -9,8 +9,8 @@
 /* @@F */   
  define frame f1 
  	/* @@V */ 
-    v1 label "v1" init "" format "" at row 9 column2  
-    v2 label "v2" init "" format "" at row 0 column0 
+    v1 label "v1" init "" format "" at row 9 column 2  
+    v2 label "v2" init "" format "" at row 0 column 0 
     /* /@@V */  
  with side-labels no-box.  
 

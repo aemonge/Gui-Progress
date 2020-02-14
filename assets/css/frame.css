@@ -306,3 +306,20 @@ hr {
 .errorMessage{
   color: red;
 }
+/* HEADER */
+#title{
+  color:white;
+}
+.volverInicio{
+  display:flex;
+  justify-content: flex-end;
+}
+.alineados{
+  display: flex;
+  flex-direction: row;
+}
+.spaced{
+  display: flex;
+  justify-content: space-between;
+}
+/* FIN HEADER */ 

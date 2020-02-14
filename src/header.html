@@ -1,4 +1,21 @@
 <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark row">
+        <div class="col-4 alineados">
+            <a class="navbar-brand" href="#">GUI-Progress</a>
+            <div class="headerOptions collapse navbar-collapse spaced" id="navbarsExampleDefault">
+                <a onclick="viewCode()" class="btn btn-outline-success my-2 my-sm-0 headerOptions" href="#" data-toggle="modal" data-target="#modalCode"><i class="fas fa-bug"></i> Ver Código </a>
+                <a onclick="guardarPlantilla()" class="btn btn-outline-primary my-2 my-sm-0 headerOptions" href="#"><i class="fas fa-file-download"></i> Guardar</a> 
+            </div>
+        </div>
+        <span id="title" class="headerOptions col-4 text-center"></span>
+        <div class="col-4 volverInicio">
+            <a class="btn btn-outline-info my-2 my-sm-0 headerOptions" href="index.html"><i class="far fa-arrow-alt-circle-left"></i> Volver Inicio <a> 
+        </div>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <!-- 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">GUI-Progress</a>
         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +38,7 @@
         </div>
         </div>
     </nav>
+    -->
 </header>
 <div id="codeExample">
 </div>

@@ -56,10 +56,10 @@ class Variable{
         return position;
     }
     getFila(){
-        return this.fila;
+        return this.fila + 1 ;
     }
     getColumna(){
-        return this.columna;
+        return this.columna + 1;
     }
     getMovido(){
         return this.movido;

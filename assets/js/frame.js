@@ -382,7 +382,7 @@ function borrarVariable(idVar){
   nuevaPlantilla.deleteVariable(idFrame,idVar);
   $('#vars').empty();
   $('.var'+idVar+'').remove(); // Borro el arrastrable
-  cargarPanelVar(idFrame);
+  //cargarPanelVar(idFrame);
 }
 function cargarFrame(idFrame){
   if(idFrame == 0){

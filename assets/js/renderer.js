@@ -13,7 +13,7 @@ const remote=electron.remote
 const ipc=electron.ipcRenderer
 let pathProgress = path.join(__dirname,'../assets/js/classProgress.js')
 const classProgress = require(pathProgress)
-let nuevaPlantilla = new classProgress.Progress()
+let nuevaPlantilla;
 
 /*ventana crear Frame*/
 
@@ -35,7 +35,31 @@ function crearPlantilla(){
   $('#index').hide();
   $('#designer').show();
   $('.headerOptions').show();
+  nuevaPlantilla = new classProgress.Progress();
+  $("#title").empty();
+  $("#title").append(nuevaPlantilla.getFileName());
   //console.log(nuevaPlantilla);
+}
+function abrirPlantilla(){
+  var app = require('electron').remote; 
+  var dialog = app.dialog;
+  let dia = dialog.showOpenDialog();
+
+  dia.then(file => {
+    if (file.filePaths === undefined){
+      alert("Ha ocurrido un error al abrir el archivo");
+      return;
+    }
+    console.log(file.filePaths);
+    let fileName = getFileName(file.filePaths[0]);
+    $("#title").empty();
+    $("#title").append(fileName);
+    $('#index').hide();
+    $('#designer').show();
+    $('.headerOptions').show();
+    //CREAR LA PLANTILLA CON LOS DATOS ENTRANTES
+    //TRATAR DATOS
+  });
 }
 function exit(){
   window.close();

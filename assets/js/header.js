@@ -5,7 +5,6 @@ $(() => {
  function generateCode(){
     let tempTable = "\n";
     let frame = "";
-    let update = "update";
 
 
 
@@ -14,8 +13,7 @@ $(() => {
         frame += "define frame " + elemF.getNombre() + " \n";
         elemF.getVariables().forEach(function (elemV, indexV, array) {
             tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo() + "\n";
-            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel() + '" init "' + elemV.getInitial() +'" format "' + elemV.getFormato() +'" at row '+elemV.getFila()+' column'+elemV.getColumna()+' \n';
-            update += " " + elemV.getNombre();
+            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel() + '" init "' + elemV.getInitial() +'" format "' + elemV.getFormato() +'" at row '+elemV.getFila()+' column '+elemV.getColumna()+' \n';
         });
         tempTable += ". \n";
         frame += "with "
@@ -26,15 +24,14 @@ $(() => {
             frame += "no-label ";
         }
         if(elemF.getBorde() == 0) {
-            frame += "no-box. ";
+            frame += "no-box. \n";
         }
         else{
-            frame += ".";
+            frame += ". \n";
         }
-        update += " with frame " +elemF.getNombre() +". \n";
     });
     
-   tempTable += frame +"\n"+ update;
+   tempTable += frame;
    return tempTable;
    
 }
@@ -47,16 +44,22 @@ function guardarPlantilla(){
     var dialog = app.dialog;
     let code = generateCode();
     let fs = require('fs');
-    dialog.showSaveDialog((fileName) =>{
-        if (fileName === undefined){
-             console.log("No guardaste el archivo");
+    let dia = dialog.showSaveDialog();
+
+    dia.then(file => {
+        if (file.filePath === undefined){
+            alert("Ha ocurrido un error al guardar el archivo");
              return;
         }
-        fs.writeFile(fileName, code, function(err) {
+        fs.writeFile(file.filePath, code, function(err) {
             if (err) {
                 alert(err);
             }
-            alert("El archivo codeTest.txt fue creado correctamente");
+            let fileName = getFileName(file.filePath);
+            nuevaPlantilla.setFileName(fileName);
+            $("#title").empty();
+            $("#title").append(nuevaPlantilla.getFileName());
+            alert("Guardado correctamente");
         });
     });
     // CODIGO ANTIGUO QUE GUARDA DIRECTAMENTE
@@ -83,4 +86,17 @@ function guardarPlantilla(){
     for(let i = 1; i<= count; i++){
         $('.line-numbers').append(''+i+'<br>')
     }
+ }
+ function getFileName(filePath){
+    let i = filePath.length -1 ;
+    let encontrado = false ;
+    let fileName = "";
+     while (i >= 0 && !encontrado){
+        if(filePath[i] !== "\\")
+            fileName = filePath[i] + fileName;
+        else
+            encontrado = true;
+        i--;
+     }
+     return fileName;
  }

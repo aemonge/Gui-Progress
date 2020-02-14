@@ -1,0 +1,5 @@
+
+define temp-table tt_sdfas no-undo 
+. 
+define frame sdfas 
+with side-labels no-box. 
