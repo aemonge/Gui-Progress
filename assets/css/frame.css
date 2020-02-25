@@ -30,6 +30,7 @@
   flex-direction: column;
 }
 #movend{
+  height: 30px;
   position: relative;
 }
 

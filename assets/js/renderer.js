@@ -13,6 +13,7 @@ const remote=electron.remote
 const ipc=electron.ipcRenderer
 let pathProgress = path.join(__dirname,'../assets/js/classProgress.js')
 const classProgress = require(pathProgress)
+const parser=require(path.join(__dirname,'../assets/js/parser.js'));
 let nuevaPlantilla;
 
 /*ventana crear Frame*/
@@ -50,7 +51,7 @@ function abrirPlantilla(){
       alert("Ha ocurrido un error al abrir el archivo");
       return;
     }
-    console.log(file.filePaths);
+    //console.log(file.filePaths);
     let fileName = getFileName(file.filePaths[0]);
     $("#title").empty();
     $("#title").append(fileName);
@@ -59,6 +60,7 @@ function abrirPlantilla(){
     $('.headerOptions').show();
     //CREAR LA PLANTILLA CON LOS DATOS ENTRANTES
     //TRATAR DATOS
+    parser.pruebaParseo();
   });
 }
 function exit(){
