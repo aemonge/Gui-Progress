@@ -3,8 +3,6 @@ var parser = require(path.join(__dirname,'../js/prueba.js'));
 
 // var parser = peg.generate("start = ('a' / 'b')+");
 exports.pruebaParseo = function pruebaParseo(){
-    console.log(parser.parse("2*(3+4)"));
-    console.log(parser.parse("abba"));
-    console.log(parser.parse("abca"));
-    
+    let code = "/* @@TemporalTable */\ndefine temp-table tt_f1 no-undo\nfield v1 as integer\nfield v2 as integer\n.\n/* /@@TemporalTable */";
+    console.log(parser.parse(code));
 }

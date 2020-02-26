@@ -1,17 +1,8 @@
-start
-  = additive
-
-additive
-  = left:multiplicative "+" right:additive { return left + right; }
-  / multiplicative
-
-multiplicative
-  = left:primary "*" right:multiplicative { return left * right; }
-  / primary
-
-primary
-  = integer
-  / "(" additive:additive ")" { return additive; }
-
-integer "integer"
-  = digits:[0-9]+ { return parseInt(digits.join(""), 10); }
+start = tempTableInit+ c:$codeTempTable tempTableEnd+ { return c;}
+space = " "
+enter = "\n"
+tempTableInit = "/* @@TemporalTable */"
+tempTableEnd  = "/* /@@TemporalTable */"
+codeTempTable = line+
+line = space+ / enter+ / word
+word = [a-zA-Z0-9.\-\_]+
