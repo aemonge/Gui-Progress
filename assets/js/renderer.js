@@ -45,22 +45,25 @@ function abrirPlantilla(){
   var app = require('electron').remote; 
   var dialog = app.dialog;
   let dia = dialog.showOpenDialog();
-
+  var fs = require('fs');
   dia.then(file => {
     if (file.filePaths === undefined){
       alert("Ha ocurrido un error al abrir el archivo");
       return;
     }
-    //console.log(file.filePaths);
+
+    // Titulo
     let fileName = getFileName(file.filePaths[0]);
     $("#title").empty();
     $("#title").append(fileName);
     $('#index').hide();
     $('#designer').show();
     $('.headerOptions').show();
-    //CREAR LA PLANTILLA CON LOS DATOS ENTRANTES
-    //TRATAR DATOS
-    parser.pruebaParseo();
+    fs.readFile(file.filePaths[0],'utf8', (err, data) =>{
+      if (err) throw err;
+      parser.parserCode(data);
+      //CREAR LA PLANTILLA CON LOS DATOS PARSEADOS
+    });
   });
 }
 function exit(){
