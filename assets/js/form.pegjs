@@ -1,5 +1,13 @@
+tabla = DefineFrame __ name:Id __ lines:lines+ final:FinalFrame _{
+return {type:"frame", value:name, lines: lines}
+}
+
+DefineFrame = "define frame"
+
+lines=Campo+
+
 Campo
-  = identificador:Id opciones:Opcion* {
+  = identificador:Id opciones:Opcion* __{
   return {id: identificador, opciones: opciones}
   }
 
@@ -39,6 +47,8 @@ LiteralCadena = "\"" texto:([^\"]*) "\"" {
 return texto.join("")
 }
 
+FinalFrame="with."
+
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 
@@ -47,5 +57,3 @@ _ "whitespace"
  
 __ "whitespace_mandatory"
   = [ \t\n\r]+
-
-
