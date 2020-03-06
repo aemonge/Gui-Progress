@@ -1,8 +1,9 @@
-tabla = DefineFrame __ name:Id __ lines:lines+ final:FinalFrame _{
+tabla = DefineFrame __ name:Id __ lines:lines+ final:FinalFrame {
 return {type:"frame", value:name, lines: lines}
 }
 
 DefineFrame = "define frame"
+
 
 lines=Campo+
 
@@ -12,9 +13,12 @@ Campo
   }
 
 
-Id = ([a-zA-Z0-9])+ {
+Id = !ReservedWord ([a-zA-Z0-9])+ {
 return text()
 }
+
+ReservedWord = "with" / "define"
+
    
 Opcion = __ opcion:(OpcionLabel/OpcionInit/OpcionFormat/OpcionAt/OpcionRow/OpcionCol) {
 return opcion
@@ -47,7 +51,10 @@ LiteralCadena = "\"" texto:([^\"]*) "\"" {
 return texto.join("")
 }
 
-FinalFrame="with."
+
+FinalFrame="with" __ final:(opc)
+
+opc="side-labels"
 
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
