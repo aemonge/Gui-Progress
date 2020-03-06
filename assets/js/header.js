@@ -49,17 +49,20 @@ function guardarPlantilla(){
     dia.then(file => {
         if (file.filePath === undefined){
             alert("Ha ocurrido un error al guardar el archivo");
-             return;
+            return;
         }
         fs.writeFile(file.filePath, code, function(err) {
             if (err) {
                 alert(err);
             }
-            let fileName = getFileName(file.filePath);
-            nuevaPlantilla.setFileName(fileName);
-            $("#title").empty();
-            $("#title").append(nuevaPlantilla.getFileName());
-            alert("Guardado correctamente");
+            else{
+                let fileName = getFileName(file.filePath);
+                nuevaPlantilla.setFileName(fileName);
+                $("#title").empty();
+                $("#title").append(nuevaPlantilla.getFileName());
+                alert("Guardado correctamente");
+            }
+            
         });
     });
     // CODIGO ANTIGUO QUE GUARDA DIRECTAMENTE

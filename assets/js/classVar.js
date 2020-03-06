@@ -14,7 +14,12 @@ class Variable{
         this.columna=0;
         this.movido=0;
     }
-    
+    editData(newData){
+        this.name=newData.name;
+        this.format=newData.format;
+        this.label=newData.label;
+        this.initial=newData.initial;
+    }
     getVar(){
         return this;
     }

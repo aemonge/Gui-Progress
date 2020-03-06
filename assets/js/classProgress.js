@@ -40,6 +40,10 @@ class Progress{
         let frame = this.frames.get(parseInt(idFrame));
         frame.editData(newData);
     }
+    editVar(idFrame,idVar, newData){
+        let frame = this.frames.get(parseInt(idFrame));
+        frame.editVar(newData);
+    }
     getVariableByKey(idFrame,keyVar){
         let frame=this.frames.get(parseInt(idFrame));
         return frame.getVariable(keyVar);

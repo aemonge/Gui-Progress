@@ -480,88 +480,68 @@ function createVisualDraggable(infoVar){
   
 }
 function createEditPanel(idVar){
-  // CAMBIAR
-  /* No es necesario, simplemente rellenar los campos en el panel de variable ya existente */
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
-  $("#vars").empty();
-  /* PRUEBA CON FORM NO BORRAR
+  $("#vars").empty();  
   $("#vars").append('<div class="card border-d mb-3 text-center">\
-    <div class="card-header">\
+    <div class="card-header text-center">\
       <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-    </div>\
-      <div class="card-body text-left form-sec">\
-      <form>\
-        <div class="form-group">\
-          <label>Nombre:</label>\
-          <input id="eNombreVariable" type="text" class="form-control NombreVariable" placeholder="Var1">\
-        </div>\
-        <div class="form-group">\
-          <label>Tipo de variable:</label>\
-          <select id="eTipoVar" class="form-control tipoVar" name="select">\
-            <option value="integer">Integer</option>\
-            <option value="decimal">Decimal</option> \
-            <option value="logical">Logical</option>\
-            <option value="character">Character</option>\
-            <option value="date">Date</option>\
-          </select>\
-        </div>       \
-        <div class="form-group">\
-          <label>Label:</label>\
-          <input id="eLabelVariable" type="text" class="form-control labelVariable" placeholder="Variable 1">\
-        </div>\
-        <div class="form-group lugarFormatYear" id="eLugarFormatYear">\
-        </div>\
-        <div class="form-group lugarFormat" id="eLugarFormat">\
-          <label>Formato:</label>\
-          <input id="eFormato" type="text" class="form-control formato">\
-        </div>\
-        <div class="form-group lugarInit" id="eLugarInit">\
-          <label>Valor Inicial:</label>\
-          <input id="eValorInicial" type="text" class="form-control valorInicial" placeholder="0">\
-        </div>\
-        <div id ="editVarBtn" class="text-center">\
-        </div>\
-      </form>\
-    </div>\
-  </div>');
-  */
-  
-  $("#vars").append('<div class="card border-d mb-3 text-center">\
-    <div class="card-header">\
-      <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
+      <h6 class="card-title text-dark">Type: '+infoVar["type"]+'</h5>\
     </div>\
       <div class="card-body text-left">\
-      <table class="table table-hover group table-striped">\
+      <table class="table table-hover">\
         <tbody>\
           <tr>\
           <td>Nombre:</td>\
-          <td>'+infoVar["name"]+'</td>\
-        </tr>\
-          <tr>\
-          <td>Tipo:</td>\
-          <td>'+infoVar["type"]+'</td>\
+          <td><input id="nombreVariableEdit" type="text" class="form-control" value="'+infoVar["name"]+'"></td>\
         </tr>\
           <tr>\
           <td>Formato:</td>\
-          <td>'+infoVar["format"]+'</td>\
+          <td><input id="formatoVariableEdit" type="text" class="form-control" value="'+infoVar["format"]+'"></td>\
         </tr>\
         <tr>\
           <td>Etiqueta:</td>\
-          <td>'+infoVar["label"]+'</td>\
+          <td><input id="labelVariableEdit" type="text" class="form-control" value="'+infoVar["label"]+'"></td>\
           </tr>\
           <tr>\
           <td>Valor inicial:</td>\
-          <td>'+infoVar["initial"]+'</td>\
+          <td><input id="initVariableEdit" type="text" class="form-control" value="'+infoVar["initial"]+'"></td>\
           </tr>\
         </tbody>\
       </table>\
       <div id ="editVarBtn" class="text-center"></div>\
     </div>\
   </div>');
- 
-  $('#editVarBtn').append(' <a href="#" class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
+  $("#vars").append('<span class="errorEditVar errorMessage"></span>');
+  //buttons
+  $('#editVarBtn').append(' <a href="#" onclick="editarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
   $('#editVarBtn').append(' <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar </h6></a>');
+}
+function editarVariable(idVar){
+  let idFrame = $("#frames option:selected").attr('value');
+  let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+  let newData = {
+    idVar: idVar,
+    name: document.getElementById('nombreVariableEdit').value,
+    format: document.getElementById('formatoVariableEdit').value,
+    label: document.getElementById('labelVariableEdit').value,
+    initial: document.getElementById('initVariableEdit').value
+  }
+  let antiguoName= infoVar.name;
+  validation.validateEditVar(idFrame,infoVar, newData, function(message) { 
+    $('.errorEditVar').empty();
+    if ("Ok" === message) {
+      nuevaPlantilla.getFrame(idFrame).editVar(newData);
+      newData = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+      createEditPanel(newData.id);
+      //actualizar draggable.
+      $('#'+antiguoName+'').remove(); // borro antiguo 
+      createVisualDraggable(newData); // creo nuevo
+    } 
+    else {
+      $('.errorEditVar').append(message);
+    }
+  })
 }
 function modificarFrame(idFrame){
   let e = document.getElementById("eBordeFrame");

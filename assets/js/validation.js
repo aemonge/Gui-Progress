@@ -2,7 +2,6 @@
 exports.validateNewFrame = function validateNewFrame(frameInfo, callback){
 
     let encontrado = false;
-    let vacio = false;
     if (frameInfo["nombre"] == ""){
         callback("Nombre de frame vacío, debe rellenar este campo");
     }
@@ -23,7 +22,6 @@ exports.validateNewFrame = function validateNewFrame(frameInfo, callback){
 exports.validateEditFrame = function validateEditFrame(frameInfoOld,frameInfoNew, callback){
 
     let encontrado = false;
-    let vacio = false;
     if (frameInfoNew["name"] === ""){
         callback("Nombre de frame vacío, debe rellenar este campo");
     }
@@ -46,7 +44,6 @@ exports.validateEditFrame = function validateEditFrame(frameInfoOld,frameInfoNew
 exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
 
     let encontrado = false;
-    let vacio = false;
     if (varInfo["name"] == ""){
         callback("Nombre de variable vacío, debe rellenar este campo");
     }
@@ -56,6 +53,27 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
                 encontrado = true;
             }
         });
+        if (encontrado){
+            callback("Nombre de variable ya existente, elija otro");
+        }
+        else
+        callback("Ok");
+    }
+    
+}
+exports.validateEditVar= function validateEditVar(idFrame, varInfoOld,validateEditVar, callback){
+    let encontrado = false;
+    if (validateEditVar["name"] === ""){
+        callback("Nombre de variable vacío, debe rellenar este campo");
+    }
+    else{
+        if(validateEditVar["name"] !== varInfoOld["name"]){ //Si ha cambiado el nombre, compruebo que no sea uno existente
+            nuevaPlantilla.getFrame(idFrame).getVariables().forEach(function (elemF, indexF, array) {
+                if (elemF.getNombre() == validateEditVar["name"]){
+                    encontrado = true;
+                }
+            });
+        }
         if (encontrado){
             callback("Nombre de variable ya existente, elija otro");
         }
