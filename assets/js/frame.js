@@ -201,7 +201,6 @@ btnAnyadirFrame.addEventListener('click',function(){
       $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
       $("#frames option:selected").removeAttr("selected");
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
-      vaciarVariables();
       //cargamos datos del frame
       cargarFrame(idFrame);
       $('#nombreFrame').val("");
@@ -227,8 +226,7 @@ function cerrarModal(idModal){
 //AL CAMBIAR DE FRAME CARGAR VISTA DE NUEVO FRAME CON SUS VARIABLES
 $(document).on('change', '#frames', function(event) {
   let id = $("#frames option:selected").attr('value');
-  vaciarVariables();
-  cargarFrame(id);  
+  cargarFrame(id);
 });
 btnAnyadirVar.addEventListener('click',function(){
   let tipo = $("#tipoVar option:selected").attr('value');
@@ -294,7 +292,7 @@ $(document).on('change', '#tipoVar', function(event) {
   }
   else if(tipo=="character"){// Dejamos el formato vacío por el momento, por defecto ponemos 8
     $('#lugarFormat').append('<label>Longitud caracter (Format):</label>');
-    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" placeholder="8">');
+    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" placeholder="x(8)">');
     $('#lugarInit').append('<label>Valor Inicial:</label>');
     $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="abcdefg1">');
   }
@@ -358,6 +356,7 @@ function borrarVariable(idVar){
   //cargarPanelVar(idFrame);
 }
 function cargarFrame(idFrame){
+  vaciarVariables();
   if(idFrame == 0){
     $('.editEnabled').hide();
   }
@@ -402,7 +401,7 @@ function cargarPanelVar(idFrame){
   let mapIter = frame.getVariables().entries();
   let value = mapIter.next().value;
   while(value != undefined) {
-    console.log('variables: ', value);
+    //console.log('variables: ', value);
     
     addVisualVar(value[1]);
     value = mapIter.next().value;

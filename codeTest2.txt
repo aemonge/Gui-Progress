@@ -1,4 +1,0 @@
-define temp-table tt_f1 no-undo  
-    field v1 as integer 
-    field v2 as integer 
-.

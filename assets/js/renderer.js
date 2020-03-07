@@ -39,7 +39,7 @@ function crearPlantilla(tablas, frames, fileName){
   else{
     nuevaPlantilla = new classProgress.Progress();
     nuevaPlantilla.setFileName(fileName);
-    createFrameAndVars(tablas, frames, nuevaPlantilla);   
+    createFrameAndVars(tablas, frames);   
   }
   $('#index').hide();
   $('#designer').show();
@@ -47,33 +47,43 @@ function crearPlantilla(tablas, frames, fileName){
   $("#title").empty();
   $("#title").append(nuevaPlantilla.getFileName());
 }
-function createFrameAndVars(tablas, frames, plantilla){
+function createFrameAndVars(tablas, frames){
   console.log(tablas,frames);
   let key = frames.entries().next().value[0]; 
   let value   = frames.entries().next().value[1];
-  //console.log(frames,frames.entries().next(),frames.entries().next().value[0] ,frames.entries().next().value[1]);
-
-  let idFrame = plantilla.addFrame(key,value['borde'],value['etiqueta']); 
+  let borde = 1;
+  if(value['borde'] != "")
+    borde = 0;
+  let etiqueta = 0;
+  if(value['etiquetas'] != "side-labels")
+    etiqueta = 1;
+  let idFrame = nuevaPlantilla.addFrame(key,borde,etiqueta); 
   //seleccionamos frame para mostrar
   $('#frames').append('<option value= "'+idFrame+'">'+key+'</option>');
   $("#frames option:selected").removeAttr("selected");
   $('#frames option[value="'+idFrame+'"]').attr("selected",true);
-
   for (var [clave, valor] of frames) {
-    if(clave != key){
-      idFrame = plantilla.addFrame(clave,valor['borde'],valor['etiqueta']);
-      $('#frames').append('<option value= "'+idFrame+'">'+key+'</option>');
+    if(clave != key){ //Cargar nuevo frame
+      if(valor['borde'] != "")
+        borde = 0;
+      let etiqueta = 0;
+      if(valor['etiquetas'] != "side-labels")
+        etiqueta = 1;
+      idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
+      $('#frames').append('<option value= "'+idFrame+'">'+clave+'</option>');
       $("#frames option:selected").removeAttr("selected");
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
       key = clave;
     }
+    //cargamos variables del frame en el que nos encontramos
     let varInfo={
       name:"",
       type: "",
       label: "",
       initial: "",
       format: "",
-      id:""
+      id:"",
+      movido:""
     };
     //Rellenamos label, row y col de map frames
     valor.lines.forEach(line =>{
@@ -98,16 +108,13 @@ function createFrameAndVars(tablas, frames, plantilla){
           });
         }
       });
-      let idVar = plantilla.addVartoFrame(idFrame,varInfo);
+      let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
       varInfo.id=idVar;
-      let obj=plantilla.getVariableByKey(idFrame,idVar);
+      let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
       varInfo.movido=obj.movido;
-      addVisualVar(varInfo);
     });
+    cargarFrame(idFrame);
   }
-  vaciarVariables();
-  //cargamos datos del frame
-  cargarFrame(idFrame);
 }
 function abrirPlantilla(){
   var app = require('electron').remote; 

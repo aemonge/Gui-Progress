@@ -17,7 +17,7 @@ var = ("_" / [a-zA-Z0-9] / "-")*  {
 return text()
 }
 type = "as" __ t:$defType+ {return t;}
-defType = "integer" / "character" / "date" / "logical"
+defType = "integer" / "character" / "date" / "logical" / "decimal"
 
 Opcion = __ opcion:(OpcionLabel/OpcionInit/OpcionFormat) {
 return opcion

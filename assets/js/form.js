@@ -900,15 +900,26 @@ function peg$parse(input, options) {
   }
 
   function peg$parseopcBox() {
-    var s0, s1;
+    var s0, s1, s2;
 
     s0 = peg$currPos;
+    s1 = [];
     if (input.substr(peg$currPos, 6) === peg$c40) {
-      s1 = peg$c40;
+      s2 = peg$c40;
       peg$currPos += 6;
     } else {
-      s1 = peg$FAILED;
+      s2 = peg$FAILED;
       if (peg$silentFails === 0) { peg$fail(peg$c41); }
+    }
+    while (s2 !== peg$FAILED) {
+      s1.push(s2);
+      if (input.substr(peg$currPos, 6) === peg$c40) {
+        s2 = peg$c40;
+        peg$currPos += 6;
+      } else {
+        s2 = peg$FAILED;
+        if (peg$silentFails === 0) { peg$fail(peg$c41); }
+      }
     }
     if (s1 !== peg$FAILED) {
       s0 = input.substring(s0, peg$currPos);

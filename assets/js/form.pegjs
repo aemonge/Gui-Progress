@@ -44,7 +44,7 @@ return {etiquetas:l , borde:b}
 }
 
 opclabel=$("side-labels" / "no-label")
-opcBox = $"no-box"
+opcBox = $"no-box"*
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 

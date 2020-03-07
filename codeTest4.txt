@@ -2,14 +2,28 @@
 
 /* BEGIN TemporalTable */ 
 define temp-table tt_a no-undo 
-   field v1 as integer
-   field v2 as logical init "false"
+   field var1 as integer init "210"
+   field var2 as decimal init "2.3"
+. 
+/* END TemporalTable */ 
+/* BEGIN TemporalTable */ 
+define temp-table tt_b no-undo 
+   field var1frameb as logical init "false"
+   field var2frameb as character init "asdasdasda"
+   field var3frameb as date init "03/07/2020" format "mm/dd/yy"
 . 
 /* END TemporalTable */ 
 
 /* BEGIN Frame */ 
 define frame a 
-   v1 label "v1" at row 2 column 26 
-   v2 label "check" at row 2 column 43 
+   var1 label "variable integer" at row 3 column 15 
+   var2 label "variable decimal" at row 7 column 14 
+with side-labels no-box. 
+/* END Frame */ 
+/* BEGIN Frame */ 
+define frame b 
+   var1frameb label "variable logica" at row 5 column 33 
+   var2frameb label "variable character" at row 6 column 46 
+   var3frameb label "Fecha de hoy" at row 9 column 14 
 with side-labels no-box. 
 /* END Frame */ 
