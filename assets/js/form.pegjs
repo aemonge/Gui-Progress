@@ -1,39 +1,26 @@
-tabla = DefineFrame __ name:Id __ lines:lines+ final:FinalFrame {
-return {type:"frame", value:name, lines: lines}
+frame = _ DefineFrame __ name:Id __ lines:lines* final:FinalFrame _ "." _ {
+return {dataFrame:{final, name:name},lines: lines}
 }
 
 DefineFrame = "define frame"
 
 
-lines=Campo+
-
-Campo
-  = identificador:Id opciones:Opcion* __{
+lines=identificador:Id opciones:Opcion* __{
   return {id: identificador, opciones: opciones}
   }
 
 
-Id = !ReservedWord ([a-zA-Z0-9])+ {
+Id = !ReservedWord ("_" / [a-zA-Z0-9] / "-")+ {
 return text()
 }
-
 ReservedWord = "with" / "define"
 
-   
-Opcion = __ opcion:(OpcionLabel/OpcionInit/OpcionFormat/OpcionAt/OpcionRow/OpcionCol) {
+Opcion = __ opcion:(OpcionLabel/OpcionAt/OpcionRow/OpcionCol) {
 return opcion
 }
    
-OpcionLabel = "label" __ cadena:LiteralCadena {
-return { type: "label", label: cadena }
-}
-
-OpcionInit = "init" __ result:(LiteralCadena/Integer) {
-return { type: "init", value: result }
-}
-
-OpcionFormat = "format" __ cadena:LiteralCadena {
-return { type: "format", format: cadena }
+OpcionLabel = "label" __ value:LiteralCadena {
+return { type: "label", value: value }
 }
 OpcionAt= "at" __ cadena:(OpcionRow/OpcionCol){
 return cadena
@@ -52,10 +39,12 @@ return texto.join("")
 }
 
 
-FinalFrame="with" __ final:(opc)
+FinalFrame="with" __ l:opclabel _ b:opcBox {
+return {etiquetas:l , borde:b}
+}
 
-opc="side-labels"
-
+opclabel=$("side-labels" / "no-label")
+opcBox = $"no-box"
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 

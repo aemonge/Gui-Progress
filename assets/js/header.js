@@ -3,19 +3,39 @@ $(() => {
  });
 
  function generateCode(){
+    let code = "\n";
+    code += generarTablas();
+    code += generarFrames();
+   return code;
+   
+}
+function generarTablas(){
     let tempTable = "\n";
-    let frame = "";
-
-
-
     nuevaPlantilla.getFrames().forEach(function (elemF, indexF, array) {
+        tempTable += "/* BEGIN TemporalTable */ \n";
         tempTable += "define temp-table tt_" + elemF.getNombre() + " no-undo \n";
-        frame += "define frame " + elemF.getNombre() + " \n";
-        elemF.getVariables().forEach(function (elemV, indexV, array) {
-            tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo() + "\n";
-            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel() + '" init "' + elemV.getInitial() +'" format "' + elemV.getFormato() +'" at row '+elemV.getFila()+' column '+elemV.getColumna()+' \n';
+        elemF.getVariables().forEach(function (elemV, indexV, array) {    
+            tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo();
+            if(elemV.getInitial() != "")
+                tempTable += " init " + '"' +elemV.getInitial() + '"';
+            if(elemV.getFormato()!= "")
+                tempTable += " format " + '"'+ elemV.getFormato() + '"';   
+                tempTable += "\n";
         });
         tempTable += ". \n";
+        tempTable += "/* END TemporalTable */ \n";
+
+    });
+    return tempTable;
+}
+function generarFrames(){
+    let frame = "\n";
+    nuevaPlantilla.getFrames().forEach(function (elemF, indexF, array) {
+        frame+= "/* BEGIN Frame */ \n";
+        frame += "define frame " + elemF.getNombre() + " \n";
+        elemF.getVariables().forEach(function (elemV, indexV, array) {
+            frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel()  +'" at row '+elemV.getFila()+' column '+elemV.getColumna()+' \n';
+        });
         frame += "with "
         if(elemF.getEtiqueta() == 0) {
             frame += "side-labels ";
@@ -29,12 +49,11 @@ $(() => {
         else{
             frame += ". \n";
         }
+        frame+= "/* END Frame */ \n";
     });
-    
-   tempTable += frame;
-   return tempTable;
-   
+    return frame;
 }
+
 function guardarPlantilla(){
     /*
         ENLACE PARA DIALOG

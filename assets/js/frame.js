@@ -181,35 +181,6 @@ interact('.drag-drop')
     // dragMoveListener from the dragging demo above
     onmove: dragMoveListener
   })
-
-
-  /*interact(element)
-  .draggable({
-    modifiers: [
-      interact.modifiers.snap({
-        targets: [
-          interact.createSnapGrid({ x: 30, y: 30 })
-        ],
-        range: Infinity,
-        relativePoints: [ { x: 0, y: 0 } ]
-      }),
-      interact.modifiers.restrict({
-        restriction: element.parentNode,
-        elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
-        endOnly: true
-      })
-    ],
-    inertia: true
-  })
-
-  .on('dragmove', function (event) {
-    x += event.dx
-    y += event.dy
-
-    event.target.style.webkitTransform =
-    event.target.style.transform =
-        'translate(' + x + 'px, ' + y + 'px)'
-  })*/
   
 btnAnyadirFrame.addEventListener('click',function(){
   let e = document.getElementById("bordeFrame");
@@ -289,6 +260,8 @@ btnAnyadirVar.addEventListener('click',function(){
       format: $("#fDate option:selected").attr('value')
     }
   }
+  if(varInfo.label == "")
+        varInfo.label = varInfo.name;
   let idFrame = $("#frames option:selected").attr('value');
   validation.validateNewVar(varInfo,idFrame, function(message) { 
     $('.errorVar').empty();
@@ -527,6 +500,8 @@ function editarVariable(idVar){
     label: document.getElementById('labelVariableEdit').value,
     initial: document.getElementById('initVariableEdit').value
   }
+  if(newData.label == "")
+    newData.label = newData.name;
   let antiguoName= infoVar.name;
   validation.validateEditVar(idFrame,infoVar, newData, function(message) { 
     $('.errorEditVar').empty();

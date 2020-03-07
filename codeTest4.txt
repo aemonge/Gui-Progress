@@ -1,0 +1,15 @@
+
+
+/* BEGIN TemporalTable */ 
+define temp-table tt_a no-undo 
+   field v1 as integer
+   field v2 as logical init "false"
+. 
+/* END TemporalTable */ 
+
+/* BEGIN Frame */ 
+define frame a 
+   v1 label "v1" at row 2 column 26 
+   v2 label "check" at row 2 column 43 
+with side-labels no-box. 
+/* END Frame */ 
