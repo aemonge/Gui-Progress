@@ -95,6 +95,8 @@ function createFrameAndVars(tablas, frames){
           varInfo.row = opcion.value;
         if(opcion.type == "colum")
           varInfo.col = opcion.value;
+        if(varInfo.col != 0 || varInfo.row !=0)
+          varInfo.movido=1;
       });
       // Rellenamos tipo, init y format del map tabla
       tablas.get(clave).forEach(variable =>{
@@ -108,7 +110,7 @@ function createFrameAndVars(tablas, frames){
           });
         }
       });
-      let idVar = nuevaPlantilla.addVartoFrame(idFrame,varInfo);
+      let idVar = nuevaPlantilla.addVartoFrameRead(idFrame,varInfo);
       varInfo.id=idVar;
       let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
       varInfo.movido=obj.movido;

@@ -13,7 +13,7 @@ lines=identificador:Id opciones:Opcion* __{
 Id = !ReservedWord ("_" / [a-zA-Z0-9] / "-")+ {
 return text()
 }
-ReservedWord = "with" / "define"
+ReservedWord = "with" / "define" / "label" / "at" / "row" / "col" / "no-box" / opclabel
 
 Opcion = __ opcion:(OpcionLabel/OpcionAt/OpcionRow/OpcionCol) {
 return opcion

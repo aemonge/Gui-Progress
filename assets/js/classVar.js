@@ -66,6 +66,12 @@ class Variable{
     getColumna(){
         return this.columna + 1;
     }
+    setFila(i){
+        this.fila=i;
+    }
+    setCol(i){
+        this.columna=i;
+    }
     getMovido(){
         return this.movido;
     }

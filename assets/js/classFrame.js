@@ -23,6 +23,21 @@ class Frame {
         this.idVar ++;
         return  this.idVar -1;
     }
+    addVariableRead(name, type, format, label, initial,col,row,movido){
+        let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
+        
+        if(movido==1){
+            newVar.setMovido();
+        }
+        if(col!=0)
+            newVar.setCol(col);
+        if(row!=0)
+            newVar.setFila(row);
+        console.log("movido: ",newVar);
+        this.vars.set(this.idVar,newVar);
+        this.idVar ++;
+        return  this.idVar -1;
+    }
 
     getFrame(){
         return this;

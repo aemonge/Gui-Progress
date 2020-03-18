@@ -13,9 +13,12 @@ line
   }
 
 field = "field" / "fields"
-var = ("_" / [a-zA-Z0-9] / "-")*  {
+var = !reservedWords ("_" / [a-zA-Z0-9] / "-")*  {
 return text()
 }
+
+reservedWords = "field" / defType / "temp-table" / noUndo / "as" / "init" / "format"
+
 type = "as" __ t:$defType+ {return t;}
 defType = "integer" / "character" / "date" / "logical" / "decimal"
 
