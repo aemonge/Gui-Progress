@@ -128,7 +128,9 @@ function abrirPlantilla(){
       alert("Ha ocurrido un error al abrir el archivo");
       return;
     }
-    let fileName = getFileName(file.filePaths[0]);
+    console.log("file: " + file.filePaths[0]);
+    //let fileName = getFileName(file.filePaths[0]);
+    let fileName= path.basename(file.filePaths[0]);
     fs.readFile(file.filePaths[0],'utf8', (err, data) =>{
       if (err) throw err;
       parser.parserCode(data, (err, dataTable, dataFrame) =>{
@@ -136,6 +138,9 @@ function abrirPlantilla(){
           alert("Error: " + err + ".");
           return;
         }
+        console.log("dataTable: "+dataTable);
+        console.log("/ dataFrame: "+dataFrame);
+        console.log("/ fileName: "+fileName);
         crearPlantilla(dataTable,dataFrame,fileName);
       });
     });
