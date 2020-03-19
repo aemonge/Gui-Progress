@@ -57,7 +57,12 @@ function createFrameAndVars(tablas, frames){
   let etiqueta = 0;
   if(value['etiquetas'] != "side-labels")
     etiqueta = 1;
-  let idFrame = nuevaPlantilla.addFrame(key,borde,etiqueta); 
+    
+  let idFrame = nuevaPlantilla.addFrame(key,borde,etiqueta);
+  
+
+
+
   //seleccionamos frame para mostrar
   $('#frames').append('<option value= "'+idFrame+'">'+key+'</option>');
   $("#frames option:selected").removeAttr("selected");
@@ -69,7 +74,16 @@ function createFrameAndVars(tablas, frames){
       let etiqueta = 0;
       if(valor['etiquetas'] != "side-labels")
         etiqueta = 1;
+
+      //COMPROBAR QUE NO HAY OTRO FRAME QUE SE LLAME IGUAL///
+    let nombreFrame=false;
+    nombreFrame=validarNombreFrame(clave);
+    if(nombreFrame==false){
       idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
+    }else{
+      alert("Hay un Frame que se llama igual a "+clave);
+    }
+      //idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
       $('#frames').append('<option value= "'+idFrame+'">'+clave+'</option>');
       $("#frames option:selected").removeAttr("selected");
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
@@ -88,6 +102,18 @@ function createFrameAndVars(tablas, frames){
     //Rellenamos label, row y col de map frames
     valor.lines.forEach(line =>{
       varInfo.name = line.id;
+
+      //////////////////////////////////////////////////
+      let existe=validarNombreVar(key,varInfo.name,tablas);
+      if(existe){
+        console.log("variable: "+varInfo.name+" existe");
+      
+      
+      
+      }else{
+        console.log("variable: "+varInfo.name+" No existe");
+      }
+      ////////////////////////////////////////////////
       line.opciones.forEach(opcion =>{
         if(opcion.type == "label")
           varInfo.label = opcion.value;
@@ -146,6 +172,31 @@ function abrirPlantilla(){
     });
   });
 }
+
+function validarNombreVar(clave,nombre,tablas){
+  let t=tablas.entries().next().value[0];
+  for (var claveT of tablas) {
+    if(claveT[0]==clave){
+      for(let i=0; i<claveT[1].length;i++){
+        if(claveT[1][i]["var"]==nombre)
+          return true;
+      }
+      return false;
+    }  
+    //console.log("hola")
+  }
+  return false;
+}
+function validarNombreFrame(key){
+  let frames=nuevaPlantilla.getFrames().entries();
+  for(let frame of frames){
+    if(key==frame[1]["name"])
+      return true;
+  }
+  return false;
+}
+
+
 function exit(){
   window.close();
 }

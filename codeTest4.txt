@@ -25,5 +25,6 @@ define frame b
    var1frameb label "variable logica" at row 5 column 33 
    var2frameb label "variable character" at row 6 column 46 
    var3frameb label "Fecha de hoy" at row 9 column 14 
+   var4frameb label "Fecha de hoy" at row 9 column 14 
 with side-labels no-box. 
 /* END Frame */ 
