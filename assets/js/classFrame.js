@@ -3,18 +3,15 @@ let pathVar = path.join(__dirname,'../js/classVar.js')
 const classVar = require(pathVar)
 
 class Frame {
-    /*Borde     = 0 NO
-                = 1 Sí
+    /*Type      = 0 entrada
+                = 1 salida
     */
-    /*Etiquetas = 0 side-label
-                = 1 no-label
-    */
-    constructor(id,name,borde,etiqueta){
+    constructor(id,name,title,type){
         this.idVar=1; // inicializamos ids variables
         this.id=id;  // mi id me viene dado de la clase Progress
         this.name=name;
-        this.borde=borde;
-        this.etiqueta=etiqueta;
+        this.title=title;
+        this.type=type;
         this.vars= new Map(); //inicializamos map de variables
     }
     addVariable(name, type, format, label, initial){
@@ -59,8 +56,8 @@ class Frame {
     }
     editData(newData){
         this.name=newData.name;
-        this.borde=newData.borde;
-        this.etiqueta=newData.etiqueta;
+        this.title=newData.titulo;
+        this.type=newData.tipo;
     }
     editVar(newData){
         this.vars.get(parseInt(newData.idVar)).editData(newData);

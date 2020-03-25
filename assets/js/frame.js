@@ -92,6 +92,7 @@ interact('.dropzone').dropzone({
       //event.relatedTarget.textContent = 'Dragged out'
     },
     ondrop: function (event) {
+      let idFrame = $("#frames option:selected").attr('value');
       //event.relatedTarget.textContent = 'Dropped'
       console.log('x:' +posx + ' y:' + posy);
       //console.log('eventdx:',event.dx);
@@ -128,7 +129,6 @@ interact('.dropzone').dropzone({
         objeto.parentNode.removeChild(objeto);
         console.log('nueva cordenadas izquierda:',objcln.offsetLeft,' nueva coordenadas superiores:',objcln.offsetTop);
       //console.log(varid);
-        let idFrame = $("#frames option:selected").attr('value');
         let key= objcln.getAttribute("key")
         variable=nuevaPlantilla.getVariableByKey(idFrame,key);
         variable.setMovido();      
@@ -137,8 +137,7 @@ interact('.dropzone').dropzone({
         objeto=document.getElementById(varid);
         posx=x1;
         posy=y1;
-      }else{
-        let idFrame = $("#frames option:selected").attr('value');
+      }else{       
         let key= objeto.getAttribute("key")
         variable=nuevaPlantilla.getVariableByKey(idFrame,key);
       
@@ -151,6 +150,7 @@ interact('.dropzone').dropzone({
       console.log('fila:',fil,'col:',col);
       variable.setFilaCol(fil,col);
       console.log(variable);
+      createEditPanel(variable.id);
       
     },
     ondropdeactivate: function (event) {
@@ -158,6 +158,7 @@ interact('.dropzone').dropzone({
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
     }
+    
 })
 var x = 0; var y = 0
 interact('.drag-drop')
@@ -183,20 +184,18 @@ interact('.drag-drop')
   })
   
 btnAnyadirFrame.addEventListener('click',function(){
-  let e = document.getElementById("bordeFrame");
-  var border = e.options[e.selectedIndex].value;
-  e=document.getElementById("etiqueFrame");
-  var etiqueta= e.options[e.selectedIndex].value;
+  let e = document.getElementById("tipoFrame");
+  var tipo= e.options[e.selectedIndex].value;
   let frameInfo = {
     nombre: document.getElementById('nombreFrame').value,
-    borde: border,
-    etiqueta: etiqueta
+    titulo: document.getElementById('tituloFrame').value,
+    tipo: tipo
   }
 
   validation.validateNewFrame(frameInfo, function(message) { 
     $('.errorFrame').empty();
     if ("Ok" === message) {
-      let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['borde'],frameInfo['etiqueta']); 
+      let idFrame = nuevaPlantilla.addFrame(frameInfo['nombre'],frameInfo['titulo'],frameInfo['tipo']); 
       //seleccionamos frame para mostrar
       $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
       $("#frames option:selected").removeAttr("selected");
@@ -364,31 +363,36 @@ function cargarFrame(idFrame){
     $('.frameSelected').empty();
     $('.frameSelected').append(' <a href="#" class="btnFrame" data-toggle="modal" data-target="#modalFrameEdit"><h6 class="text-dark"><i class="far fa-edit"></i> Editar Frame </h6></a>');
     $('.frameSelected').append(' <a href="#" onclick="borrarFrame('+idFrame+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar Frame </h6></a>');
+    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'update\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
     $('.editEnabled').show();
+    let frame = nuevaPlantilla.getFrame(idFrame);
+    $('#tituloFrameActual').append(frame.title);
     cargarPanelEdicionFrame(idFrame);
     cargarPanelVar(idFrame);
   }
 }
+function cargarVista(vistaActual){
+  let idFrame = $("#frames option:selected").attr('value');
+  if(vistaActual === "update"){
+    $("#cambiarVista").remove();
+    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'display\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Update</h6></a>');
+    /* cambiar vista*/
+  }
+  else if(vistaActual === "display"){
+    $("#cambiarVista").remove();
+    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'update\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
+    /* cambiar vista*/
+  }
+}
 function cargarPanelEdicionFrame(idFrame){
-  
   let frame = nuevaPlantilla.getFrame(idFrame);
   $("#eNombreFrame").val(frame["name"]);
-
-  //Creamos de nuevo los select para evitar conflictos con el seleccionado
-  //Select borde
-  $("#lugarBorde").empty();
-  $("#lugarBorde").append("<label>Borde:</label>");
-  $("#lugarBorde").append('<select id="eBordeFrame" class="form-control" name="bordeFrame"></select>');
-  $("#eBordeFrame").append('<option value="0">No</option>');
-  $("#eBordeFrame").append('<option value="1">Si</option>'); 
-  $('#eBordeFrame option[value='+frame["borde"]+']').attr("selected",true);
-  //Select etiqueta
-  $("#lugarEtiqueta").empty();
-  $("#lugarEtiqueta").append("<label>Etiquetas:</label>");
-  $("#lugarEtiqueta").append('<select id="eEtiqueFrame" class="form-control" name="etiquetaFrame"></select>');
-  $("#eEtiqueFrame").append('<option value="0">En fila</option>');
-  $("#eEtiqueFrame").append('<option value="1">Sin etiquetas</option>'); 
-  $('#eEtiqueFrame option[value='+frame["etiqueta"]+']').attr("selected",true);
+  $("#etituloFrame").val(frame["title"]);
+  
+  //Borro para evitar conflictos de actualización
+  $('#etipoFrame').remove();
+  $('#lugarTipo').append('<select id="etipoFrame" class="form-control" name="tipoFrame"><option value="0">Entrada </option><option value="1">Salida</option></select>');
+  $('#etipoFrame option[value='+frame["type"]+']').attr("selected",true);
   //Botón guardar
   $("#btnEditarFrame").removeAttr("onclick");
   $("#btnEditarFrame").attr("onclick", 'modificarFrame('+idFrame+')');
@@ -458,7 +462,7 @@ function createEditPanel(idVar){
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header text-center">\
       <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-      <h6 class="card-title text-dark">Type: '+infoVar["type"]+'</h5>\
+      <h6 class="card-title text-dark">Type: '+infoVar["type"]+' Position: row '+infoVar["fila"]+' col '+infoVar["columna"]+'</h5>\
     </div>\
       <div class="card-body text-left">\
       <table class="table table-hover">\
@@ -518,14 +522,12 @@ function editarVariable(idVar){
   })
 }
 function modificarFrame(idFrame){
-  let e = document.getElementById("eBordeFrame");
-  let border = e.options[e.selectedIndex].value;
-  e=document.getElementById("eEtiqueFrame");
-  let etiqueta= e.options[e.selectedIndex].value;
+  let e = document.getElementById("etipoFrame");
+  let tipo= e.options[e.selectedIndex].value;
   let newData = {
     name: document.getElementById('eNombreFrame').value,
-    borde: border,
-    etiqueta: etiqueta
+    titulo: document.getElementById('etituloFrame').value,
+    tipo: tipo
   }
   let frameInfoOld = nuevaPlantilla.getFrame(idFrame);
   validation.validateEditFrame(frameInfoOld, newData, function(message) { 

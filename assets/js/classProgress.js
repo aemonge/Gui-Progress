@@ -8,8 +8,8 @@ class Progress{
         this.fileName = "Sin título.p" //inicializamos el nombre del archivo al crearse desde cero
     }
     //LLamamos al constructor de la clase frame para crear un nuevo frame, lo metemos en nuestro array y actualizamos idFrames
-    addFrame(name, borde, etiqueta){ 
-        let newFrame = new classFrame.Frame(this.idFrames,name,borde,etiqueta);
+    addFrame(name, title, type){ 
+        let newFrame = new classFrame.Frame(this.idFrames,name,title,type);
         this.frames.set(this.idFrames,newFrame);
         this.idFrames ++;
         return this.idFrames -1;

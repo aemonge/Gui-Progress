@@ -1,24 +1,10 @@
 #outer-dropzone {
-  height: 400px;
+  height: 400;
 }
   
-#inner-dropzone {
-  height: 460;
-}
-
-.dropzone {
-  background-color: #ccc;
-  border: dashed 4px transparent;
-  border-radius: 4px;
-  margin: auto;
-  /*padding: 10px; */
-  width: 800px; /* cada columna 10px */
-  transition: background-color 0.3s;
-}
 
 #varsMov{
-  background-color: #ccc;
-  border: dashed 4px transparent;
+  border: solid 1px #d5dfe5;
   border-radius: 4px;
   margin:auto;
   margin-top: 2%;
@@ -40,7 +26,7 @@
 }
 
 .drop-target {
-  background-color: #29e;
+  background-color: rgb(206, 227, 241);
   border-color: #fff;
   border-style: solid;
 }
@@ -324,3 +310,25 @@ hr {
   justify-content: space-between;
 }
 /* FIN HEADER */ 
+.verticalSeparator{
+  border-left: 2px solid rgb(130, 138, 153);
+  height: 100%;
+}
+
+fieldset {
+	border: solid 1px #d5dfe5;
+  border-radius: 4px;
+  margin: auto;
+  /*padding: 10px; */
+  width: 800px; /* cada columna 10px */
+  transition: background-color 0.3s;
+}
+
+legend {
+	background-color: #fff;
+	font-size: 14px;
+  padding-left: 2%;
+  padding-right: 1%;
+	width: auto;
+}
+
