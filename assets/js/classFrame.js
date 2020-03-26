@@ -13,6 +13,7 @@ class Frame {
         this.title=title;
         this.type=type;
         this.vars= new Map(); //inicializamos map de variables
+        this.view = "update";
     }
     addVariable(name, type, format, label, initial){
         let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
@@ -35,7 +36,12 @@ class Frame {
         this.idVar ++;
         return  this.idVar -1;
     }
-
+    getVista(){
+        return this.view;
+    }
+    setVista(vista){
+        this.view = vista;
+    }
     getFrame(){
         return this;
     }

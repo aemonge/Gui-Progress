@@ -7,7 +7,7 @@ $(() => {
   $('.editEnabled').hide();
 });
 
-
+var vista;
 let posx=0;
 let posy=0;
 let oldx=0;
@@ -267,7 +267,9 @@ btnAnyadirVar.addEventListener('click',function(){
       varInfo.id=idVar;
       let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
       varInfo.movido=obj.movido;
-      addVisualVar(varInfo);
+      let frame = nuevaPlantilla.getFrame(idFrame);
+      let vista = frame.getVista();
+      addVisualVar(varInfo, vista);
       cerrarModal("#modalNewVar");
       console.log(nuevaPlantilla);
     } else {
@@ -360,29 +362,33 @@ function cargarFrame(idFrame){
     $('.editEnabled').hide();
   }
   else{
+    let frame = nuevaPlantilla.getFrame(idFrame);
     $('.frameSelected').empty();
     $('.frameSelected').append(' <a href="#" class="btnFrame" data-toggle="modal" data-target="#modalFrameEdit"><h6 class="text-dark"><i class="far fa-edit"></i> Editar Frame </h6></a>');
     $('.frameSelected').append(' <a href="#" onclick="borrarFrame('+idFrame+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar Frame </h6></a>');
-    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'update\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
+    if(frame.getVista() == "display")
+      $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Update</h6></a>');
+    else if(frame.getVista() == "update")
+      $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
     $('.editEnabled').show();
-    let frame = nuevaPlantilla.getFrame(idFrame);
+    $('#tituloFrameActual').empty();
     $('#tituloFrameActual').append(frame.title);
     cargarPanelEdicionFrame(idFrame);
     cargarPanelVar(idFrame);
   }
 }
-function cargarVista(vistaActual){
+function cambiarVista(){
   let idFrame = $("#frames option:selected").attr('value');
-  if(vistaActual === "update"){
-    $("#cambiarVista").remove();
-    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'display\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Update</h6></a>');
-    /* cambiar vista*/
+  let frame = nuevaPlantilla.getFrame(idFrame);
+  let vista = frame.getVista();
+  console.log("vista actual: ", vista);
+  if(vista == "update"){
+    frame.setVista("display");
   }
-  else if(vistaActual === "display"){
-    $("#cambiarVista").remove();
-    $('.frameSelected').append(' <a href="#" onclick="cargarVista(\'update\')" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
-    /* cambiar vista*/
+  else if(vista == "display"){
+    frame.setVista("update");
   }
+  cargarFrame(idFrame);
 }
 function cargarPanelEdicionFrame(idFrame){
   let frame = nuevaPlantilla.getFrame(idFrame);
@@ -404,36 +410,41 @@ function cargarPanelVar(idFrame){
   let frame = nuevaPlantilla.getFrame(idFrame);
   let mapIter = frame.getVariables().entries();
   let value = mapIter.next().value;
+  let vista = frame.getVista();
   while(value != undefined) {
     //console.log('variables: ', value);
     
-    addVisualVar(value[1]);
+    addVisualVar(value[1], vista);
     value = mapIter.next().value;
   }
 
 }
-function addVisualVar(infoVar){
-  createVisualDraggable(infoVar);
+function addVisualVar(infoVar, vista){
+  createVisualDraggable(infoVar,vista);
   createEditPanel(infoVar["id"]);
 }
 
-function createVisualDraggable(infoVar){
+function createVisualDraggable(infoVar, vista){
   let stringDiv;
   let tipo = infoVar["type"];
-
-  
-  
-  if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
-    stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
-  }
-  else if(tipo=="logical"){
-    if(infoVar["format"] == "true"){
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+  if (vista == "update"){
+    if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
     }
-    else{
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+    else if(tipo=="logical"){
+      if(infoVar["format"] == "true"){
+        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+      }
+      else{
+        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+      }
     }
   }
+  else if (vista == "display"){
+    if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date" || tipo=="logical"){
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label>'+infoVar["initial"]+'</a></div>';
+    }
+  } 
   if(infoVar["movido"]==1){
     $("#movend").append(stringDiv);
     if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
@@ -451,9 +462,6 @@ function createVisualDraggable(infoVar){
   }else{
     $("#varsMov").append(stringDiv);
   }
-
-  
-  
 }
 function createEditPanel(idVar){
   let idFrame = $("#frames option:selected").attr('value');
@@ -512,9 +520,11 @@ function editarVariable(idVar){
       nuevaPlantilla.getFrame(idFrame).editVar(newData);
       newData = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
       createEditPanel(newData.id);
+      let frame = nuevaPlantilla.getFrame(idFrame);
+      let vista = frame.getVista();
       //actualizar draggable.
       $('#'+antiguoName+'').remove(); // borro antiguo 
-      createVisualDraggable(newData); // creo nuevo
+      createVisualDraggable(newData,vista); // creo nuevo
     } 
     else {
       $('.errorEditVar').append(message);
