@@ -46,10 +46,12 @@ interact('.draggable')
 function dragMoveListener (event) {
   var target = event.target
   // keep the dragged position in the data-x/data-y attributes
+  
   var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
   var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
   posx=x;
   posy=y;
+
   // translate the element
   target.style.webkitTransform =
   target.style.transform =
@@ -94,7 +96,14 @@ interact('.dropzone').dropzone({
     ondrop: function (event) {
       let idFrame = $("#frames option:selected").attr('value');
       //event.relatedTarget.textContent = 'Dropped'
+      
+
       console.log('x:' +posx + ' y:' + posy);
+      //var style = window.getComputedStyle(myElement);
+  
+
+
+
       //console.log('eventdx:',event.dx);
       var target = event.relatedTarget;
       var varid=target.getAttribute('id');
@@ -165,9 +174,12 @@ interact('.drag-drop')
   .draggable({
     
     modifiers: [
-      interact.modifiers.restrictRect({
+      interact.modifiers.restrict({
         //restriction: 'parent',
-        endOnly: true
+        //restriction: [{x: 0, y: 0, width: 441, height: 826}],
+        //restriction: '#prueba',
+        restriction: document.getElementById("inner-dropzone"),
+        endOnly: false
       }),
       interact.modifiers.snap({
         targets: [

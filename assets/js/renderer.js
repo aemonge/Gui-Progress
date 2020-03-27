@@ -80,6 +80,8 @@ function createFrameAndVars(tablas, frames){
     nombreFrame=validarNombreFrame(clave);
     if(nombreFrame==false){
       idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
+
+      
     }else{
       alert("Hay un Frame que se llama igual a "+clave);
     }
