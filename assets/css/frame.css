@@ -1,15 +1,18 @@
 #outer-dropzone {
   height: 400;
 }
+#inner-dropzone {
+  height: 384px;
+}
   
 
 #varsMov{
-  border: solid 1px #d5dfe5;
+  /*border: solid 1px #d5dfe5;*/
   border-radius: 4px;
   margin:auto;
   margin-top: 2%;
   /*padding: 10px; */
-  width: 800px; /* cada columna 10px */
+  /*width: 800px;*//*cada columna 10px */
   transition: background-color 0.3s;
   padding : 2%;
   display:flex;
@@ -32,8 +35,7 @@
 }
 
 .drag-drop {
-  display: inline-block;
-  
+  display: inline-block;  
   /*min-width: 40px;
   padding: 2em 0.5em;
   */
@@ -317,7 +319,7 @@ hr {
 
 fieldset {
 	border: solid 1px #d5dfe5;
-  border-radius: 4px;
+  /*border-radius: 4px;*/
   margin: auto;
   /*padding: 10px; */
   width: 800px; /* cada columna 10px */

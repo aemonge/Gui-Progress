@@ -22,7 +22,8 @@ interact('.draggable')
   // keep the element within the area of it's parent
   modifiers: [
     interact.modifiers.restrictRect({
-      restriction: 'parent',
+      //restriction: 'parent',
+      restriction: document.getElementById("inner-dropzone"),
       endOnly: true
     })
   ],
@@ -70,7 +71,7 @@ interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector
     //accept: '#yes-drop',
     // Require a 75% element overlap for a drop to be possible
-    overlap: 0.1,
+    overlap: 0.2,
   
     // listen for drop related events:
   
@@ -179,7 +180,7 @@ interact('.drag-drop')
         //restriction: [{x: 0, y: 0, width: 441, height: 826}],
         //restriction: '#prueba',
         restriction: document.getElementById("inner-dropzone"),
-        endOnly: false
+        endOnly: true
       }),
       interact.modifiers.snap({
         targets: [
@@ -438,12 +439,18 @@ function addVisualVar(infoVar, vista){
 
 function createVisualDraggable(infoVar, vista){
   let stringDiv;
+  let tam=8;
   let tipo = infoVar["type"];
+  
   if (vista == "update"){
-    if(tipo == "integer" || tipo == "decimal" || tipo=="character" || tipo=="date"){
+    if(tipo == "character" || tipo=="integer"){    
+      if(infoVar["format"]!=null){
+        tam=infoVar["format"];
+      }  
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'"readonly></a></div>';
+    }else if(tipo == "decimal" || tipo=="date"){
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
-    }
-    else if(tipo=="logical"){
+    }else if(tipo=="logical"){
       if(infoVar["format"] == "true"){
         stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
       }
