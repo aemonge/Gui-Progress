@@ -24,7 +24,7 @@ interact('.draggable')
     interact.modifiers.restrictRect({
       //restriction: 'parent',
       restriction: document.getElementById("inner-dropzone"),
-      endOnly: true
+      endOnly: false
     })
   ],
   // enable autoScroll
@@ -71,7 +71,7 @@ interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector
     //accept: '#yes-drop',
     // Require a 75% element overlap for a drop to be possible
-    overlap: 0.2,
+    overlap: 1,
   
     // listen for drop related events:
   
@@ -539,12 +539,8 @@ function editarVariable(idVar){
       nuevaPlantilla.getFrame(idFrame).editVar(newData);
       newData = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
       createEditPanel(newData.id);
-      let frame = nuevaPlantilla.getFrame(idFrame);
-      let vista = frame.getVista();
-      //actualizar draggable.
-      $('#'+antiguoName+'').remove(); // borro antiguo 
-      createVisualDraggable(newData,vista); // creo nuevo
-    } 
+      cargarFrame(idFrame);
+    }
     else {
       $('.errorEditVar').append(message);
     }
@@ -563,9 +559,10 @@ function modificarFrame(idFrame){
     $('.errorFrame').empty();
     if ("Ok" === message) {
       nuevaPlantilla.editFrame(idFrame, newData);
-      $("#frames option:selected").text(document.getElementById('eNombreFrame').value);
-      cargarPanelEdicionFrame(idFrame);
+      cargarFrame(idFrame);
+      $('#nombreFrame').val("");
       cerrarModal("#modalFrameEdit");
+      $("#frames option:selected").text(document.getElementById('eNombreFrame').value);
     } else {
       //mostramos mensaje de error
       $('.errorFrame').append(message);

@@ -166,9 +166,6 @@ function abrirPlantilla(){
           alert("Error: " + err + ".");
           return;
         }
-        console.log("dataTable: "+dataTable);
-        console.log("/ dataFrame: "+dataFrame);
-        console.log("/ fileName: "+fileName);
         crearPlantilla(dataTable,dataFrame,fileName);
       });
     });

@@ -54,11 +54,8 @@ class Frame {
     getNombre(){
         return this.name;
     }
-    getBorde(){
-        return this.borde;
-    }
-    getEtiqueta(){
-        return this.etiqueta;
+    getTitulo(){
+        return this.title;
     }
     editData(newData){
         this.name=newData.name;
@@ -67,9 +64,6 @@ class Frame {
     }
     editVar(newData){
         this.vars.get(parseInt(newData.idVar)).editData(newData);
-        this.name=newData.name;
-        this.borde=newData.borde;
-        this.etiqueta=newData.etiqueta;
     }
     deleteVariable(idVar){
         this.vars.delete(parseInt(idVar));
