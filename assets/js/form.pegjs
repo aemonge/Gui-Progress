@@ -1,19 +1,17 @@
 frame = _ DefineFrame __ name:Id __ lines:lines* final:FinalFrame _ "." _ {
-return {dataFrame:{final, name:name},lines: lines}
+return {dataFrame:{title:final, name:name},lines: lines}
 }
 
 DefineFrame = "define frame"
-
 
 lines=identificador:Id opciones:Opcion* __{
   return {id: identificador, opciones: opciones}
   }
 
-
 Id = !ReservedWord ("_" / [a-zA-Z0-9] / "-")+ {
 return text()
 }
-ReservedWord = "with" / "define" / "label" / "at" / "row" / "col" / "no-box" / opclabel
+ReservedWord = "with" / "define" / "label" / "at" / "row" / "col" / "title"
 
 Opcion = __ opcion:(OpcionLabel/OpcionAt/OpcionRow/OpcionCol) {
 return opcion
@@ -39,12 +37,9 @@ return texto.join("")
 }
 
 
-FinalFrame="with" __ l:opclabel _ b:opcBox {
-return {etiquetas:l , borde:b}
+FinalFrame= "with side-labels title" __ t:LiteralCadena _ {
+return t
 }
-
-opclabel=$("side-labels" / "no-label")
-opcBox = $"no-box"*
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 

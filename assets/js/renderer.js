@@ -32,14 +32,14 @@ $(() => {
    $('#code').hide();
 });
 
-function crearPlantilla(tablas, frames, fileName){
+function crearPlantilla(tablas, frames, vars, fileName){
   if(tablas == undefined | frames == undefined){
     nuevaPlantilla = new classProgress.Progress();
   }
   else{
     nuevaPlantilla = new classProgress.Progress();
     nuevaPlantilla.setFileName(fileName);
-    createFrameAndVars(tablas, frames);   
+    createFrameAndVars(tablas, frames,vars);   
   }
   $('#index').hide();
   $('#designer').show();
@@ -47,21 +47,14 @@ function crearPlantilla(tablas, frames, fileName){
   $("#title").empty();
   $("#title").append(nuevaPlantilla.getFileName());
 }
-function createFrameAndVars(tablas, frames){
-  console.log(tablas,frames);
+function createFrameAndVars(tablas, frames, vars){
+  console.log(tablas,frames,vars);
   let key = frames.entries().next().value[0]; 
   let value   = frames.entries().next().value[1];
-  let borde = 1;
-  if(value['borde'] != "")
-    borde = 0;
-  let etiqueta = 0;
-  if(value['etiquetas'] != "side-labels")
-    etiqueta = 1;
-    
-  let idFrame = nuevaPlantilla.addFrame(key,borde,etiqueta);
-  
-
-
+  let title = 1;
+  if(value['title'] != "")
+    title = value['title'];
+  let idFrame = nuevaPlantilla.addFrame(key,title,value['type']);
 
   //seleccionamos frame para mostrar
   $('#frames').append('<option value= "'+idFrame+'">'+key+'</option>');
@@ -69,80 +62,114 @@ function createFrameAndVars(tablas, frames){
   $('#frames option[value="'+idFrame+'"]').attr("selected",true);
   for (var [clave, valor] of frames) {
     if(clave != key){ //Cargar nuevo frame
-      if(valor['borde'] != "")
-        borde = 0;
-      let etiqueta = 0;
-      if(valor['etiquetas'] != "side-labels")
-        etiqueta = 1;
-
-      //COMPROBAR QUE NO HAY OTRO FRAME QUE SE LLAME IGUAL///
+      if(value['title'] != "")
+      title = value['title'];
+    //COMPROBAR QUE NO HAY OTRO FRAME QUE SE LLAME IGUAL///
     let nombreFrame=false;
     nombreFrame=validarNombreFrame(clave);
     if(nombreFrame==false){
-      idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
-
-      
+      idFrame = nuevaPlantilla.addFrame(clave,title,value['type']);
     }else{
       alert("Hay un Frame que se llama igual a "+clave);
+      break;
     }
-      //idFrame = nuevaPlantilla.addFrame(clave,borde,etiqueta);
       $('#frames').append('<option value= "'+idFrame+'">'+clave+'</option>');
       $("#frames option:selected").removeAttr("selected");
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
       key = clave;
     }
     //cargamos variables del frame en el que nos encontramos
-    let varInfo={
-      name:"",
-      type: "",
-      label: "",
-      initial: "",
-      format: "",
-      id:"",
-      movido:""
-    };
-    //Rellenamos label, row y col de map frames
-    valor.lines.forEach(line =>{
-      varInfo.name = line.id;
+    if(value['type'] == "output"){
+      let varInfo={
+        name:"",
+        type: "",
+        label: "",
+        initial: "",
+        format: "",
+        id:"",
+        movido:""
+      };
+      //Rellenamos label, row y col de map frames
+      valor.lines.forEach(line =>{
+        varInfo.name = line.id;
 
-      //////////////////////////////////////////////////
-      let existe=validarNombreVar(key,varInfo.name,tablas);
-      if(existe){
-        console.log("variable: "+varInfo.name+" existe");
-      
-      
-      
-      }else{
-        console.log("variable: "+varInfo.name+" No existe");
-      }
-      ////////////////////////////////////////////////
-      line.opciones.forEach(opcion =>{
-        if(opcion.type == "label")
-          varInfo.label = opcion.value;
-        if(opcion.type == "row")
-          varInfo.row = opcion.value;
-        if(opcion.type == "colum")
-          varInfo.col = opcion.value;
-        if(varInfo.col != 0 || varInfo.row !=0)
-          varInfo.movido=1;
-      });
-      // Rellenamos tipo, init y format del map tabla
-      tablas.get(clave).forEach(variable =>{
-        if (variable.var == varInfo.name){
-          varInfo.type = variable.type;
-          variable.opciones.forEach(opcion =>{
-            if(opcion.type == "init")
-              varInfo.initial = opcion.value;
-            if(opcion.type == "format")
-              varInfo.format = opcion.format;
-          });
+        //////////////////////////////////////////////////
+        let existe=validarNombreVar(key,varInfo.name,tablas);
+        if(existe){
+          console.log("variable: "+varInfo.name+" existe");
+        }else{
+          console.log("variable: "+varInfo.name+" No existe");
         }
+        ////////////////////////////////////////////////
+        line.opciones.forEach(opcion =>{
+          if(opcion.type == "label")
+            varInfo.label = opcion.value;
+          if(opcion.type == "row")
+            varInfo.row = opcion.value;
+          if(opcion.type == "colum")
+            varInfo.col = opcion.value;
+          if(varInfo.col != 0 || varInfo.row !=0)
+            varInfo.movido=1;
+        });
+        // Rellenamos tipo, init y format del map tabla
+        tablas.get(clave).forEach(variable =>{
+          if (variable.var == varInfo.name){
+            varInfo.type = variable.type;
+            variable.opciones.forEach(opcion =>{
+              if(opcion.type == "init")
+                varInfo.initial = opcion.value;
+              if(opcion.type == "format")
+                varInfo.format = opcion.format;
+            });
+          }
+        });
+        let idVar = nuevaPlantilla.addVartoFrameRead(idFrame,varInfo);
+        varInfo.id=idVar;
+        let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
+        varInfo.movido=obj.movido;
       });
-      let idVar = nuevaPlantilla.addVartoFrameRead(idFrame,varInfo);
-      varInfo.id=idVar;
-      let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
-      varInfo.movido=obj.movido;
-    });
+    }
+    else if(value['type'] == "input"){
+      //Rellenamos label, row y col de map frames
+      valor.lines.forEach(line =>{
+        let varInfo={
+          name:line.id,
+          type: "",
+          label: "",
+          initial: "",
+          format: "",
+          id:"",
+          movido:""
+        };
+
+        //////////////////////////////////////////////////
+        //VALIDAR LA VARIABLE
+        ////////////////////////////////////////////////
+        line.opciones.forEach(opcion =>{
+          if(opcion.type == "label")
+            varInfo.label = opcion.value;
+          if(opcion.type == "row")
+            varInfo.row = opcion.value;
+          if(opcion.type == "colum")
+            varInfo.col = opcion.value;
+          if(varInfo.col != 0 || varInfo.row !=0)
+            varInfo.movido=1;
+        });
+        // Rellenamos tipo, init y format del map vars
+        vars.get(line.id).forEach(opcion =>{
+          if(opcion.type == "type")
+            varInfo.type = opcion.value;
+          if(opcion.type == "init")
+            varInfo.initial = opcion.value;
+          if(opcion.type == "format")
+            varInfo.format = opcion.format;
+        });
+        let idVar = nuevaPlantilla.addVartoFrameRead(idFrame,varInfo);
+        varInfo.id=idVar;
+        let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
+        varInfo.movido=obj.movido;
+      });
+    }
     cargarFrame(idFrame);
   }
 }
@@ -156,17 +183,17 @@ function abrirPlantilla(){
       alert("Ha ocurrido un error al abrir el archivo");
       return;
     }
-    console.log("file: " + file.filePaths[0]);
+    //console.log("file: " + file.filePaths[0]);
     //let fileName = getFileName(file.filePaths[0]);
     let fileName= path.basename(file.filePaths[0]);
     fs.readFile(file.filePaths[0],'utf8', (err, data) =>{
       if (err) throw err;
-      parser.parserCode(data, (err, dataTable, dataFrame) =>{
+      parser.parserCode(data, (err, dataTable, dataFrame, dataVars) =>{
         if (err != ""){
           alert("Error: " + err + ".");
           return;
         }
-        crearPlantilla(dataTable,dataFrame,fileName);
+        crearPlantilla(dataTable,dataFrame,dataVars,fileName);
       });
     });
   });
