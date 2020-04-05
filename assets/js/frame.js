@@ -24,6 +24,7 @@ interact('.draggable')
     interact.modifiers.restrictRect({
       //restriction: 'parent',
       restriction: document.getElementById("inner-dropzone"),
+      
       endOnly: false
     })
   ],
@@ -35,7 +36,7 @@ interact('.draggable')
   // call this function on every dragend event
   onend: function (event) {
     var textEl = event.target.querySelector('p')
-
+    console.log('Holi pataliebre');
     textEl && (textEl.textContent =
       'moved a distance of ' +
       (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
@@ -92,19 +93,14 @@ interact('.dropzone').dropzone({
       // remove the drop feedback style
       event.target.classList.remove('drop-target')
       event.relatedTarget.classList.remove('can-drop')
+      alert('No puedes sacar el objeto fuera de la zona');
       //event.relatedTarget.textContent = 'Dragged out'
     },
     ondrop: function (event) {
       let idFrame = $("#frames option:selected").attr('value');
       //event.relatedTarget.textContent = 'Dropped'
-      
-
       console.log('x:' +posx + ' y:' + posy);
       //var style = window.getComputedStyle(myElement);
-  
-
-
-
       //console.log('eventdx:',event.dx);
       var target = event.relatedTarget;
       var varid=target.getAttribute('id');
@@ -161,6 +157,8 @@ interact('.dropzone').dropzone({
       variable.setFilaCol(fil,col);
       console.log(variable);
       createEditPanel(variable.id);
+
+      
       
     },
     ondropdeactivate: function (event) {
@@ -193,7 +191,11 @@ interact('.drag-drop')
     inertia: true,
     //autoScroll: true,
     // dragMoveListener from the dragging demo above
-    onmove: dragMoveListener
+    onmove: dragMoveListener,
+
+    onend: function (event) {
+      console.log('Paso por aquí');
+    }
   })
   
 btnAnyadirFrame.addEventListener('click',function(){
