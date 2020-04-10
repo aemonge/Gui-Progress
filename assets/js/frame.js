@@ -93,7 +93,7 @@ interact('.dropzone').dropzone({
       // remove the drop feedback style
       event.target.classList.remove('drop-target')
       event.relatedTarget.classList.remove('can-drop')
-      alert('No puedes sacar el objeto fuera de la zona');
+      //alert('No puedes sacar el objeto fuera de la zona');
       //event.relatedTarget.textContent = 'Dragged out'
     },
     ondrop: function (event) {
@@ -105,23 +105,35 @@ interact('.dropzone').dropzone({
       var target = event.relatedTarget;
       var varid=target.getAttribute('id');
       var zone = document.getElementById('inner-dropzone');
-      var movido=target.getAttribute('movido');
+      //var movido=target.getAttribute('movido');
       var objeto=document.getElementById(varid);
-      var variable=null;
+      var key= objeto.getAttribute("key");
+      var variable=nuevaPlantilla.getVariableByKey(idFrame,key);
+      
+      //var variable=null;
       console.log('cordenadas izquierda:',objeto.offsetLeft,' coordenadas superiores:',objeto.offsetTop);
       
       console.log('zona iz:', zone.offsetLeft,' zona top:',zone.offsetTop);
       //var divmov='<div id="'+varid+'" class="'+varvar+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
       //var divmov='<div id="'+varid+'"></div>'
       //$("#movend").append(divmov);
-      if(movido==0){
+      //if(movido==0){
+      if(variable['movido']==0){
         var objcln=objeto.cloneNode(true);
         $('#movend').append(objcln);
         posx=parseInt(objeto.getAttribute('data-x'));
         posy=parseInt(objeto.getAttribute('data-y'));
         console.log('zona iz:', zone.offsetLeft,' zona top:',zone.offsetTop);
 
+
+        // x=objeto.offsetLeft+posx
+        //                          -> dataX=posx+objeto.offsetLeft-clone.offsetLeft
+        // x=clone.offsetLeft+dataX
         var x1=posx+objeto.offsetLeft-objcln.offsetLeft;
+
+        // y=objeto.offsetTop+posy
+        //                          -> datay=posy+objeto.offsetTop+clone.offsetTop
+        // y=datay-clone.offsetTop
         var y1=posy+objeto.offsetTop+objcln.offsetTop;
         
         // translate the element
@@ -131,12 +143,12 @@ interact('.dropzone').dropzone({
         // update the posiion attributes
         objcln.setAttribute('data-x', x1)
         objcln.setAttribute('data-y', y1)
-        objcln.setAttribute('movido',1)
+        //objcln.setAttribute('movido',1)
         objeto.parentNode.removeChild(objeto);
         console.log('nueva cordenadas izquierda:',objcln.offsetLeft,' nueva coordenadas superiores:',objcln.offsetTop);
       //console.log(varid);
-        let key= objcln.getAttribute("key")
-        variable=nuevaPlantilla.getVariableByKey(idFrame,key);
+        //let key= objcln.getAttribute("key")
+        //variable=nuevaPlantilla.getVariableByKey(idFrame,key);
         variable.setMovido();      
         variable.setPosition(x1,y1);
         
@@ -146,11 +158,11 @@ interact('.dropzone').dropzone({
       }else{       
         let key= objeto.getAttribute("key")
         variable=nuevaPlantilla.getVariableByKey(idFrame,key);
-      
         variable.setPosition(posx,posy);
         //console.log(variable);
       }
       //calculo columna y fila
+      
       var col=Math.round((objeto.offsetLeft+posx-zone.offsetLeft)/9);
       var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/24);
       console.log('fila:',fil,'col:',col);
@@ -178,7 +190,7 @@ interact('.drag-drop')
         //restriction: [{x: 0, y: 0, width: 441, height: 826}],
         //restriction: '#prueba',
         restriction: document.getElementById("inner-dropzone"),
-        endOnly: true
+        endOnly: false
       }),
       interact.modifiers.snap({
         targets: [
@@ -195,6 +207,56 @@ interact('.drag-drop')
 
     onend: function (event) {
       console.log('Paso por aquí');
+      let idFrame = $("#frames option:selected").attr('value');
+      let target = event.currentTarget;
+      console.log(event);
+      let varid=target.getAttribute('id');
+      let zone = document.getElementById('inner-dropzone');
+      //var movido=target.getAttribute('movido');
+      let objeto=document.getElementById(varid);
+      let key= objeto.getAttribute("key");
+      console.log('id: '+varid+' key: '+key+' frame: '+idFrame);
+      let variable=nuevaPlantilla.getVariableByKey(idFrame,key);
+      console.log('ancho zona: '+zone.offsetWidth);
+      console.log('alto zona: '+zone.offsetHeight);
+      let posright=posx+objeto.offsetWidth+objeto.offsetLeft;
+      if(variable['movido']==0){
+        
+        //Controlamos las X y las Y
+        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop){
+          console.log('muevelo');
+          //let x1 = zone.offsetWidth+zone.offsetLeft - objeto.offsetWidth+objeto.offsetLeft;
+          objeto.style.webkitTransform =
+          objeto.style.transform =
+          'translate(' + 0 + 'px, ' + 0 + 'px)'
+          objeto.setAttribute('data-x', 0)
+          objeto.setAttribute('data-y', 0)
+
+        }
+        //else{
+        //  console.log('estamos dentro');
+        //}
+      }else{
+        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop){
+          //objeto.style.webkitTransform =
+          //objeto.style.transform =
+          //'translate(' + variable['posx'] + 'px, ' + variable['posy'] + 'px)'
+          //objeto.setAttribute('data-x', 0)
+          //objeto.setAttribute('data-y', 0)
+
+          let datx=(variable["columna"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(variable["name"]).offsetLeft;
+          let daty=(variable["fila"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(variable["name"]).offsetTop;
+          objeto.setAttribute('data-x', datx);
+          objeto.setAttribute('data-y', daty);
+          // translate the element
+          objeto.style.webkitTransform =
+          objeto.style.transform =
+            'translate(' + datx + 'px, ' + daty + 'px)'
+
+        }
+      }
+
+
     }
   })
   
