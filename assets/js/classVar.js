@@ -61,10 +61,10 @@ class Variable{
         return position;
     }
     getFila(){
-        return this.fila + 1 ;
+        return this.fila;
     }
     getColumna(){
-        return this.columna + 1;
+        return this.columna;
     }
     setFila(i){
         this.fila=i;

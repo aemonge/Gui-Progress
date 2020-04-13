@@ -10,7 +10,7 @@ line = v:var _ opciones:Opcion+ _{
 var = !reservedWords ("_" / [a-zA-Z0-9] / "-")*  {
 return text()
 }
-reservedWords = "field" / defType / "temp-table" / noUndo / "as" / "init" / "format"
+reservedWords = "field" / defType / "temp-table" / noUndo / "as " / "init " / "format "
 
 Opcion = _ opcion:(type/OpcionLabel/OpcionInit/OpcionFormat) {
 return opcion

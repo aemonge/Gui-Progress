@@ -530,6 +530,8 @@ function createVisualDraggable(infoVar, vista){
   } 
   if(infoVar["movido"]==1){
     $("#movend").append(stringDiv);
+    console.log("left: ",document.getElementById(infoVar["name"]).offsetLeft );
+    console.log("top: ",document.getElementById(infoVar["name"]).offsetTop );
     if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
       let datx=(infoVar["columna"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(infoVar["name"]).offsetLeft;
       let daty=(infoVar["fila"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(infoVar["name"]).offsetTop;

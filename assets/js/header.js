@@ -58,7 +58,7 @@ function generarFrames(){
             frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel()  +'" at row '+elemV.getFila()+' column '+elemV.getColumna()+' \n';
         });
         frame += "with side-labels";
-        if(elemF.getTitulo() != "" || elemF.getTitulo() != undefined) {
+        if(elemF.getTitulo() != "") {
             frame += ' title "' + elemF.getTitulo() + '". \n';
         }
         else{
