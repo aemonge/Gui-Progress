@@ -3,6 +3,7 @@
 }
 #inner-dropzone {
   height: 384px;
+
 }
   
 
@@ -33,6 +34,9 @@
   border-color: #fff;
   border-style: solid;
 }
+.drag-drop input{
+  height: 22px;
+}
 
 .drag-drop {
   display: inline-block;  
@@ -45,11 +49,14 @@
   
   border: solid 2px #fff;
   */
+  height: 24px;
   touch-action: none;
   -webkit-transform: translate(0px, 0px);
           transform: translate(0px, 0px);
 
   transition: background-color 0.3s;
+  font-family: 'Courier New', Courier, monospace;
+
 }
 /*
 .drag-drop.can-drop {
@@ -162,7 +169,7 @@ hr {
   white-space: pre;
   display: block;
   font-size: .8em;
-  font-family: 'lato', helvetica, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
 }
 #editVarBtn{
   display: flex;
