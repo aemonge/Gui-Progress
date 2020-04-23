@@ -33,6 +33,11 @@ $(() => {
 });
 
 function crearPlantilla(tablas, frames, vars, fileName){
+  
+  $('#index').hide();
+  $('#designer').show();
+  $('.headerOptions').show();
+  $("#title").empty();
   if(tablas == undefined | frames == undefined){
     nuevaPlantilla = new classProgress.Progress();
   }
@@ -41,10 +46,6 @@ function crearPlantilla(tablas, frames, vars, fileName){
     nuevaPlantilla.setFileName(fileName);
     createFrameAndVars(tablas, frames,vars);   
   }
-  $('#index').hide();
-  $('#designer').show();
-  $('.headerOptions').show();
-  $("#title").empty();
   $("#title").append(nuevaPlantilla.getFileName());
 }
 function createFrameAndVars(tablas, frames, vars){

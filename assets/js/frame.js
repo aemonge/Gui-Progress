@@ -508,7 +508,7 @@ function createVisualDraggable(infoVar, vista){
   
   if (vista == "update"){
     if(tipo == "character" || tipo=="integer"){    
-      if(infoVar["format"]!=null){
+      if(infoVar["format"]!=null && infoVar["format"]!=""){
         tam=infoVar["format"];
       }  
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'"readonly></a></div>';
@@ -528,21 +528,24 @@ function createVisualDraggable(infoVar, vista){
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label>'+infoVar["initial"]+'</a></div>';
     }
   } 
+  
   if(infoVar["movido"]==1){
     $("#movend").append(stringDiv);
-    console.log("left: ",document.getElementById(infoVar["name"]).offsetLeft );
-    console.log("top: ",document.getElementById(infoVar["name"]).offsetTop );
+    
+    var zona=document.getElementById('inner-dropzone');
+    var objeto=document.getElementById(infoVar["name"]);
+    console.log("left: ",objeto.offsetLeft );
+    console.log("top: ",objeto.offsetTop );
     if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
-      let datx=(infoVar["columna"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(infoVar["name"]).offsetLeft;
-      let daty=(infoVar["fila"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(infoVar["name"]).offsetTop;
-      document.getElementById(infoVar["name"]).setAttribute('data-x', datx);
-      document.getElementById(infoVar["name"]).setAttribute('data-y', daty);
+      let datx=(infoVar["columna"]*9+zona.offsetLeft)-objeto.offsetLeft;
+      let daty=(infoVar["fila"]*24+zona.offsetTop)-objeto.offsetTop;
+      objeto.setAttribute('data-x', datx);
+      objeto.setAttribute('data-y', daty);
       // translate the element
       document.getElementById(infoVar["name"]).style.webkitTransform =
       document.getElementById(infoVar["name"]).style.transform =
         'translate(' + datx + 'px, ' + daty + 'px)'
     }
-
 
   }else{
     $("#varsMov").append(stringDiv);
