@@ -220,10 +220,11 @@ interact('.drag-drop')
       console.log('ancho zona: '+zone.offsetWidth);
       console.log('alto zona: '+zone.offsetHeight);
       let posright=posx+objeto.offsetWidth+objeto.offsetLeft;
+      let posbottom=posy+objeto.offsetHeight+objeto.offsetTop;
       if(variable['movido']==0){
         
         //Controlamos las X y las Y
-        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop){
+        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop || posbottom>(zone.offsetHeight+zone.offsetTop)) {
           console.log('muevelo');
           //let x1 = zone.offsetWidth+zone.offsetLeft - objeto.offsetWidth+objeto.offsetLeft;
           objeto.style.webkitTransform =
@@ -237,7 +238,7 @@ interact('.drag-drop')
         //  console.log('estamos dentro');
         //}
       }else{
-        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop){
+        if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop || posbottom>(zone.offsetHeight+zone.offsetTop)){
           //objeto.style.webkitTransform =
           //objeto.style.transform =
           //'translate(' + variable['posx'] + 'px, ' + variable['posy'] + 'px)'
