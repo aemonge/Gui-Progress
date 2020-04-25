@@ -340,4 +340,20 @@ legend {
   padding-right: 1%;
 	width: auto;
 }
+/* OUTPUT FRAME */
 
+#sortable { 
+  list-style-type: none; 
+  width: 100%; 
+}
+#sortable li { 
+  width: 100%; 
+  margin: 0 3px 3px 3px; 
+  padding: 0.4em; 
+  padding-left: 1.5em;  
+}
+#outputVars{
+  background-color: red;
+}
+
+/* END OUTPUT FRAME */

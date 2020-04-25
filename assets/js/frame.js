@@ -5,6 +5,8 @@ const classFrame = require(pathFrame)
 
 $(() => {
   $('.editEnabled').hide();
+  $('.inputFrame').hide();
+  $('#outputFrame').hide();
 });
 
 var vista;
@@ -424,6 +426,9 @@ function borrarFrame(id){
   $('#frames option[value="'+id+'"]').remove();
   $('#frames option[value="0"]').attr("selected",true);
   $('.editEnabled').hide();
+  $('.frameSelected').hide();
+  $('.inputFrame').hide();
+  $('#outputFrame').hide();
   $("#varsMov").empty();
 }
 function borrarVariable(idVar){
@@ -438,21 +443,33 @@ function cargarFrame(idFrame){
   vaciarVariables();
   if(idFrame == 0){
     $('.editEnabled').hide();
+    $('.inputFrame').hide();
+    $('.frameSelected').hide();
+    $('#outputFrame').hide();
   }
   else{
     let frame = nuevaPlantilla.getFrame(idFrame);
     $('.frameSelected').empty();
     $('.frameSelected').append(' <a href="#" class="btnFrame" data-toggle="modal" data-target="#modalFrameEdit"><h6 class="text-dark"><i class="far fa-edit"></i> Editar Frame </h6></a>');
     $('.frameSelected').append(' <a href="#" onclick="borrarFrame('+idFrame+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar Frame </h6></a>');
-    if(frame.getVista() == "display")
-      $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Update</h6></a>');
-    else if(frame.getVista() == "update")
-      $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
-    $('.editEnabled').show();
-    $('#tituloFrameActual').empty();
-    $('#tituloFrameActual').append(frame.title);
-    cargarPanelEdicionFrame(idFrame);
-    cargarPanelVar(idFrame);
+    if(frame.getTipo() == "output") {
+      cargarFrameSalida(idFrame);
+      cargarPanelEdicionFrame(idFrame);
+    }
+    else if (frame.getTipo() == "input"){
+      if(frame.getVista() == "display")
+        $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame inputFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Update</h6></a>');
+      else if(frame.getVista() == "update")
+        $('.frameSelected').append(' <a href="#" onclick="cambiarVista()" class="btnFrame inputFrame" id ="cambiarVista" ><h6 class="text-dark"><i class="far fa-eye"></i> Cambiar a Vista Display</h6></a>');
+      $('#outputFrame').hide();
+      $('.inputFrame').show();
+      $('.editEnabled').show();
+      $('#tituloFrameActual').empty();
+      $('#tituloFrameActual').append(frame.title);
+      cargarPanelEdicionFrame(idFrame);
+      cargarPanelVar(idFrame);
+    }
+    $('.frameSelected').show();
   }
 }
 function cambiarVista(){
@@ -472,11 +489,6 @@ function cargarPanelEdicionFrame(idFrame){
   let frame = nuevaPlantilla.getFrame(idFrame);
   $("#eNombreFrame").val(frame["name"]);
   $("#etituloFrame").val(frame["title"]);
-  
-  //Borro para evitar conflictos de actualización
-  $('#etipoFrame').remove();
-  $('#lugarTipo').append('<select id="etipoFrame" class="form-control" name="tipoFrame"><option value="0">Entrada </option><option value="1">Salida</option></select>');
-  $('#etipoFrame option[value='+frame["type"]+']').attr("selected",true);
   //Botón guardar
   $("#btnEditarFrame").removeAttr("onclick");
   $("#btnEditarFrame").attr("onclick", 'modificarFrame('+idFrame+')');

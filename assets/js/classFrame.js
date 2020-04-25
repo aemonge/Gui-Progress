@@ -11,7 +11,10 @@ class Frame {
         this.id=id;  // mi id me viene dado de la clase Progress
         this.name=name;
         this.title=title;
-        this.type=type;
+        if (type == "0")
+            this.type="input";
+        if (type == "1")
+            this.type="output";
         this.vars= new Map(); //inicializamos map de variables
         this.view = "update";
     }
@@ -56,6 +59,9 @@ class Frame {
     }
     getTitulo(){
         return this.title;
+    }
+    getTipo(){
+        return this.type;
     }
     editData(newData){
         this.name=newData.name;

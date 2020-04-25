@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../assets/css/frame.css">
     <script src="../node_modules/interactjs/dist/interact.min.js"></script>
     
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="../assets/js/frame.js"></script>
     <script src="../assets/js/renderer.js"></script>
     <title>GUI-Progress</title>
@@ -23,49 +23,47 @@
           <select id="frames" name="frames" class="btn">
             <option value="0">Seleccionar frame</option>
           </select>
-          <div class="nav-link frameSelected editEnabled"></div>
+          <div class="nav-link frameSelected"></div>
         </div>
         <div class="col-4 col-sm-4 placeholder">
           <div class="row centered horizontalEqual">
               <a id='crearFrame' data-toggle="modal" data-target="#modalNewFrame" href="#" class="btn btn-info">
                 <i class="far fa-plus-square"></i>Nuevo Frame
               </a>
-              <a id="crearVar" data-toggle="modal" data-target="#modalNewVar" href="#" class="btn btn-info editEnabled">
+              <a id="crearVar" data-toggle="modal" data-target="#modalNewVar" href="#" class="btn btn-info editEnabled outputFrame">
                   <i class="far fa-plus-square"></i> Nueva Variable
               </a>
           </div>
         </div>
       </div>
-      <div class="row">
-        <hr/>
-      </div>
         
-        <div id="prueba" class="row editEnabled">
-          <div class="col-8 col-sm-8 placeholder"> 
-            <div class="row">
-              <div id="movend">
-              </div>
+      <div class="row inputFrame">
+        <div class="col-8 col-sm-8 placeholder"> 
+          <div class="row">
+            <div id="movend">
             </div>
-
-            <div class="row">
-              <fieldset>
-                <legend id="tituloFrameActual">   </legend>
-                
-                <div id="inner-dropzone" class="dropzone">
-                  
-                </div>
-                
-              </fieldset>
-            </div>  
-            <div class="row">
-              <div id="varsMov">
-              </div>
-            </div>  
-            
           </div>
-          <div id="vars"class="col-4 col-sm-4 placeholder text-center">
-          </div>             
+
+          <div class="row">
+            <fieldset>
+              <legend id="tituloFrameActual">   </legend>
+              
+              <div id="inner-dropzone" class="dropzone">
+                
+              </div>
+              
+            </fieldset>
+          </div>  
+          <div class="row">
+            <div id="varsMov">
+            </div>
+          </div>  
+          
         </div>
+        <div id="vars"class="col-4 col-sm-4 placeholder text-center">
+        </div>             
+      </div>
+      <div id="outputFrame" class="row"></div>
       </div>
              <!-- Modal new Frame-->
      <div id="modalNewFrame" class="modal fade" role="dialog">
@@ -122,13 +120,6 @@
               <label>Titulo:</label>
                 <input id='etituloFrame' class="form-control" type="text" placeholder="frame 1">
             </div>       
-            <div class="form-group" id="lugarTipo">
-              <label>Tipo:</label>
-                <select id="etipoFrame" class="form-control" name="tipoFrame">
-                  <option value="0">Entrada </option>
-                  <option value="1">Salida</option>
-                </select>
-            </div>
             <div class="text-center">
                 <a href="#" id="btnEditarFrame" class="btn btn-sm btn-info" ><i class="far fa-save" ></i> Guardar Cambios </a>
             </div>
@@ -199,6 +190,7 @@
         </div>
 
       </div>
+      
     </div>
      <footer>
       <div class="container-fluid">
@@ -208,4 +200,10 @@
       </div>
     </footer>
   </body>
+  <!---------------- OUTPUT FRAME ------------------------->
+  <script>
+    $(document).ready(function () {
+      $('#outputFrame').load('./outputFrame.html');
+    });
+  </script>
 </html>

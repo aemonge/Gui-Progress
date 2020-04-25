@@ -137,3 +137,11 @@ function guardarPlantilla(){
      }
      return fileName;
  }
+function volverInicio(){
+    nuevaPlantilla.getFrames().forEach(function (elemF, indexF, array) {
+        borrarFrame(elemF.id);
+    });
+    $('#designer').hide();
+    $('#index').show();
+
+}
