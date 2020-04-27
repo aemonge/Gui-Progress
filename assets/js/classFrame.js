@@ -17,6 +17,7 @@ class Frame {
             this.type="output";
         this.vars= new Map(); //inicializamos map de variables
         this.view = "update";
+        this.varsOutFrame = new Array(0); //inicializamos array para variables de salida
     }
     addVariable(name, type, format, label, initial){
         let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
@@ -34,10 +35,18 @@ class Frame {
             newVar.setCol(col);
         if(row!=0)
             newVar.setFila(row);
-        console.log("movido: ",newVar);
         this.vars.set(this.idVar,newVar);
         this.idVar ++;
         return  this.idVar -1;
+    }
+    addVariableOutput(idVar){
+        this.varsOutFrame.push(idVar.toString());
+    }
+    actualizarPosiciones(arrayActualizado){
+        this.varsOutFrame = arrayActualizado.slice();
+    } 
+    getPosicionOutput(idVar){
+        return  this.varsOutFrame.indexOf(idVar.toString()) + 1; 
     }
     getVista(){
         return this.view;
@@ -50,6 +59,9 @@ class Frame {
     }
     getVariables(){
         return this.vars;
+    }
+    getVariablesOutput(){
+        return this.varsOutFrame;
     }
     getVariable(idVar){
         return this.vars.get(parseInt(idVar));
@@ -73,6 +85,9 @@ class Frame {
     }
     deleteVariable(idVar){
         this.vars.delete(parseInt(idVar));
+        if(this.type = "output"){
+            this.varsOutFrame.splice(this.varsOutFrame.indexOf(idVar.toString()),1);
+        }
     }
 }
 module.exports = {

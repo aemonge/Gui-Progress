@@ -38,7 +38,6 @@ interact('.draggable')
   // call this function on every dragend event
   onend: function (event) {
     var textEl = event.target.querySelector('p')
-    console.log('Holi pataliebre');
     textEl && (textEl.textContent =
       'moved a distance of ' +
       (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
@@ -208,7 +207,6 @@ interact('.drag-drop')
     onmove: dragMoveListener,
 
     onend: function (event) {
-      console.log('Paso por aquí');
       let idFrame = $("#frames option:selected").attr('value');
       let target = event.currentTarget;
       console.log(event);
@@ -349,9 +347,15 @@ btnAnyadirVar.addEventListener('click',function(){
       varInfo.movido=obj.movido;
       let frame = nuevaPlantilla.getFrame(idFrame);
       let vista = frame.getVista();
-      addVisualVar(varInfo, vista);
+      if(frame.getTipo() == "output") {
+        frame.addVariableOutput(idVar);
+        addVisualVarOutput(varInfo);
+      }
+      else{
+        addVisualVar(varInfo, vista);
+      }
+      
       cerrarModal("#modalNewVar");
-      console.log(nuevaPlantilla);
     } else {
       //mostramos mensaje de error
       $('.errorVar').append(message);
@@ -432,12 +436,18 @@ function borrarFrame(id){
   $("#varsMov").empty();
 }
 function borrarVariable(idVar){
-  
   let idFrame = $("#frames option:selected").attr('value');
   nuevaPlantilla.deleteVariable(idFrame,idVar);
-  $('#vars').empty();
-  $('.var'+idVar+'').remove(); // Borro el arrastrable
-  //cargarPanelVar(idFrame);
+  let frame = nuevaPlantilla.getFrame(idFrame);
+  if(frame.getTipo() == "output"){
+    $('#varsOutput').empty();
+    cargarPanelVarOutput( idFrame);
+  }
+  else{ //input frame
+    $('#vars').empty();
+    $('.var'+idVar+'').remove(); // Borro el arrastrable
+  }
+  
 }
 function cargarFrame(idFrame){
   vaciarVariables();
@@ -455,6 +465,7 @@ function cargarFrame(idFrame){
     if(frame.getTipo() == "output") {
       cargarFrameSalida(idFrame);
       cargarPanelEdicionFrame(idFrame);
+      cargarPanelVarOutput(idFrame);
     }
     else if (frame.getTipo() == "input"){
       if(frame.getVista() == "display")
@@ -476,7 +487,6 @@ function cambiarVista(){
   let idFrame = $("#frames option:selected").attr('value');
   let frame = nuevaPlantilla.getFrame(idFrame);
   let vista = frame.getVista();
-  console.log("vista actual: ", vista);
   if(vista == "update"){
     frame.setVista("display");
   }
@@ -605,23 +615,43 @@ function createEditPanel(idVar){
 function editarVariable(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
-  let newData = {
-    idVar: idVar,
-    name: document.getElementById('nombreVariableEdit').value,
-    format: document.getElementById('formatoVariableEdit').value,
-    label: document.getElementById('labelVariableEdit').value,
-    initial: document.getElementById('initVariableEdit').value
+  let frame = nuevaPlantilla.getFrame(idFrame);
+  let newData;
+  if(frame.getTipo() == "output"){
+    newData = {
+      idVar: idVar,
+      name: document.getElementById('nombreVariableEditO').value,
+      format: document.getElementById('formatoVariableEditO').value,
+      label: document.getElementById('labelVariableEditO').value,
+      initial: document.getElementById('initVariableEditO').value
+    }
   }
+  else{ //Input frame
+    newData = {
+      idVar: idVar,
+      name: document.getElementById('nombreVariableEdit').value,
+      format: document.getElementById('formatoVariableEdit').value,
+      label: document.getElementById('labelVariableEdit').value,
+      initial: document.getElementById('initVariableEdit').value
+    }
+  }
+  // QUITAR
   if(newData.label == "")
     newData.label = newData.name;
+  // QUITAR
   let antiguoName= infoVar.name;
   validation.validateEditVar(idFrame,infoVar, newData, function(message) { 
     $('.errorEditVar').empty();
     if ("Ok" === message) {
       nuevaPlantilla.getFrame(idFrame).editVar(newData);
       newData = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
-      createEditPanel(newData.id);
       cargarFrame(idFrame);
+      if(frame.getTipo() == "output"){
+        createEditPanelOutput(newData.id);
+      }
+      else{
+        createEditPanel(newData.id);
+      }
     }
     else {
       $('.errorEditVar').append(message);
@@ -630,16 +660,15 @@ function editarVariable(idVar){
 }
 function modificarFrame(idFrame){
   let e = document.getElementById("etipoFrame");
-  let tipo= e.options[e.selectedIndex].value;
   let newData = {
     name: document.getElementById('eNombreFrame').value,
-    titulo: document.getElementById('etituloFrame').value,
-    tipo: tipo
+    titulo: document.getElementById('etituloFrame').value
   }
   let frameInfoOld = nuevaPlantilla.getFrame(idFrame);
   validation.validateEditFrame(frameInfoOld, newData, function(message) { 
     $('.errorFrame').empty();
     if ("Ok" === message) {
+      newData.tipo = frameInfoOld.getTipo();
       nuevaPlantilla.editFrame(idFrame, newData);
       cargarFrame(idFrame);
       $('#nombreFrame').val("");
