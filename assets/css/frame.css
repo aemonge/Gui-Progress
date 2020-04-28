@@ -223,9 +223,6 @@ hr {
 .mb-100{
     margin-bottom:100px;
 }
-.services {
-	background-color: #FBFBFB;
-}
 .single-service {
 	position: relative;
 	text-align: center;
@@ -344,16 +341,27 @@ legend {
 
 #sortable { 
   list-style-type: none; 
-  width: 100%; 
+  width: 900px; 
+  height: auto;
+  padding: 3%;
 }
-#sortable li { 
-  width: 100%; 
-  margin: 0 3px 3px 3px; 
-  padding: 0.4em; 
-  padding-left: 1.5em;  
+#sortable li{
+  margin: 1%;
 }
-#outputVars{
-  background-color: red;
+.nav {
+  list-style-type: none;
+  padding: 1%;
+  font-family: 'Courier New', Courier, monospace;
 }
 
+.nav li {
+  display: inline-block;
+  height: 50px;
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  margin: 0%;
+}
+.label {
+  padding-left: 10px;
+}
 /* END OUTPUT FRAME */

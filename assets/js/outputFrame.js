@@ -27,7 +27,7 @@ function addVisualVarOutput(infoVar){
 
 function createVisualOutput(infoVar){
   //Creamos un list con los datos de la variable en el ul
-  $("#sortable").append('<li id = "' + infoVar["id"] + '" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"><a href="#" onclick="createEditPanelOutput('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"></span>' + infoVar["name"] + ' </a></li>');
+  $("#sortable").append('<li id = "' + infoVar["id"] + '" class="list-group-item"><i class="fas fa-sort"></i><a href="#" onclick="createEditPanelOutput('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'">' + infoVar["name"] + ' </a></li>');
 }
 function createEditPanelOutput(idVar){
   let idFrame = $("#frames option:selected").attr('value');

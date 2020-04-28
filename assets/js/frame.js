@@ -475,12 +475,12 @@ function cargarFrame(idFrame){
       $('#outputFrame').hide();
       $('.inputFrame').show();
       $('.editEnabled').show();
-      $('#tituloFrameActual').empty();
-      $('#tituloFrameActual').append(frame.title);
       cargarPanelEdicionFrame(idFrame);
       cargarPanelVar(idFrame);
     }
     $('.frameSelected').show();
+    $('.tituloFrameActual').empty();
+    $('.tituloFrameActual').append(frame.title);
   }
 }
 function cambiarVista(){
