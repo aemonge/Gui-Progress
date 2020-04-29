@@ -73,7 +73,7 @@ interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector
     //accept: '#yes-drop',
     // Require a 75% element overlap for a drop to be possible
-    overlap: 1,
+    overlap: 0.95,
   
     // listen for drop related events:
   
@@ -151,7 +151,7 @@ interact('.dropzone').dropzone({
         //let key= objcln.getAttribute("key")
         //variable=nuevaPlantilla.getVariableByKey(idFrame,key);
         variable.setMovido();      
-        variable.setPosition(x1,y1);
+        //variable.setPosition(x1,y1);
         
         objeto=document.getElementById(varid);
         posx=x1;
@@ -159,7 +159,7 @@ interact('.dropzone').dropzone({
       }else{       
         let key= objeto.getAttribute("key")
         variable=nuevaPlantilla.getVariableByKey(idFrame,key);
-        variable.setPosition(posx,posy);
+        //variable.setPosition(posx,posy);
         //console.log(variable);
       }
       //calculo columna y fila
@@ -168,11 +168,22 @@ interact('.dropzone').dropzone({
       var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/24);
       console.log('fila:',fil,'col:',col);
       variable.setFilaCol(fil,col);
-      console.log(variable);
-      createEditPanel(variable.id);
 
-      
-      
+
+      let datx=(col*9+zone.offsetLeft)-objeto.offsetLeft;
+      let daty=(fil*24+zone.offsetTop)-objeto.offsetTop;
+      objeto.setAttribute('data-x', datx);
+      objeto.setAttribute('data-y', daty);
+          // translate the element
+      objeto.style.webkitTransform =
+      objeto.style.transform =
+        'translate(' + datx + 'px, ' + daty + 'px)'
+      posx=datx;
+      posy=daty;
+      variable.setPosition(posx,posy);
+
+      console.log(variable);
+      createEditPanel(variable.id); 
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
