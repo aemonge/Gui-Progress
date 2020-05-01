@@ -4,11 +4,10 @@ return {dataFrame:{title:final, name:name},lines: lines}
 
 DefineFrame = "define frame"
 
-lines=identificador:Id opciones:Opcion* __{
+lines=identificador:Id opciones:Opcion* _{
   return {id: identificador, opciones: opciones}
   }
-
-Id = !ReservedWord ("_" / [a-zA-Z0-9] / "-")+ {
+Id = !(ReservedWord __) ("_" / [a-zA-Z0-9] / "-")+ {
 return text()
 }
 ReservedWord = "with" / "define" / "label" / "at" / "row" / "col" / "title"
@@ -36,10 +35,13 @@ LiteralCadena = "\"" texto:([^\"]*) "\"" {
 return texto.join("")
 }
 
-
-FinalFrame= "with side-labels title" __ t:LiteralCadena _ {
+FinalFrame= "with" _ s:OpcionSideLabels? _ t:OpcionTitle?_ {
 return t
 }
+OpcionTitle = "title" __ value:LiteralCadena {
+return value
+}
+OpcionSideLabels = "side-labels"
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 

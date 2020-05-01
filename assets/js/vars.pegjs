@@ -7,7 +7,7 @@ noUndo  = "no-undo"
 line = v:var _ opciones:Opcion+ _{
   return {name: v, opciones: opciones}
   }
-var = !reservedWords ("_" / [a-zA-Z0-9] / "-")*  {
+var = !(reservedWords __) ("_" / [a-zA-Z0-9] / "-")*  {
 return text()
 }
 reservedWords = "field" / defType / "temp-table" / noUndo / "as " / "init " / "format "

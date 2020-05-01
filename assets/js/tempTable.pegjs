@@ -13,7 +13,7 @@ line
   }
 
 field = "field" / "fields"
-var = !reservedWords ("_" / [a-zA-Z0-9] / "-")*  {
+var = !(reservedWords __) ("_" / [a-zA-Z0-9] / "-")*  {
 return text()
 }
 

@@ -518,12 +518,26 @@ function peg$parse(input, options) {
   }
 
   function peg$parsevar() {
-    var s0, s1, s2, s3;
+    var s0, s1, s2, s3, s4;
 
     s0 = peg$currPos;
     s1 = peg$currPos;
     peg$silentFails++;
-    s2 = peg$parsereservedWords();
+    s2 = peg$currPos;
+    s3 = peg$parsereservedWords();
+    if (s3 !== peg$FAILED) {
+      s4 = peg$parse__();
+      if (s4 !== peg$FAILED) {
+        s3 = [s3, s4];
+        s2 = s3;
+      } else {
+        peg$currPos = s2;
+        s2 = peg$FAILED;
+      }
+    } else {
+      peg$currPos = s2;
+      s2 = peg$FAILED;
+    }
     peg$silentFails--;
     if (s2 === peg$FAILED) {
       s1 = void 0;

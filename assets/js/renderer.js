@@ -38,7 +38,7 @@ function crearPlantilla(tablas, frames, vars, fileName){
   $('#designer').show();
   $('.headerOptions').show();
   $("#title").empty();
-  if(tablas == undefined | frames == undefined){
+  if(frames == undefined){
     nuevaPlantilla = new classProgress.Progress();
   }
   else{
@@ -49,11 +49,11 @@ function crearPlantilla(tablas, frames, vars, fileName){
   $("#title").append(nuevaPlantilla.getFileName());
 }
 function createFrameAndVars(tablas, frames, vars){
-  console.log(tablas,frames,vars);
+  console.log("tablas ",tablas,"frames ",frames,"vars ",vars);
   let key = frames.entries().next().value[0]; 
   let value   = frames.entries().next().value[1];
-  let title = 1;
-  if(value['title'] != "")
+  let title = "";
+  if(value['title'] !== null)
     title = value['title'];
   let idFrame = nuevaPlantilla.addFrame(key,title,value['type']);
 
@@ -63,13 +63,13 @@ function createFrameAndVars(tablas, frames, vars){
   $('#frames option[value="'+idFrame+'"]').attr("selected",true);
   for (var [clave, valor] of frames) {
     if(clave != key){ //Cargar nuevo frame
-      if(value['title'] != "")
-      title = value['title'];
+      if(valor['title'] !== null)
+        title = valor['title'];
     //COMPROBAR QUE NO HAY OTRO FRAME QUE SE LLAME IGUAL///
     let nombreFrame=false;
     nombreFrame=validarNombreFrame(clave);
     if(nombreFrame==false){
-      idFrame = nuevaPlantilla.addFrame(clave,title,value['type']);
+      idFrame = nuevaPlantilla.addFrame(clave,title,valor['type']);
     }else{
       alert("Hay un Frame que se llama igual a "+clave);
       break;
@@ -79,8 +79,9 @@ function createFrameAndVars(tablas, frames, vars){
       $('#frames option[value="'+idFrame+'"]').attr("selected",true);
       key = clave;
     }
+ 
     //cargamos variables del frame en el que nos encontramos
-    if(value['type'] == "output"){
+    if(valor['type'] == 1){ // output frame
       let varInfo={
         name:"",
         type: "",
@@ -88,7 +89,6 @@ function createFrameAndVars(tablas, frames, vars){
         initial: "",
         format: "",
         id:"",
-        movido:""
       };
       //Rellenamos label, row y col de map frames
       valor.lines.forEach(line =>{
@@ -105,12 +105,6 @@ function createFrameAndVars(tablas, frames, vars){
         line.opciones.forEach(opcion =>{
           if(opcion.type == "label")
             varInfo.label = opcion.value;
-          if(opcion.type == "row")
-            varInfo.row = opcion.value;
-          if(opcion.type == "colum")
-            varInfo.col = opcion.value;
-          if(varInfo.col != 0 || varInfo.row !=0)
-            varInfo.movido=1;
         });
         // Rellenamos tipo, init y format del map tabla
         tablas.get(clave).forEach(variable =>{
@@ -124,13 +118,11 @@ function createFrameAndVars(tablas, frames, vars){
             });
           }
         });
-        let idVar = nuevaPlantilla.addVartoFrameRead(idFrame,varInfo);
+        let idVar = nuevaPlantilla.addVartoOutputFrame(idFrame,varInfo);
         varInfo.id=idVar;
-        let obj=nuevaPlantilla.getVariableByKey(idFrame,idVar);
-        varInfo.movido=obj.movido;
       });
     }
-    else if(value['type'] == "input"){
+    else if(valor['type'] == 0){ // input frame
       //Rellenamos label, row y col de map frames
       valor.lines.forEach(line =>{
         let varInfo={

@@ -20,8 +20,14 @@ class Progress{
     }
     addVartoFrameRead(idFrame,varInfo){
         let frame = this.frames.get(parseInt(idFrame));
-        console.log("variable que me llega: ", varInfo);
+        /* console.log("variable que me llega: ", varInfo); */
         return frame.addVariableRead(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial'],varInfo['col'],varInfo['row'],varInfo['movido']);
+    }
+    addVartoOutputFrame(idFrame,varInfo){
+        let frame = this.frames.get(parseInt(idFrame));
+        let id = frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial']);
+        frame.addVariableOutput(id);
+        return id;
     }
     getFrames(){
         return this.frames;
