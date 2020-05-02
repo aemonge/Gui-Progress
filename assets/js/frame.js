@@ -13,6 +13,10 @@ var vista;
 let posx=0;
 let posy=0;
 let oldx=0;
+let objetoMover;
+let filasdis=24;
+let columnasdis=9;
+
 
 /* The dragging code for '.draggable' from the demo above
  * applies to this demo as well so it doesn't have to be repeated. */
@@ -67,6 +71,92 @@ function dragMoveListener (event) {
 
 // this is used later in the resizing and gesture demos
 window.dragMoveListener = dragMoveListener
+
+//*********************************************/
+//INICIO CONTROLAMOS LAS FLECHAS
+//*********************************************/
+/*$(document).ready(function() {
+  $('.drag-drop').onkeydown = detectKey;
+});*/
+
+document.onkeydown = detectKey;
+//document.addEventListener('onkeydown', detectKey);
+
+function detectKey(e) {
+  let idFrame = $("#frames option:selected").attr('value');
+  let objeto= nuevaPlantilla.getFrame(idFrame).getVariable($('#'+objetoMover.id).attr('key'));
+  let tipo=nuevaPlantilla.getFrame(idFrame).getTipo();
+  e = e || window.event;
+  var target = e.target || e.srcElement;
+  var targetTagName = (target.nodeType == 1) ? target.nodeName.toUpperCase() : "";
+  let x=objeto.getPosition()['x'];
+  let y=objeto.getPosition()['y'];
+  posx=x;
+  posy=y;
+  let obj= document.getElementById(objeto["name"]);
+  if(objeto["movido"]==1 && tipo == "input"){
+
+    if ( !/INPUT|SELECT|TEXTAREA/.test(targetTagName) ) { 
+      if (e.keyCode == '38') {
+          // up arrow
+          let daty = y - filasdis;
+          posy=daty;
+          if(daty>=document.getElementById('inner-dropzone').offsetTop){
+            calcularPosicionesFlechas(objeto, obj,x,daty);
+          }      
+      }
+      else if (e.keyCode == '40') {
+          // down arrow
+          let daty = y + filasdis;
+          posy=daty;
+          if(daty+obj.offsetHeight<document.getElementById('inner-dropzone').offsetTop+document.getElementById('inner-dropzone').offsetHeight){
+            calcularPosicionesFlechas(objeto, obj,x,daty);
+          }
+      }
+      else if (e.keyCode == '37') {
+         // left arrow
+          let datx = x - columnasdis;
+          posx=datx;
+          if(datx>document.getElementById('inner-dropzone').offsetLeft){
+            calcularPosicionesFlechas(objeto, obj,datx,y);
+          }  
+      }
+      else if (e.keyCode == '39') {
+         // right arrow
+          let datx = x + columnasdis;
+          posx=datx;
+          if(datx+obj.offsetWidth<document.getElementById('inner-dropzone').offsetLeft+document.getElementById('inner-dropzone').offsetWidth){
+            calcularPosicionesFlechas(objeto, obj,datx,y);
+          }
+      }
+    }
+
+  }
+
+  function calcularPosicionesFlechas(objeto, objetodiv, datx, daty){
+    calcularFilaColumna(objetodiv,objeto);
+    objetodiv.setAttribute('data-y', daty);
+    objetodiv.setAttribute('data-x', datx);
+    objetodiv.style.webkitTransform =
+    objetodiv.style.transform =
+      'translate(' + datx + 'px, ' + daty + 'px)'
+    objeto.setPosition(datx,daty);
+  }
+
+  /*$('#'+objetoMover.id).setAttribute('data-x', datx);
+          objeto.setAttribute('data-y', daty);
+          // translate the element
+          objeto.style.webkitTransform =
+          objeto.style.transform =
+            'translate(' + datx + 'px, ' + daty + 'px)'*/
+  
+  
+}
+
+//*********************************************/
+//FIN DE ONTROLAMOS LAS FLECHAS
+//*********************************************/
+
 
  // enable draggables to be dropped into this
 interact('.dropzone').dropzone({
@@ -126,7 +216,6 @@ interact('.dropzone').dropzone({
         posy=parseInt(objeto.getAttribute('data-y'));
         console.log('zona iz:', zone.offsetLeft,' zona top:',zone.offsetTop);
 
-
         // x=objeto.offsetLeft+posx
         //                          -> dataX=posx+objeto.offsetLeft-clone.offsetLeft
         // x=clone.offsetLeft+dataX
@@ -163,15 +252,15 @@ interact('.dropzone').dropzone({
         //console.log(variable);
       }
       //calculo columna y fila
-      
-      var col=Math.round((objeto.offsetLeft+posx-zone.offsetLeft)/9);
-      var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/24);
+      //calcularFilaColumna(objeto, variable);
+      var col=Math.round((objeto.offsetLeft+posx-zone.offsetLeft)/columnasdis);
+      var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/filasdis);
       console.log('fila:',fil,'col:',col);
       variable.setFilaCol(fil,col);
 
 
-      let datx=(col*9+zone.offsetLeft)-objeto.offsetLeft;
-      let daty=(fil*24+zone.offsetTop)-objeto.offsetTop;
+      let datx=(col*columnasdis+zone.offsetLeft)-objeto.offsetLeft;
+      let daty=(fil*filasdis+zone.offsetTop)-objeto.offsetTop;
       objeto.setAttribute('data-x', datx);
       objeto.setAttribute('data-y', daty);
           // translate the element
@@ -206,7 +295,7 @@ interact('.drag-drop')
       }),
       interact.modifiers.snap({
         targets: [
-          interact.createSnapGrid({ x: 9, y: 24 })
+          interact.createSnapGrid({ x: columnasdis, y: filasdis })
         ],
         range: Infinity,
         relativePoints: [ { x: 0, y: 0 } ]
@@ -232,6 +321,7 @@ interact('.drag-drop')
       console.log('alto zona: '+zone.offsetHeight);
       let posright=posx+objeto.offsetWidth+objeto.offsetLeft;
       let posbottom=posy+objeto.offsetHeight+objeto.offsetTop;
+      
       if(variable['movido']==0){
         
         //Controlamos las X y las Y
@@ -256,8 +346,8 @@ interact('.drag-drop')
           //objeto.setAttribute('data-x', 0)
           //objeto.setAttribute('data-y', 0)
 
-          let datx=(variable["columna"]*9+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(variable["name"]).offsetLeft;
-          let daty=(variable["fila"]*24+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(variable["name"]).offsetTop;
+          let datx=(variable["columna"]*columnasdis+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(variable["name"]).offsetLeft;
+          let daty=(variable["fila"]*filasdis+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(variable["name"]).offsetTop;
           objeto.setAttribute('data-x', datx);
           objeto.setAttribute('data-y', daty);
           // translate the element
@@ -268,10 +358,17 @@ interact('.drag-drop')
         }
       }
 
-
+   
     }
   })
-  
+function calcularFilaColumna(objeto, variable){
+  let zone=document.getElementById('inner-dropzone');
+  var col=Math.round((objeto.offsetLeft+posx-zone.offsetLeft)/columnasdis);
+  var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/filasdis);
+  console.log('fila:',fil,'col:',col);
+  variable.setFilaCol(fil,col);
+}
+
 btnAnyadirFrame.addEventListener('click',function(){
   let e = document.getElementById("tipoFrame");
   var tipo= e.options[e.selectedIndex].value;
@@ -545,9 +642,9 @@ function createVisualDraggable(infoVar, vista){
       if(infoVar["format"]!=null && infoVar["format"]!=""){
         tam=infoVar["format"];
       }  
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'"readonly></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'" readonly></a></div>';
     }else if(tipo == "decimal" || tipo=="date"){
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8"readonly></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8" readonly></a></div>';
     }else if(tipo=="logical"){
       if(infoVar["format"] == "true"){
         stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
@@ -565,16 +662,18 @@ function createVisualDraggable(infoVar, vista){
   
   if(infoVar["movido"]==1){
     $("#movend").append(stringDiv);
-    
+    let idFrame = $("#frames option:selected").attr('value');
+    let obj= nuevaPlantilla.getFrame(idFrame).getVariable($('#'+infoVar["name"]).attr('key'));
     var zona=document.getElementById('inner-dropzone');
     var objeto=document.getElementById(infoVar["name"]);
     console.log("left: ",objeto.offsetLeft );
     console.log("top: ",objeto.offsetTop );
     if(infoVar["fila"]!=undefined && infoVar["columna"]!=undefined){
-      let datx=(infoVar["columna"]*9+zona.offsetLeft)-objeto.offsetLeft;
-      let daty=(infoVar["fila"]*24+zona.offsetTop)-objeto.offsetTop;
+      let datx=(infoVar["columna"]*columnasdis+zona.offsetLeft)-objeto.offsetLeft;
+      let daty=(infoVar["fila"]*filasdis+zona.offsetTop)-objeto.offsetTop;
       objeto.setAttribute('data-x', datx);
       objeto.setAttribute('data-y', daty);
+      obj.setPosition(datx,daty);
       // translate the element
       document.getElementById(infoVar["name"]).style.webkitTransform =
       document.getElementById(infoVar["name"]).style.transform =
@@ -582,9 +681,21 @@ function createVisualDraggable(infoVar, vista){
     }
 
   }else{
-    $("#varsMov").append(stringDiv);
+    $("#varsMov").append(stringDiv);  
   }
+  /*
+  document.getElementById(infoVar["name"]).onkeydown = detectKey; 
+  document.getElementById(infoVar["name"]).onfocus = function () {
+    document.getElementById(infoVar["name"]).addClass('classVarSelected');
+    alert('coge foco');
+  };
+  document.getElementById(infoVar["name"]).onblur = function () {
+    document.getElementById(infoVar["name"]).removeClass('classVarSelected');
+    alert('pierde foco');
+  };
+  console.log("tipo de infoVar "+typeof(infoVar));*/
 }
+
 function createEditPanel(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
@@ -622,7 +733,13 @@ function createEditPanel(idVar){
   //buttons
   $('#editVarBtn').append(' <a href="#" onclick="editarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
   $('#editVarBtn').append(' <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar </h6></a>');
+  //Le doy el foco a mi classVar para moverla con el teclado
+  objetoMover=document.getElementById(infoVar["name"]);
+ 
+  
+
 }
+
 function editarVariable(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);

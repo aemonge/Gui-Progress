@@ -39,9 +39,9 @@ class Variable{
         return this.initial;
     }
     getPosition(){
-        position={
-            x:this.posx,
-            y:this.posy
+        let position={
+            'x':this.posx,
+            'y':this.posy
         }
         return position;
     }
@@ -54,9 +54,9 @@ class Variable{
         this.columna=y;
     }
     getFilaCol(){
-        position={
-            x:this.fila,
-            y:this.columna
+        let position={
+            'x':this.fila,
+            'y':this.columna
         }
         return position;
     }
@@ -78,6 +78,7 @@ class Variable{
     setMovido(){
         this.movido=1;
     }
+    
 }
 module.exports = {
     Variable:Variable

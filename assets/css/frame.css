@@ -365,3 +365,7 @@ legend {
   padding-left: 10px;
 }
 /* END OUTPUT FRAME */
+
+.classVarSelected{
+  border: 1px solid red;
+}
