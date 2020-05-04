@@ -167,7 +167,8 @@ function createFrameAndVars(tablas, frames, vars){
   }
 }
 function abrirPlantilla(){
-  var app = require('electron').remote; 
+  //var app = require('electron').remote; 
+  var app=remote;
   var dialog = app.dialog;
   let dia = dialog.showOpenDialog();
   var fs = require('fs');

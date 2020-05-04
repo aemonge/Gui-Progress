@@ -13,7 +13,7 @@ var vista;
 let posx=0;
 let posy=0;
 let oldx=0;
-let objetoMover;
+let objetoMover=null;
 let filasdis=24;
 let columnasdis=9;
 
