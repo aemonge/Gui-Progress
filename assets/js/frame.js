@@ -75,7 +75,7 @@ window.dragMoveListener = dragMoveListener
 //*********************************************/
 //INICIO CONTROLAMOS LAS FLECHAS
 //*********************************************/
-/*$(document).ready(function() {
+/*$(documetn).ready(function() {
   $('.drag-drop').onkeydown = detectKey;
 });*/
 

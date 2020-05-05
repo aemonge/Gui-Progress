@@ -1,10 +1,12 @@
 'use strict'
 
 //import Progress from './classProgress.js'
-window.$ = window.jQuery = require('jquery')
+//window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
 window.frames["../../src/frame.html"]
+//require('jquery-ui-dist')
+
 
 const electron = require('electron')
 const path = require('path')
