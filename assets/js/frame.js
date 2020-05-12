@@ -475,7 +475,6 @@ $(document).on('change', '#tipoVar', function(event) {
   let tipo = $("#tipoVar option:selected").attr('value');
   //siempre nos cargamos el formato y el init y lo cargamos como debamos en función del tipo
   $('#lugarFormat').empty();
-  $('#lugarFormatYear').empty();
   $('#lugarInit').empty();
   if(tipo == "integer" || tipo == "decimal"){// ponemos inicio = 0, dejamos el formato vacío por el momento
     $('#lugarFormat').append('<label>Formato:</label>');
@@ -490,17 +489,38 @@ $(document).on('change', '#tipoVar', function(event) {
     $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="abcdefg1">');
   }
   else if(tipo=="date"){ // Añadimos opción de year en 2 o 4 digitos y escribimos todos los formatos en un select
-    $('#lugarFormatYear').append('<label>Formato año:</label>');
-    $('#lugarFormatYear').append('<select id="fYear" class="form-control" name="selectAño">\
-                                  <option value="2Digitos">2 dígitos (yy)</option>\
-                                  <option value="4Digitos">4 dígitos (yyyy)</option></select>');
     $('#lugarFormat').append('<label>Formato:</label>');
     $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
-                              <option value="mm/dd/yy">mm/dd/yy</option>\
-                              <option value="dd/mm/yy">dd/mm/yy</option>\
-                              <option value="yy/mm/dd">yy/mm/dd</option></select>');
+                              <option value="mm/dd/y">mm/dd/yy</option>\
+                              <option value="dd/mm/y">dd/mm/yy</option>\
+                              <option value="y/mm/dd">yy/mm/dd</option></select>');
     $('#lugarInit').append('<label>Valor Inicial:</label>');
-    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
+    
+    
+    $('#lugarInit').append('<p><input id="valorInicial" type="text" class="form-control date"></p>');
+    $( ".accordion" ).accordion();
+    $.datepicker.regional['es'] = {
+      closeText: 'Cerrar',
+      prevText: '< Ant',
+      nextText: 'Sig >',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+      dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+      weekHeader: 'Sm',
+      dateFormat: $("#lugarFormat option:selected").attr('value'),
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: ''
+      };
+      $.datepicker.setDefaults($.datepicker.regional['es']);
+    $( "#valorInicial" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
   }
   else if(tipo=="logical"){
     $('#lugarInit').append('<label>Valor Inicial:</label>');
@@ -509,29 +529,31 @@ $(document).on('change', '#tipoVar', function(event) {
                             <option value="true">Seleccionado (True)</option></select>');
   }
 });
-//AL CAMBIAR DE FORMATO DE AÑO AJUSTAMOS EL FORMATO Y EL INIT
-$(document).on('change', '#fYear', function(event) {
-  let format = $("#fYear option:selected").attr('value');
-  $('#lugarFormat').empty();
-  $('#lugarInit').empty();
-  if(format =="2Digitos"){
-    $('#lugarFormat').append('<label>Formato:</label>');
-    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
-                              <option value="mm/dd/yy">mm/dd/yy</option>\
-                              <option value="dd/mm/yy">dd/mm/yy</option>\
-                              <option value="yy/mm/dd">yy/mm/dd</option></select>');
-    $('#lugarInit').append('<label>Valor Inicial:</label>');
-    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
-  }
-  else if(format =="4Digitos"){
-    $('#lugarFormat').append('<label>Formato:</label>');
-    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
-                              <option value="mm/dd/yyyy">mm/dd/yyyy</option>\
-                              <option value="dd/mm/yyyy">dd/mm/yyyy</option>\
-                              <option value="yyyy/mm/dd">yyyy/mm/dd</option></select>');
-    $('#lugarInit').append('<label>Valor Inicial:</label>');
-    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control"  placeholder=" / / ">');
-  }
+$(document).on('change', '#lugarFormat', function(event) {
+  let format = $("#lugarFormat option:selected").attr('value');
+  $('#valorInicial').val("");
+  $.datepicker.regional['es'] = {
+    closeText: 'Cerrar',
+    prevText: '< Ant',
+    nextText: 'Sig >',
+    currentText: 'Hoy',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+    weekHeader: 'Sm',
+    dateFormat: $("#lugarFormat option:selected").attr('value'),
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+  $( "#valorInicial" ).datepicker({
+    changeMonth: true,
+    changeYear: true
+  });
 });
 function borrarFrame(id){
   nuevaPlantilla.deleteFrame(id);

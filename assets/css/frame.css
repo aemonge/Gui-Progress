@@ -80,7 +80,8 @@ hr {
   border-left: 2px solid black;
   height: 100%;
 }
-#vars{
+#vars, #varsOutput{
+  padding-top: 30px;
   width:90%;
 }
 
@@ -343,10 +344,16 @@ legend {
   list-style-type: none; 
   width: 900px; 
   height: auto;
-  padding: 3%;
+  padding-bottom: 3%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 30px;
 }
 #sortable li{
-  margin: 1%;
+  margin-bottom: 1%;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 0%;
 }
 .nav {
   list-style-type: none;
@@ -361,11 +368,18 @@ legend {
   font-family: 'Courier New', Courier, monospace;
   margin: 0%;
 }
-.label {
-  /*padding-left: 10px;*/
+#sortable .label {
+  padding-left: 10px;
 }
 /* END OUTPUT FRAME */
 
 .classVarSelected{
   border: 1px solid red;
+}
+#ui-datepicker-div{
+  position: sticky;
+  top: 0;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border: 2px solid #ced4da;
 }
