@@ -11,7 +11,7 @@ class Variable{
         this.posx=0;
         this.posy=0;
         this.fila=0;
-        this.columna=0;
+        this.columna=null;
         this.movido=0;
     }
     editData(newData){

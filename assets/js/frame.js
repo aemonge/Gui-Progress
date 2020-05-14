@@ -721,11 +721,15 @@ function createVisualDraggable(infoVar, vista){
 function createEditPanel(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+  let columna = 0;
+  if(infoVar["columna"] !=null && infoVar["label"].length!=0){
+    columna=parseInt(infoVar["columna"])+infoVar["label"].length;
+  }
   $("#vars").empty();  
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header text-center">\
       <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-      <h6 class="card-title text-dark">Type: '+infoVar["type"]+' Position: row '+infoVar["fila"]+' col '+infoVar["columna"]+'</h5>\
+      <h6 class="card-title text-dark">Type: '+infoVar["type"]+' Position: row '+infoVar["fila"]+' col '+columna+'</h5>\
     </div>\
       <div class="card-body text-left">\
       <table class="table table-hover">\

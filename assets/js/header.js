@@ -66,7 +66,7 @@ function generarFrames(){
         
         if(elemF.getTipo() == "input") {
             elemF.getVariables().forEach(function (elemV, indexV, array) {
-                frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel()  +'" at row '+elemV.getFila()+' column '+elemV.getColumna()+' \n';
+                frame += "   " + elemV.getNombre() +' label "' + elemV.getLabel()  +'" at row '+elemV.getFila()+' column '+(elemV.getColumna()+elemV.getLabel().length).toString()+' \n';
             });
             frame += "with side-labels";
         }
