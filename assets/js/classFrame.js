@@ -85,7 +85,7 @@ class Frame {
     }
     deleteVariable(idVar){
         this.vars.delete(parseInt(idVar));
-        if(this.type = "output"){
+        if(this.type == "output"){
             this.varsOutFrame.splice(this.varsOutFrame.indexOf(idVar.toString()),1);
         }
     }

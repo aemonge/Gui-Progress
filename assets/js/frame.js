@@ -416,13 +416,40 @@ $(document).on('change', '#frames', function(event) {
 btnAnyadirVar.addEventListener('click',function(){
   let tipo = $("#tipoVar option:selected").attr('value');
   let varInfo;
-  if(tipo == "integer" || tipo == "decimal" || tipo=="character"){
+  if(tipo == "integer"){
+    let ini = parseInt(document.getElementById('valorInicial').value);
+    if(isNaN(ini))
+      ini = 0;
+    varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: ini.toFixed(),
+      format: "->,>>>,>>9"
+    }
+  }
+  else if(tipo == "decimal"){
+    let parteDecimal = parseInt(document.getElementById('formatoDecimal').value);
+    let ini = parseFloat(document.getElementById('valorInicial').value);
+    if(parteDecimal <= 0 || isNaN(parteDecimal))
+      parteDecimal = 1;
+    if(isNaN(ini))
+      ini = 0;
+    varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: ini.toFixed(parteDecimal),
+      format: getFormat(parteDecimal)
+    }
+  }
+  else if(tipo=="character"){
     varInfo = {
       name: document.getElementById('nombreVariable').value,
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
-      format:document.getElementById('formato').value
+      format: '"x(' + document.getElementById('formato').value + ')"'
     }
   }
   else if(tipo=="logical"){
@@ -470,6 +497,18 @@ btnAnyadirVar.addEventListener('click',function(){
     }
   })
 })
+function getFormat(parteDecimal){
+  // 9<<<<<<<<
+  let format = "->,>>>,>>9."
+  for(let i = 0; i < parteDecimal; i++){
+    format += "9";
+  }
+  for (let j = parteDecimal; j < 10; j++){
+    format +="<";
+  }
+  
+  return format;
+}
 //AL CAMBIAR DE FORMATO DE VAR AJUSTAMOS EL FORMATO Y EL INIT
 $(document).on('change', '#tipoVar', function(event) {
   let tipo = $("#tipoVar option:selected").attr('value');
@@ -477,8 +516,10 @@ $(document).on('change', '#tipoVar', function(event) {
   $('#lugarFormat').empty();
   $('#lugarInit').empty();
   if(tipo == "integer" || tipo == "decimal"){// ponemos inicio = 0, dejamos el formato vacío por el momento
-    $('#lugarFormat').append('<label>Formato:</label>');
-    $('#lugarFormat').append('<input id="formato" type="text" class="form-control">');
+    if(tipo == "decimal"){
+      $('#lugarFormat').append('<label>Parte decimal obligatoria:</label>');
+      $('#lugarFormat').append('<input id="formatoDecimal" type="text" class="form-control" placeholder="1">');
+    }
     $('#lugarInit').append('<label>Valor Inicial:</label>');
     $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="0">');
   }
@@ -517,7 +558,7 @@ $(document).on('change', '#tipoVar', function(event) {
       yearSuffix: ''
       };
       $.datepicker.setDefaults($.datepicker.regional['es']);
-    $( "#valorInicial" ).datepicker({
+    $( ".date" ).datepicker({
       changeMonth: true,
       changeYear: true
     });
@@ -531,7 +572,7 @@ $(document).on('change', '#tipoVar', function(event) {
 });
 $(document).on('change', '#lugarFormat', function(event) {
   let format = $("#lugarFormat option:selected").attr('value');
-  $('#valorInicial').val("");
+  $('.date').val("");
   $.datepicker.regional['es'] = {
     closeText: 'Cerrar',
     prevText: '< Ant',
@@ -550,7 +591,7 @@ $(document).on('change', '#lugarFormat', function(event) {
     yearSuffix: ''
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
-  $( "#valorInicial" ).datepicker({
+  $( ".date" ).datepicker({
     changeMonth: true,
     changeYear: true
   });
