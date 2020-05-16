@@ -1,7 +1,7 @@
 'use strict'
 
 class Variable{
-    constructor(id,name, type, format, label, initial){
+    constructor(id,name, type, format, label, initial, tam){
         this.id=id;
         this.name=name;
         this.type=type; //0 Integer; 1 Decimal; 2 Logical; 3 Caharacter;
@@ -13,9 +13,11 @@ class Variable{
         this.fila=0;
         this.columna=null;
         this.movido=0;
+        this.tam = tam;
     }
     editData(newData){
         this.name=newData.name;
+        this.type=newData.type;
         this.format=newData.format;
         this.label=newData.label;
         this.initial=newData.initial;
@@ -78,7 +80,9 @@ class Variable{
     setMovido(){
         this.movido=1;
     }
-    
+    getTam(){
+        return this.tam;
+    }
 }
 module.exports = {
     Variable:Variable

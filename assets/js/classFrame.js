@@ -19,8 +19,8 @@ class Frame {
         this.view = "update";
         this.varsOutFrame = new Array(0); //inicializamos array para variables de salida
     }
-    addVariable(name, type, format, label, initial){
-        let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
+    addVariable(name, type, format, label, initial, tam){
+        let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial, tam);
         this.vars.set(this.idVar,newVar);
         this.idVar ++;
         return  this.idVar -1;

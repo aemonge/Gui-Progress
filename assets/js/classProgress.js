@@ -16,7 +16,7 @@ class Progress{
     }
     addVartoFrame(idFrame,varInfo){
         let frame = this.frames.get(parseInt(idFrame));
-        return frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial']);
+        return frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial'], varInfo['tam']);
     }
     addVartoFrameRead(idFrame,varInfo){
         let frame = this.frames.get(parseInt(idFrame));
@@ -25,7 +25,7 @@ class Progress{
     }
     addVartoOutputFrame(idFrame,varInfo){
         let frame = this.frames.get(parseInt(idFrame));
-        let id = frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial']);
+        let id = frame.addVariable(varInfo['name'],varInfo['type'],varInfo['format'],varInfo['label'],varInfo['initial'],0);
         frame.addVariableOutput(id);
         return id;
     }
@@ -50,10 +50,6 @@ class Progress{
     editFrame(idFrame, newData){
         let frame = this.frames.get(parseInt(idFrame));
         frame.editData(newData);
-    }
-    editVar(idFrame,idVar, newData){
-        let frame = this.frames.get(parseInt(idFrame));
-        frame.editVar(newData);
     }
     getVariableByKey(idFrame,keyVar){
         let frame=this.frames.get(parseInt(idFrame));

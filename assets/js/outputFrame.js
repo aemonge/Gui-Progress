@@ -35,27 +35,31 @@ function createEditPanelOutput(idVar){
   $("#varsOutput").empty();  
   $("#varsOutput").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header text-center">\
-      <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-      <h6 class="card-title text-dark">Type: '+infoVar["type"]+' Position: '+nuevaPlantilla.getFrame(idFrame).getPosicionOutput(infoVar["id"])+'</h5>\
+      <h5 class="card-title text-dark"> Variable seleccionada: '+infoVar["name"]+'</h5>\
+      <h6 class="card-title text-dark"> Posición: '+nuevaPlantilla.getFrame(idFrame).getPosicionOutput(infoVar["id"])+'</h5>\
     </div>\
       <div class="card-body text-left">\
-      <table class="table table-hover">\
+      <table class="table">\
         <tbody>\
           <tr>\
             <td>Nombre:</td>\
-            <td><input id="nombreVariableEditO" type="text" class="form-control" value="'+infoVar["name"]+'"></td>\
+            <td>'+infoVar["name"]+'</td>\
+          </tr>\
+          <tr>\
+            <td>Tipo:</td>\
+            <td>'+infoVar["type"]+'</td>\
           </tr>\
           <tr>\
             <td>Formato:</td>\
-            <td><input id="formatoVariableEditO" type="text" class="form-control" value="'+infoVar["format"]+'"></td>\
+            <td>'+infoVar["format"]+'</td>\
           </tr>\
           <tr>\
             <td>Etiqueta:</td>\
-            <td><input id="labelVariableEditO" type="text" class="form-control" value="'+infoVar["label"]+'"></td>\
+            <td>'+infoVar["label"]+'</td>\
           </tr>\
           <tr>\
             <td>Valor inicial:</td>\
-            <td><input id="initVariableEditO" type="text" class="form-control" value="'+infoVar["initial"]+'"></td>\
+            <td>'+infoVar["initial"]+'</td>\
           </tr>\
         </tbody>\
       </table>\
@@ -64,7 +68,8 @@ function createEditPanelOutput(idVar){
   </div>');
   $("#varsOutput").append('<span class="errorEditVar errorMessage"></span>');
   //buttons
-  $('#editVarBtnO').append(' <a href="#" onclick="editarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
+  $('#editVarBtnO').append(' <a data-toggle="modal" data-target="#modalNewVar" href="#" onclick="prepararEditarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
+  //$('#editVarBtnO').append(' <a href="#" onclick="editarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
   $('#editVarBtnO').append(' <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar </h6></a>');
 }
 

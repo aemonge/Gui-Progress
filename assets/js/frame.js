@@ -385,7 +385,7 @@ btnAnyadirFrame.addEventListener('click',function(){
       //seleccionamos frame para mostrar
       $('#frames').append('<option value= "'+idFrame+'">'+frameInfo['nombre']+'</option>');
       $("#frames option:selected").removeAttr("selected");
-      $('#frames option[value="'+idFrame+'"]').attr("selected",true);
+      $('#frames option[value="'+idFrame+'"]').prop("selected",true);
       //cargamos datos del frame
       cargarFrame(idFrame);
       $('#nombreFrame').val("");
@@ -425,7 +425,8 @@ btnAnyadirVar.addEventListener('click',function(){
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: ini.toFixed(),
-      format: "->,>>>,>>9"
+      format: "->,>>>,>>9",
+      tam: Math.max(8,ini.toFixed().toString().length)
     }
   }
   else if(tipo == "decimal"){
@@ -440,17 +441,24 @@ btnAnyadirVar.addEventListener('click',function(){
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: ini.toFixed(parteDecimal),
-      format: getFormat(parteDecimal)
+      format: getFormatDecimal(parteDecimal),
+      tam: Math.max(8,ini.toFixed().toString().length + 1 + ini.toFixed(parteDecimal))
     }
   }
   else if(tipo=="character"){
+    let formatCharacter = document.getElementById('formato').value
+    if(formatCharacter == "" ){
+      formatCharacter = 8
+    }
     varInfo = {
       name: document.getElementById('nombreVariable').value,
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
-      format: '"x(' + document.getElementById('formato').value + ')"'
+      format: 'x(' + formatCharacter + ')',
+      tam: formatCharacter
     }
+    console.log(varInfo.format);
   }
   else if(tipo=="logical"){
     varInfo = {
@@ -458,7 +466,8 @@ btnAnyadirVar.addEventListener('click',function(){
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: $("#fLogical option:selected").attr('value'),
-      format: ""
+      format: "",
+      tam: 8
     }
   }
   else if(tipo=="date"){
@@ -467,7 +476,8 @@ btnAnyadirVar.addEventListener('click',function(){
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
-      format: $("#fDate option:selected").attr('value')
+      format: $("#fDate option:selected").attr('value'),
+      tam: 8
     }
   }
   if(varInfo.label == "")
@@ -497,7 +507,7 @@ btnAnyadirVar.addEventListener('click',function(){
     }
   })
 })
-function getFormat(parteDecimal){
+function getFormatDecimal(parteDecimal){
   // 9<<<<<<<<
   let format = "->,>>>,>>9."
   for(let i = 0; i < parteDecimal; i++){
@@ -508,6 +518,46 @@ function getFormat(parteDecimal){
   }
   
   return format;
+}
+function getFormat(infoVar){
+  let tipo = infoVar["type"];
+  let format;
+  if(tipo == "decimal"){
+    format = infoVar["format"].split(".");
+    let i;
+    for(i = 0; i < format[1].length; i++){
+      if(format[1][i] == "<")
+        break;
+    }
+    format = i.toString();
+  }
+  else if(tipo == "character"){
+    format = infoVar["format"].split("(");
+    format = format[1].split(")");
+    format = format[0];
+  }
+  return format;
+}
+function setFormatEdit(infoVar){
+  let tipo = infoVar["type"];
+  $('#lugarFormat').empty();
+  if(tipo == "character") {
+    $('#lugarFormat').append('<label>Longitud caracter (Format):</label>');
+    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" value="'+ getFormat(infoVar) +'">');
+  }
+  else if (tipo == "decimal"){
+    $('#lugarFormat').append('<label>Parte decimal obligatoria:</label>');
+    $('#lugarFormat').append('<input id="formatoDecimal" type="text" class="form-control" value="'+ getFormat(infoVar) +'">');
+  }
+  else if(tipo == "date"){
+    $('#lugarFormat').append('<label>Formato:</label>');
+    $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
+                              <option value="mm/dd/y">mm/dd/yy</option>\
+                              <option value="dd/mm/y">dd/mm/yy</option>\
+                              <option value="y/mm/dd">yy/mm/dd</option></select>');
+    $('#lugarFormat option:selected').removeAttr("selected");
+    $('#lugarFormat option[value="'+ infoVar["format"] +'"]').prop("selected",true);
+  }
 }
 //AL CAMBIAR DE FORMATO DE VAR AJUSTAMOS EL FORMATO Y EL INIT
 $(document).on('change', '#tipoVar', function(event) {
@@ -525,7 +575,7 @@ $(document).on('change', '#tipoVar', function(event) {
   }
   else if(tipo=="character"){// Dejamos el formato vacío por el momento, por defecto ponemos 8
     $('#lugarFormat').append('<label>Longitud caracter (Format):</label>');
-    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" placeholder="x(8)">');
+    $('#lugarFormat').append('<input id="formato" type="text" class="form-control" placeholder="8">');
     $('#lugarInit').append('<label>Valor Inicial:</label>');
     $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" placeholder="abcdefg1">');
   }
@@ -599,7 +649,7 @@ $(document).on('change', '#lugarFormat', function(event) {
 function borrarFrame(id){
   nuevaPlantilla.deleteFrame(id);
   $('#frames option[value="'+id+'"]').remove();
-  $('#frames option[value="0"]').attr("selected",true);
+  $('#frames option[value="0"]').prop("selected",true);
   $('.editEnabled').hide();
   $('.frameSelected').hide();
   $('.inputFrame').hide();
@@ -697,23 +747,20 @@ function addVisualVar(infoVar, vista){
 
 function createVisualDraggable(infoVar, vista){
   let stringDiv;
-  let tam=8;
+  let tam=infoVar["tam"];
   let tipo = infoVar["type"];
   
   if (vista == "update"){
     if(tipo == "character" || tipo=="integer"){    
-      if(infoVar["format"]!=null && infoVar["format"]!=""){
-        tam=infoVar["format"];
-      }  
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'" readonly></a></div>';
     }else if(tipo == "decimal" || tipo=="date"){
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8" readonly></a></div>';
     }else if(tipo=="logical"){
-      if(infoVar["format"] == "true"){
-        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left" type="checkbox" checked="checked"></a></div>';
+      if(infoVar["initial"] == "true"){
+        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label> <i class="far fa-check-square"></i></a></div>';
       }
       else{
-        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label><input class ="inputVar field left"  type="checkbox"></a></div>';
+        stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label> <i class="far fa-square"></i></a></div>';
       }
     }
   }
@@ -769,27 +816,31 @@ function createEditPanel(idVar){
   $("#vars").empty();  
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header text-center">\
-      <h5 class="card-title text-dark"> <i class="far fa-edit"></i>'+infoVar["name"]+'</h5>\
-      <h6 class="card-title text-dark">Type: '+infoVar["type"]+' Position: row '+infoVar["fila"]+' col '+columna+'</h5>\
+      <h5 class="card-title text-dark"> Variable seleccionada: '+infoVar["name"]+'</h5>\
+      <h6 class="card-title text-dark"> Posición: Fila '+infoVar["fila"]+' Columna '+columna+'</h5>\
     </div>\
       <div class="card-body text-left">\
-      <table class="table table-hover">\
+      <table class="table">\
         <tbody>\
           <tr>\
           <td>Nombre:</td>\
-          <td><input id="nombreVariableEdit" type="text" class="form-control" value="'+infoVar["name"]+'"></td>\
+          <td>'+infoVar["name"]+'</td>\
+        </tr>\
+        <tr>\
+          <td>Tipo:</td>\
+          <td>'+infoVar["type"]+'</td>\
         </tr>\
           <tr>\
           <td>Formato:</td>\
-          <td><input id="formatoVariableEdit" type="text" class="form-control" value="'+infoVar["format"]+'"></td>\
+          <td>'+infoVar["format"]+'</td>\
         </tr>\
         <tr>\
           <td>Etiqueta:</td>\
-          <td><input id="labelVariableEdit" type="text" class="form-control" value="'+infoVar["label"]+'"></td>\
+          <td>'+infoVar["label"]+'</td>\
           </tr>\
           <tr>\
           <td>Valor inicial:</td>\
-          <td><input id="initVariableEdit" type="text" class="form-control" value="'+infoVar["initial"]+'"></td>\
+          <td>'+infoVar["initial"]+'</td>\
           </tr>\
         </tbody>\
       </table>\
@@ -798,59 +849,188 @@ function createEditPanel(idVar){
   </div>');
   $("#vars").append('<span class="errorEditVar errorMessage"></span>');
   //buttons
-  $('#editVarBtn').append(' <a href="#" onclick="editarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
+  $('#editVarBtn').append(' <a data-toggle="modal" data-target="#modalNewVar" href="#" onclick="prepararEditarVariable('+infoVar["id"]+')"class="btnFrame"><h6 class="text-dark"><i class="far fa-edit"></i> Editar </h6></a>');
   $('#editVarBtn').append(' <a href="#" onclick="borrarVariable('+infoVar["id"]+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Borrar </h6></a>');
   //Le doy el foco a mi classVar para moverla con el teclado
   objetoMover=document.getElementById(infoVar["name"]);
- 
+}
+function prepararEditarVariable(idVar){
+  let idFrame = $("#frames option:selected").attr('value');
+  let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+  //RELLENAR LOS DATOS EN EL PANEL DE EDICIÓN
+  $('#tipoVar option:selected').removeAttr("selected");
+  $('#tipoVar option[value="'+infoVar["type"]+'"]').prop("selected",true);
+
+  $('#nombreVariable').val(infoVar["name"]);
+  $('#labelVariable').val(infoVar["label"]);
+
+  let tipo = infoVar["type"];
+  //siempre nos cargamos el formato y el init y lo cargamos como debamos en función del tipo
+  $('#lugarFormat').empty();
+  $('#lugarInit').empty();
+  if(tipo == "integer" || tipo == "decimal"){
+    if(tipo == "decimal"){
+      setFormatEdit(infoVar);
+    }
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" value="'+infoVar["initial"]+'">');
+  }
+  else if(tipo=="character"){
+    setFormatEdit(infoVar);
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<input id="valorInicial" type="text" class="form-control" value="'+infoVar["initial"]+'">');
+  }
+  else if(tipo=="date"){
+    setFormatEdit(infoVar);
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    
+    
+    $('#lugarInit').append('<p><input id="valorInicial" type="text" class="form-control date" value="'+infoVar["initial"]+'"></p>');
+    $.datepicker.regional['es'] = {
+      closeText: 'Cerrar',
+      prevText: '< Ant',
+      nextText: 'Sig >',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+      dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+      weekHeader: 'Sm',
+      dateFormat: $("#lugarFormat option:selected").attr('value'),
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: ''
+      };
+      $.datepicker.setDefaults($.datepicker.regional['es']);
+    $( ".date" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+  }
+  else if(tipo=="logical"){
+    $('#lugarInit').append('<label>Valor Inicial:</label>');
+    $('#lugarInit').append('<select id="fLogical" class="form-control">\
+                            <option value="false">No seleccionado (False)</option>\
+                            <option value="true">Seleccionado (True)</option></select>');
+    $('#lugarInit option:selected').removeAttr("selected");
+    $('#lugarInit option[value="'+ infoVar["initial"] +'"]').prop("selected",true);
+  }
+  $('#lugarBotonEditVar').empty();
+  $('#btnAnyadirVar').hide();
+  //$('#lugarBotonEditVar').append('<a href="#" onclick="editarVariable('+idVar+')" class="btnFrame"><h6 class="text-dark"><i class="fas fa-trash-alt"></i> Editar Variable </h6></a>');
+  $('#lugarBotonEditVar').append('<a href= "#" onclick="editarVariable('+idVar+')" id="btnEditVar" class="btn btn-info">Editar Variable</a>');
+  $('#actionTitle').empty();
+  $('#actionTitle').append('Editar variable ' + infoVar["name"]);
   
+}
+function cleanVariablePanel(){
+  $('#tipoVar option:selected').removeAttr("selected");
+  $('#actionTitle').empty();
+  $('#actionTitle').append('Crear variable');
+  $('#btnAnyadirVar').show();
+  $('#lugarBotonEditVar').empty();
+  $('#nombreVariable').val("");
+  $('#labelVariable').val("");
+  $('#valorInicial').val("");
 
 }
-
 function editarVariable(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
   let frame = nuevaPlantilla.getFrame(idFrame);
-  let newData;
-  if(frame.getTipo() == "output"){
-    newData = {
+  let tipo = $("#tipoVar option:selected").attr('value');
+  let varInfo;
+  if(tipo == "integer"){
+    let ini = parseInt(document.getElementById('valorInicial').value);
+    if(isNaN(ini))
+      ini = 0;
+    varInfo = {
       idVar: idVar,
-      name: document.getElementById('nombreVariableEditO').value,
-      format: document.getElementById('formatoVariableEditO').value,
-      label: document.getElementById('labelVariableEditO').value,
-      initial: document.getElementById('initVariableEditO').value
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: ini.toFixed(),
+      format: "->,>>>,>>9",
+      tam: Math.max(8,ini.toFixed().toString().length)
     }
   }
-  else{ //Input frame
-    newData = {
+  else if(tipo == "decimal"){
+    let parteDecimal = parseInt(document.getElementById('formatoDecimal').value);
+    let ini = parseFloat(document.getElementById('valorInicial').value);
+    if(parteDecimal <= 0 || isNaN(parteDecimal))
+      parteDecimal = 1;
+    if(isNaN(ini))
+      ini = 0;
+    varInfo = {
       idVar: idVar,
-      name: document.getElementById('nombreVariableEdit').value,
-      format: document.getElementById('formatoVariableEdit').value,
-      label: document.getElementById('labelVariableEdit').value,
-      initial: document.getElementById('initVariableEdit').value
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: ini.toFixed(parteDecimal),
+      format: getFormatDecimal(parteDecimal),
+      tam: Math.max(8,ini.toFixed().toString().length + 1 + ini.toFixed(parteDecimal))
     }
   }
-  // QUITAR
-  if(newData.label == "")
-    newData.label = newData.name;
-  // QUITAR
+  else if(tipo=="character"){
+    let formatCharacter = document.getElementById('formato').value
+    if(formatCharacter == "" ){
+      formatCharacter = 8
+    }
+    varInfo = {
+      idVar: idVar,
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: document.getElementById('valorInicial').value,
+      format: 'x(' + formatCharacter + ')',
+      tam: formatCharacter
+    }
+  }
+  else if(tipo=="logical"){
+    varInfo = {
+      idVar: idVar,
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: $("#fLogical option:selected").attr('value'),
+      format: "",
+      tam: 8
+    }
+  }
+  else if(tipo=="date"){
+    varInfo = {
+      idVar: idVar,
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: document.getElementById('valorInicial').value,
+      format: $("#fDate option:selected").attr('value'),
+      tam: 8
+    }
+  }
+  if(varInfo.label == "")
+        varInfo.label = varInfo.name;
+  console.log("nuevo",varInfo, "antiguo",infoVar);
   let antiguoName= infoVar.name;
-  validation.validateEditVar(idFrame,infoVar, newData, function(message) { 
-    $('.errorEditVar').empty();
+  validation.validateEditVar(idFrame,infoVar, varInfo, function(message) { 
+    $('.errorVar').empty();
     if ("Ok" === message) {
-      nuevaPlantilla.getFrame(idFrame).editVar(newData);
-      newData = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
+      nuevaPlantilla.getFrame(idFrame).editVar(varInfo);
+      varInfo = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
       cargarFrame(idFrame);
       if(frame.getTipo() == "output"){
-        createEditPanelOutput(newData.id);
+        createEditPanelOutput(varInfo.id);
       }
       else{
-        createEditPanel(newData.id);
+        createEditPanel(varInfo.id);
       }
     }
     else {
-      $('.errorEditVar').append(message);
+      $('.errorVar').append(message);
     }
+    cerrarModal("#modalNewVar");
   })
 }
 function modificarFrame(idFrame){

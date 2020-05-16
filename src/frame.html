@@ -28,7 +28,7 @@
               <a id='crearFrame' data-toggle="modal" data-target="#modalNewFrame" href="#" class="btn btn-info">
                 <i class="far fa-plus-square"></i>Nuevo Frame
               </a>
-              <a id="crearVar" data-toggle="modal" data-target="#modalNewVar" href="#" class="btn btn-info editEnabled outputFrame">
+              <a id="crearVar" data-toggle="modal" data-target="#modalNewVar" onclick="cleanVariablePanel()" href="#" class="btn btn-info editEnabled outputFrame">
                   <i class="far fa-plus-square"></i> Nueva Variable
               </a>
           </div>
@@ -146,7 +146,7 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Crear variable</h4>
+            <h4 id="actionTitle" class="modal-title">Crear variable</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body form-sec">
@@ -178,6 +178,7 @@
               </div>
               <div class="text-center">
                 <input id="btnAnyadirVar" type="button"  class="btn btn-info" value="Crear Variable">
+                <div id="lugarBotonEditVar"></div>
               </div>
             </form>
           </div>
