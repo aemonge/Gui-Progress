@@ -42,23 +42,53 @@ exports.validateEditFrame = function validateEditFrame(frameInfoOld,frameInfoNew
     
 }
 exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
-
+    //validaciones["nombre"]=nombre ; validaciones[1]=valor inicial coincide con formato; 
+    let validaciones={
+        "nombre": null,
+        "ini": null
+    };
+    
     let encontrado = false;
     if (varInfo["name"] == ""){
-        callback("Nombre de variable vacío, debe rellenar este campo");
+        validaciones["nombre"]="vacio";
+        //callback("Nombre de variable vacío, debe rellenar este campo");
     }
     else{
         nuevaPlantilla.getFrame(idFrame).getVariables().forEach(function (elemF, indexF, array) {
             if (elemF.getNombre() == varInfo["name"]){
-                encontrado = true;
+                //encontrado = true;
+                validaciones["nombre"]="repetido"
             }
         });
-        if (encontrado){
+        /*if (encontrado){
             callback("Nombre de variable ya existente, elija otro");
+            validaciones[0]="repetido"
         }
         else
+        callback("Ok");*/
+    }
+    if(varInfo["type"]=="integer"){ //integer
+        
+        validaciones["ini"]=!isNaN(varInfo["initial"]);
+        if(validaciones["ini"]){
+            console.log("tamño:",varInfo["tam"]);
+            varInfo["tam"]=Math.max(8,varInfo["initial"].length);
+            console.log("tamño:",varInfo["tam"]);
+            varInfo["initial"]=parseInt(varInfo["initial"]).toFixed();
+        }
+        
+    }
+    if(validaciones["nombre"]=="vacio"){
+        callback("Nombre de variable vacío, debe rellenar este campo");
+    }else if(validaciones["nombre"]=="repetido"){
+        callback("Nombre de variable ya existente, elija otro");
+    }else if(validaciones["ini"]==false){
+        callback("Valor inicial no corresponde con el tipo elegido");
+    }else{
+
         callback("Ok");
     }
+    
     
 }
 exports.validateEditVar= function validateEditVar(idFrame, varInfoOld,validateEditVar, callback){

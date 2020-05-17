@@ -421,7 +421,20 @@ btnAnyadirVar.addEventListener('click',function(){
   let tipo = $("#tipoVar option:selected").attr('value');
   let varInfo;
   if(tipo == "integer"){
-    let ini = parseInt(document.getElementById('valorInicial').value);
+    let ini=document.getElementById('valorInicial').value;
+    if(ini==""){
+      ini= parseInt(0);
+    }
+    varInfo = {
+      name: document.getElementById('nombreVariable').value,
+      type: tipo,
+      label: document.getElementById('labelVariable').value,
+      initial: ini,
+      format: "->,>>>,>>9",
+      tam: 8
+    }
+
+    /*let ini = parseInt(document.getElementById('valorInicial').value);
     if(isNaN(ini))
       ini = 0;
     varInfo = {
@@ -431,7 +444,7 @@ btnAnyadirVar.addEventListener('click',function(){
       initial: ini.toFixed(),
       format: "->,>>>,>>9",
       tam: Math.max(8,ini.toFixed().toString().length)
-    }
+    }*/
   }
   else if(tipo == "decimal"){
     let parteDecimal = parseInt(document.getElementById('formatoDecimal').value);
