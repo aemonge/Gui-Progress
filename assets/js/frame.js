@@ -16,6 +16,7 @@ let oldx=0;
 let objetoMover=null;
 let filasdis=24;
 let columnasdis=9;
+let porcentaje=0.95;
 
 
 /* The dragging code for '.draggable' from the demo above
@@ -101,7 +102,7 @@ function detectKey(e) {
           // up arrow
           let daty = y - filasdis;
           posy=daty;
-          if(daty>=document.getElementById('inner-dropzone').offsetTop){
+          if(daty>porcentaje*(document.getElementById('inner-dropzone').offsetTop)){
             calcularPosicionesFlechas(objeto, obj,x,daty);
           }      
       }
@@ -115,9 +116,10 @@ function detectKey(e) {
       }
       else if (e.keyCode == '37') {
          // left arrow
-          let datx = x - columnasdis;
+          let datx =x - columnasdis;
+          console.log("datx:",datx);
           posx=datx;
-          if(datx>document.getElementById('inner-dropzone').offsetLeft){
+          if(datx+ obj.offsetLeft>porcentaje*(document.getElementById('inner-dropzone').offsetLeft)){
             calcularPosicionesFlechas(objeto, obj,datx,y);
           }  
       }
@@ -163,7 +165,7 @@ interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector
     //accept: '#yes-drop',
     // Require a 75% element overlap for a drop to be possible
-    overlap: 0.95,
+    overlap: porcentaje,
   
     // listen for drop related events:
   
@@ -367,6 +369,8 @@ function calcularFilaColumna(objeto, variable){
   var fil=Math.round((objeto.offsetTop+posy-zone.offsetTop)/filasdis);
   console.log('fila:',fil,'col:',col);
   variable.setFilaCol(fil,col);
+  //console.log("cakcyka",variable)
+  createEditPanel(variable.id); 
 }
 
 btnAnyadirFrame.addEventListener('click',function(){
@@ -810,14 +814,18 @@ function createEditPanel(idVar){
   let idFrame = $("#frames option:selected").attr('value');
   let infoVar = nuevaPlantilla.getFrame(idFrame).getVariable(idVar);
   let columna = 0;
+  let fila=0;
   if(infoVar["columna"] !=null && infoVar["label"].length!=0){
-    columna=parseInt(infoVar["columna"])+infoVar["label"].length;
+    columna=parseInt(infoVar["columna"])+infoVar["label"].length+1;
+  }
+  if(infoVar["fila"] !=null){
+    fila=infoVar["fila"]+1;
   }
   $("#vars").empty();  
   $("#vars").append('<div class="card border-d mb-3 text-center">\
     <div class="card-header text-center">\
       <h5 class="card-title text-dark"> Variable seleccionada: '+infoVar["name"]+'</h5>\
-      <h6 class="card-title text-dark"> Posición: Fila '+infoVar["fila"]+' Columna '+columna+'</h5>\
+      <h6 class="card-title text-dark"> Posición: Fila '+fila+' Columna '+columna+'</h5>\
     </div>\
       <div class="card-body text-left">\
       <table class="table">\

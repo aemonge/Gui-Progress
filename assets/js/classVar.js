@@ -10,7 +10,7 @@ class Variable{
         this.initial=initial;
         this.posx=0;
         this.posy=0;
-        this.fila=0;
+        this.fila=null;
         this.columna=null;
         this.movido=0;
         this.tam = tam;
