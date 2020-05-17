@@ -488,13 +488,15 @@ btnAnyadirVar.addEventListener('click',function(){
     }
   }
   else if(tipo=="date"){
+    let e=document.getElementById("fDate");
     varInfo = {
       name: document.getElementById('nombreVariable').value,
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
-      format: $("#fDate option:selected").attr('value'),
-      tam: 8
+      //format: $("#fDate option:selected").attr('value'),
+      format: e.options[e.selectedIndex].text,
+      tam: 10
     }
   }
   if(varInfo.label == "")
@@ -569,9 +571,9 @@ function setFormatEdit(infoVar){
   else if(tipo == "date"){
     $('#lugarFormat').append('<label>Formato:</label>');
     $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
-                              <option value="mm/dd/y">mm/dd/yy</option>\
-                              <option value="dd/mm/y">dd/mm/yy</option>\
-                              <option value="y/mm/dd">yy/mm/dd</option></select>');
+                              <option value="mm/dd/yy">mm/dd/yyyy</option>\
+                              <option value="dd/mm/yy">dd/mm/yyyy</option>\
+                              <option value="yy/mm/dd">yyyy/mm/dd</option></select>');
     $('#lugarFormat option:selected').removeAttr("selected");
     $('#lugarFormat option[value="'+ infoVar["format"] +'"]').prop("selected",true);
   }
@@ -599,9 +601,9 @@ $(document).on('change', '#tipoVar', function(event) {
   else if(tipo=="date"){ // Añadimos opción de year en 2 o 4 digitos y escribimos todos los formatos en un select
     $('#lugarFormat').append('<label>Formato:</label>');
     $('#lugarFormat').append('<select id="fDate" class="form-control" name="selectDate">\
-                              <option value="mm/dd/y">mm/dd/yy</option>\
-                              <option value="dd/mm/y">dd/mm/yy</option>\
-                              <option value="y/mm/dd">yy/mm/dd</option></select>');
+                              <option value="mm/dd/yy">mm/dd/yyyy</option>\
+                              <option value="dd/mm/yy">dd/mm/yyyy</option>\
+                              <option value="yy/mm/dd">yyyy/mm/dd</option></select>');
     $('#lugarInit').append('<label>Valor Inicial:</label>');
     
     
@@ -771,7 +773,7 @@ function createVisualDraggable(infoVar, vista){
     if(tipo == "character" || tipo=="integer"){    
       stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'" readonly></a></div>';
     }else if(tipo == "decimal" || tipo=="date"){
-      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="8" readonly></a></div>';
+      stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'" movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+':</label><input class ="inputVar field left" type="text" value="'+infoVar["initial"]+'" size="'+tam+'" readonly></a></div>';
     }else if(tipo=="logical"){
       if(infoVar["initial"] == "true"){
         stringDiv = '<div id="'+infoVar["name"]+'" class="drag-drop var'+infoVar["id"]+'" key="'+infoVar["id"]+'"  movido="'+infoVar["movido"]+'"><a href="#" onclick="createEditPanel('+infoVar["id"]+')" class="label label-default" title="'+infoVar["name"]+'"><label class ="labelVar">'+infoVar["label"]+'</label> <i class="far fa-check-square"></i></a></div>';

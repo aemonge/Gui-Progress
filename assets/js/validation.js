@@ -67,16 +67,20 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         else
         callback("Ok");*/
     }
+    
     if(varInfo["type"]=="integer"){ //integer
         
         validaciones["ini"]=!isNaN(varInfo["initial"]);
         if(validaciones["ini"]){
-            console.log("tamño:",varInfo["tam"]);
             varInfo["tam"]=Math.max(8,varInfo["initial"].length);
-            console.log("tamño:",varInfo["tam"]);
             varInfo["initial"]=parseInt(varInfo["initial"]).toFixed();
         }
         
+    }else if(varInfo["type"]=="date"){//date
+        console.log("date initial:",varInfo["initial"]);
+        console.log("date format:",varInfo["format"]);
+        validaciones["ini"]=isValidDate(varInfo["initial"],varInfo["format"]);
+            
     }
     if(validaciones["nombre"]=="vacio"){
         callback("Nombre de variable vacío, debe rellenar este campo");
@@ -91,6 +95,44 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
     
     
 }
+
+function isValidDate(dateString,format)
+{
+    // First check for the pattern
+    if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+            return false;
+    
+    var parts = dateString.split("/");
+    if(format=="dd/mm/yyyy"){
+        var day = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10);
+        var year = parseInt(parts[2], 10);
+    }else if(format=="mm/dd/yyyy"){
+        var day = parseInt(parts[1], 10);
+        var month = parseInt(parts[0], 10);
+        var year = parseInt(parts[2], 10);
+    }else if(format=="yyyy/mm/dd"){
+        var day = parseInt(parts[2], 10);
+        var month = parseInt(parts[1], 10);
+        var year = parseInt(parts[0], 10);
+    }else{
+        return false;
+    }
+    
+    // Check the ranges of month and year
+    if(year < 1000 || year > 3000 || month == 0 || month > 12)
+        return false;
+
+    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+    // Adjust for leap years
+    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+        monthLength[1] = 29;
+
+    // Check the range of the day
+    return day > 0 && day <= monthLength[month - 1];
+};
+
 exports.validateEditVar= function validateEditVar(idFrame, varInfoOld,validateEditVar, callback){
     let encontrado = false;
     if (validateEditVar["name"] === ""){
