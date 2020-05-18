@@ -447,19 +447,24 @@ btnAnyadirVar.addEventListener('click',function(){
     }*/
   }
   else if(tipo == "decimal"){
-    let parteDecimal = parseInt(document.getElementById('formatoDecimal').value);
-    let ini = parseFloat(document.getElementById('valorInicial').value);
-    if(parteDecimal <= 0 || isNaN(parteDecimal))
+    //let parteDecimal = parseInt(document.getElementById('formatoDecimal').value);
+    //let ini = parseFloat(document.getElementById('valorInicial').value);
+    let parteDecimal=document.getElementById('formatoDecimal').value;
+    let ini=document.getElementById('valorInicial').value;
+    //if(parteDecimal <= 0 || isNaN(parteDecimal))
+    if(parteDecimal=="")
       parteDecimal = 1;
-    if(isNaN(ini))
+    //if(isNaN(ini))
+    if(ini=="")
       ini = 0;
     varInfo = {
       name: document.getElementById('nombreVariable').value,
       type: tipo,
       label: document.getElementById('labelVariable').value,
-      initial: ini.toFixed(parteDecimal),
-      format: getFormatDecimal(parteDecimal),
-      tam: Math.max(8,ini.toFixed().toString().length + 1 + ini.toFixed(parteDecimal))
+      initial: ini, //ini.toFixed(parteDecimal),
+      format: getFormatDecimal(1), //getFormatDecimal(parteDecimal)
+      decimal: parteDecimal, //no existia
+      tam: 8 //Math.max(8,ini.toFixed().toString().length + 1 + ini.toFixed(parteDecimal))
     }
   }
   else if(tipo=="character"){
@@ -1038,6 +1043,7 @@ function editarVariable(idVar){
   console.log("nuevo",varInfo, "antiguo",infoVar);
   let antiguoName= infoVar.name;
   validation.validateEditVar(idFrame,infoVar, varInfo, function(message) { 
+  //validation.validateNewVar  (idFrame,infoVar, varInfo, function(message) { 
     $('.errorVar').empty();
     if ("Ok" === message) {
       nuevaPlantilla.getFrame(idFrame).editVar(varInfo);

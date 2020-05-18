@@ -81,6 +81,25 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         console.log("date format:",varInfo["format"]);
         validaciones["ini"]=isValidDate(varInfo["initial"],varInfo["format"]);
             
+    } else if(varInfo["type"]=="decimal"){//decimal
+        let initial=!isNaN(varInfo["initial"]);
+        let decimal=!isNaN(varInfo["decimal"]);
+        if(initial && decimal){
+            if(parseInt(decimal)<=0){
+                varInfo["decimal"]=1;
+            }else{
+                varInfo["decimal"]=parseInt(varInfo["decimal"]);
+            }
+            varInfo["initial"]=parseFloat(varInfo["initial"]).toFixed(parseInt(varInfo["decimal"]));
+            varInfo["format"]=getFormatDecimal(parseInt(varInfo["decimal"]));
+        }else if(initial==false && decimal){
+            validaciones["ini"]="decimalInitial";
+        }else if(initial==false && decimal==false){
+            validaciones["ini"]="ini&decimal";
+        }else{
+            validaciones["ini"]="decimal"
+        }
+
     }
     if(validaciones["nombre"]=="vacio"){
         callback("Nombre de variable vacío, debe rellenar este campo");
@@ -88,6 +107,12 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         callback("Nombre de variable ya existente, elija otro");
     }else if(validaciones["ini"]==false){
         callback("Valor inicial no corresponde con el tipo elegido");
+    }else if(validaciones["ini"]=="decimalInitial"){
+        callback("Valor inicial no corresponde con el tipo elegido");
+    }else if(validaciones["ini"]=="ini&decimal"){
+        callback("Valor inicial no corresponde con el tipo elegido y valor decimal debe ser un número");
+    }else if(validaciones["ini"]=="decimal"){
+        callback("Valor decimal debe ser un número");
     }else{
 
         callback("Ok");
@@ -132,6 +157,20 @@ function isValidDate(dateString,format)
     // Check the range of the day
     return day > 0 && day <= monthLength[month - 1];
 };
+
+
+function getFormatDecimal(parteDecimal){
+    // 9<<<<<<<<
+    let format = "->,>>>,>>9."
+    for(let i = 0; i < parteDecimal; i++){
+      format += "9";
+    }
+    for (let j = parteDecimal; j < 10; j++){
+      format +="<";
+    }
+    
+    return format;
+  }
 
 exports.validateEditVar= function validateEditVar(idFrame, varInfoOld,validateEditVar, callback){
     let encontrado = false;
