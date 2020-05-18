@@ -92,6 +92,7 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
             }
             varInfo["initial"]=parseFloat(varInfo["initial"]).toFixed(parseInt(varInfo["decimal"]));
             varInfo["format"]=getFormatDecimal(parseInt(varInfo["decimal"]));
+            varInfo["tam"]=varInfo["initial"].toString().length;
         }else if(initial==false && decimal){
             validaciones["ini"]="decimalInitial";
         }else if(initial==false && decimal==false){
@@ -100,6 +101,18 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
             validaciones["ini"]="decimal"
         }
 
+    }else if(varInfo["type"]=="character"){
+        if(!isNaN(varInfo["format"])){
+            if(parseInt(varInfo["format"])<=0){
+                varInfo["format"]='x(8)';
+            }else{
+                varInfo["tam"]=parseInt(varInfo["format"]);
+                varInfo["format"]='x('+parseInt(varInfo["format"])+')';
+                
+            }
+        }else{
+            validaciones["ini"]="character";
+        }
     }
     if(validaciones["nombre"]=="vacio"){
         callback("Nombre de variable vacío, debe rellenar este campo");
@@ -113,6 +126,8 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         callback("Valor inicial no corresponde con el tipo elegido y valor decimal debe ser un número");
     }else if(validaciones["ini"]=="decimal"){
         callback("Valor decimal debe ser un número");
+    }else if(validaciones["ini"]=="character"){
+        callback("El formato debe ser un número entero");
     }else{
 
         callback("Ok");

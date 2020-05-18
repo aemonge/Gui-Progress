@@ -477,8 +477,8 @@ btnAnyadirVar.addEventListener('click',function(){
       type: tipo,
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
-      format: 'x(' + formatCharacter + ')',
-      tam: formatCharacter
+      format: formatCharacter,//'x(' + formatCharacter + ')',
+      tam: 8//formatCharacter
     }
     console.log(varInfo.format);
   }
@@ -771,7 +771,7 @@ function addVisualVar(infoVar, vista){
 
 function createVisualDraggable(infoVar, vista){
   let stringDiv;
-  let tam=infoVar["tam"];
+  let tam=parseInt(infoVar["tam"]);
   let tipo = infoVar["type"];
   
   if (vista == "update"){
