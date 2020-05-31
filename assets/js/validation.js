@@ -139,19 +139,26 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
 function isValidDate(dateString,format)
 {
     // First check for the pattern
-    if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-            return false;
-    
+   // if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
+    //        return false;
+
     var parts = dateString.split("/");
     if(format=="dd/mm/yyyy"){
+        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
+            return false;
         var day = parseInt(parts[0], 10);
         var month = parseInt(parts[1], 10);
         var year = parseInt(parts[2], 10);
     }else if(format=="mm/dd/yyyy"){
+        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
+            return false;
         var day = parseInt(parts[1], 10);
         var month = parseInt(parts[0], 10);
         var year = parseInt(parts[2], 10);
     }else if(format=="yyyy/mm/dd"){
+        if(!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(dateString)){
+            return false;
+        }
         var day = parseInt(parts[2], 10);
         var month = parseInt(parts[1], 10);
         var year = parseInt(parts[0], 10);

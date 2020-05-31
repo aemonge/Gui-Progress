@@ -127,7 +127,7 @@ function detectKey(e) {
          // right arrow
           let datx = x + columnasdis;
           posx=datx;
-          if(datx+obj.offsetWidth<document.getElementById('inner-dropzone').offsetLeft+document.getElementById('inner-dropzone').offsetWidth){
+          if(datx+obj.offsetWidth+obj.offsetLeft<document.getElementById('inner-dropzone').offsetLeft+document.getElementById('inner-dropzone').offsetWidth){
             calcularPosicionesFlechas(objeto, obj,datx,y);
           }
       }
