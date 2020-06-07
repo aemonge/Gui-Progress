@@ -77,8 +77,8 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         }
         
     }else if(varInfo["type"]=="date"){//date
-        console.log("date initial:",varInfo["initial"]);
-        console.log("date format:",varInfo["format"]);
+        //console.log("date initial:",varInfo["initial"]);
+        //console.log("date format:",varInfo["format"]);
         validaciones["ini"]=isValidDate(varInfo["initial"],varInfo["format"]);
             
     } else if(varInfo["type"]=="decimal"){//decimal
@@ -138,10 +138,6 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
 
 function isValidDate(dateString,format)
 {
-    // First check for the pattern
-   // if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
-    //        return false;
-
     var parts = dateString.split("/");
     if(format=="dd/mm/yyyy"){
         if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
@@ -166,17 +162,17 @@ function isValidDate(dateString,format)
         return false;
     }
     
-    // Check the ranges of month and year
+    // Creamos rangos para años y meses
     if(year < 1000 || year > 3000 || month == 0 || month > 12)
         return false;
 
     var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-    // Adjust for leap years
+    // Ajustamos años bisisestos
     if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
         monthLength[1] = 29;
 
-    // Check the range of the day
+    // Comprobamos el día con el mes
     return day > 0 && day <= monthLength[month - 1];
 };
 
