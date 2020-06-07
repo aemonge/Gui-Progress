@@ -328,8 +328,7 @@ interact('.drag-drop')
         
         //Controlamos las X y las Y
         if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop || posbottom>(zone.offsetHeight+zone.offsetTop)) {
-          console.log('muevelo');
-          //let x1 = zone.offsetWidth+zone.offsetLeft - objeto.offsetWidth+objeto.offsetLeft;
+          
           objeto.style.webkitTransform =
           objeto.style.transform =
           'translate(' + 0 + 'px, ' + 0 + 'px)'
@@ -337,17 +336,10 @@ interact('.drag-drop')
           objeto.setAttribute('data-y', 0)
 
         }
-        //else{
-        //  console.log('estamos dentro');
-        //}
+        
       }else{
         if(posright>(zone.offsetWidth+zone.offsetLeft) || (objeto.offsetLeft+posx)<zone.offsetLeft || (objeto.offsetTop+posy)<zone.offsetTop || posbottom>(zone.offsetHeight+zone.offsetTop)){
-          //objeto.style.webkitTransform =
-          //objeto.style.transform =
-          //'translate(' + variable['posx'] + 'px, ' + variable['posy'] + 'px)'
-          //objeto.setAttribute('data-x', 0)
-          //objeto.setAttribute('data-y', 0)
-
+          
           let datx=(variable["columna"]*columnasdis+document.getElementById('inner-dropzone').offsetLeft)-document.getElementById(variable["name"]).offsetLeft;
           let daty=(variable["fila"]*filasdis+document.getElementById('inner-dropzone').offsetTop)-document.getElementById(variable["name"]).offsetTop;
           objeto.setAttribute('data-x', datx);
