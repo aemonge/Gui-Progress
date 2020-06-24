@@ -54,12 +54,28 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         //callback("Nombre de variable vacío, debe rellenar este campo");
     }
     else{
-        nuevaPlantilla.getFrame(idFrame).getVariables().forEach(function (elemF, indexF, array) {
-            if (elemF.getNombre() == varInfo["name"]){
-                //encontrado = true;
-                validaciones["nombre"]="repetido"
+        let frames=nuevaPlantilla.getFrames();
+        //variable en frame de entrada
+        if(nuevaPlantilla.getFrame(idFrame).getTipo()==0){
+            for(let frame of frames){
+                if(frame.getTipo()==0){
+                    frame.getVariables().forEach(function (elemF, indexF, array) {
+                        if (elemF.getNombre() == varInfo["name"]){
+                            //encontrado = true;
+                            validaciones["nombre"]="repetido"
+                        }
+                    })
+                }
             }
-        });
+        }else{
+            nuevaPlantilla.getFrame(idFrame).getVariables().forEach(function (elemF, indexF, array) {
+                if (elemF.getNombre() == varInfo["name"]){
+                    //encontrado = true;
+                    validaciones["nombre"]="repetido"
+                }
+            });
+        }
+       
         /*if (encontrado){
             callback("Nombre de variable ya existente, elija otro");
             validaciones[0]="repetido"

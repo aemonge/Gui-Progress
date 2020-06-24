@@ -1,0 +1,10 @@
+Comenzamos a leer el archivo 
+>OK:Se añade nuevo Frame de entrada con nombre: sadfsadfasasdf con titulo:  con id:1
+>Empezamos a crear la variable de entrada: sadfsadfsadfsadf con label: sadfsadfsadfsadf
+>>OK:Se agrega correctamente la variable: sadfsadfsadfsadf con id: 1 con label: sadfsadfsadfsadf de tipo: integer con formato: ->,>>>,>>9 con valor inicial: 2 en fila: 2 en columna: 8
+>Empezamos a crear la variable de entrada: sad con label: sa
+>>NOK: Error variable no encontrada en la tabla de variables.
+------------------------------------------------------------
+>OK:Se añade nuevo Frame de salida con nombre: b con titulo: salida con id:2
+>NOK: No se ha definido la temp-table. 
+------------------------------------------------------------

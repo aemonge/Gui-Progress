@@ -16,7 +16,7 @@ let oldx=0;
 let objetoMover=null;
 let filasdis=24;
 let columnasdis=9;
-let porcentaje=0.95;
+let porcentaje=0.94;
 
 
 /* The dragging code for '.draggable' from the demo above
