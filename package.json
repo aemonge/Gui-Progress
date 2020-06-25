@@ -1,8 +1,8 @@
 {
-  "name": "bootstrap-example",
-  "productName": "Bootstrap Example",
+  "name": "gui-progress",
+  "productName": "GUI-Progress",
   "version": "1.0.0",
-  "description": "Demonstrates how to use Bootstrap and jQuery.",
+  "description": "DISEÑO INTERACTIVO DE INTERFACES GRÁFICAS DE USUARIO PARA PROGRESS",
   "main": "main.js",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
