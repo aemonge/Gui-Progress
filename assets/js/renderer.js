@@ -160,6 +160,7 @@ function createFrameAndVars(tablas,frames,vars){
               if(varInfo.col != 0 || varInfo.row !=0)
                 varInfo["movido"]=1;
             });
+            varInfo["col"]=parseInt(varInfo["col"])-(varInfo["label"].length+1);
             // Rellenamos tipo, init y format del map vars
             flog+=">Empezamos a crear la variable de entrada: "+varInfo["name"]+" con label: "+varInfo['label']+"\n";
             if(vars.get(line.id)!=null){
