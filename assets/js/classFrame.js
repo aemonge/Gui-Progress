@@ -25,8 +25,8 @@ class Frame {
         this.idVar ++;
         return  this.idVar -1;
     }
-    addVariableRead(name, type, format, label, initial,col,row,movido){
-        let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial);
+    addVariableRead(name, type, format, label, initial,col,row,movido,tam){
+        let newVar = new classVar.Variable(this.idVar,name, type, format, label, initial,tam);
         
         if(movido==1){
             newVar.setMovido();

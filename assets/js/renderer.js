@@ -56,6 +56,7 @@ function createFrameAndVars(tablas,frames,vars){
     outp=false;
   if(vars.size==0 || vars==null ||vars==undefined)
     inp=false;
+if(frames.size!=0 && frames!=null && frames!=undefined){    
   for(var frame of frames){
     console.log(frame);
     var clave=frame[0];
@@ -212,6 +213,9 @@ function createFrameAndVars(tablas,frames,vars){
     cargarFrame(idFrame);
     
   }
+}else{
+  flog+=("NOK:Error al leer los frames, no hay frames definidos\n")
+}
   console.log(flog);
   let fs = require('fs');
   let nombre= "erroLog-"+nuevaPlantilla.getFileName().split('.')[0]+".txt"
@@ -219,7 +223,7 @@ function createFrameAndVars(tablas,frames,vars){
         if (err) {
             alert(err);
         }
-        alert("Se ha creado el archivo "+nombre+" con los detalles de la carga");
+        //alert("Se ha creado el archivo "+nombre+" con los detalles de la carga");
     });
 
 }

@@ -1,7 +1,7 @@
 Comenzamos a leer el archivo 
->OK:Se añade nuevo Frame de entrada con nombre: sadfsadfasasdf con titulo:  con id:1
->Empezamos a crear la variable de entrada: sadfsadfsadfsadf con label: sadfsadfsadfsadf
->>OK:Se agrega correctamente la variable: sadfsadfsadfsadf con id: 1 con label: sadfsadfsadfsadf de tipo: integer con formato: ->,>>>,>>9 con valor inicial: 2 en fila: 2 en columna: 8
+>OK:Se añade nuevo Frame de entrada con nombre: a con titulo:  con id:1
+>Empezamos a crear la variable de entrada: v1 con label: v1
+>>OK:Se agrega correctamente la variable: v1 con id: 1 con label: v1 de tipo: integer con formato: ->,>>>,>>9 con valor inicial: 2 en fila: 2 en columna: 5
 >Empezamos a crear la variable de entrada: sad con label: sa
 >>NOK: Error variable no encontrada en la tabla de variables.
 ------------------------------------------------------------
