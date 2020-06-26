@@ -221,11 +221,20 @@ if(frames.size!=0 && frames!=null && frames!=undefined){
   let nombre= "erroLog-"+nuevaPlantilla.getFileName().split('.')[0]+".txt"
     fs.writeFile(nombre, flog, function(err) {
         if (err) {
-            alert(err);
+            displayMsg(err);
+            /* alert(err); */
         }
+        displayMsg("Se ha creado el archivo un archivo con los detalles de la carga: <br> "+nombre);
         //alert("Se ha creado el archivo "+nombre+" con los detalles de la carga");
     });
-
+}
+function displayMsg(msg){
+  $('#msgModalLog').empty();
+  $('#msgModalLog').append(msg);
+  document.getElementById('modalLog').style.display = 'block';
+}
+function closeModalLog(){
+  document.getElementById('modalLog').style.display = 'none';
 }
 
 function preparaDatos(varInfo){
@@ -266,7 +275,8 @@ function abrirPlantilla(){
   var fs = require('fs');
   dia.then(file => {
     if (file.filePaths === undefined){
-      alert("Ha ocurrido un error al abrir el archivo");
+      displayMsg("Ha ocurrido un error al abrir el archivo");
+      /* alert("Ha ocurrido un error al abrir el archivo"); */
       return;
     }
     //console.log("file: " + file.filePaths[0]);
@@ -276,7 +286,10 @@ function abrirPlantilla(){
       if (err) throw err;
       parser.parserCode(data, (err, dataTable, dataFrame, dataVars) =>{
         if (err != ""){
+          displayMsg("Error: " + err + ".");
+          /*
           alert("Error: " + err + ".");
+          */
           return;
         }
         crearPlantilla(dataTable,dataFrame,dataVars,fileName);

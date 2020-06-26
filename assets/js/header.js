@@ -19,8 +19,12 @@ function generarTablas(){
             tempTable += "define temp-table tt_" + elemF.getNombre() + " no-undo \n";
             elemF.getVariables().forEach(function (elemV, indexV, array) {    
                 tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo();
-                if(elemV.getInitial() != "")
-                    tempTable += " init " + '"' +elemV.getInitial() + '"';
+                if(elemV.getInitial() != ""){
+                    if (elemV.getTipo() == "character")
+                        tempTable += " init " + '"' +elemV.getInitial() + '"';
+                    else
+                        tempTable += " init " + elemV.getInitial();
+                }
                 if(elemV.getFormato()!= "")
                     tempTable += " format " + '"'+ elemV.getFormato() + '"';   
                     tempTable += "\n";
@@ -40,8 +44,12 @@ function generarVariables(){
             elemF.getVariables().forEach(function (elemV, indexV, array) {    
                 if (haveVars == false) haveVars= true;
                 vars += "define variable " + elemV.getNombre() +" as " + elemV.getTipo();
-                if(elemV.getInitial() != "")
-                vars += " init " + '"' +elemV.getInitial() + '"';
+                if(elemV.getInitial() != ""){
+                    if (elemV.getTipo() == "character")
+                        vars += " init " + '"' +elemV.getInitial() + '"';
+                    else
+                        vars += " init " + elemV.getInitial();
+                }
                 if(elemV.getFormato()!= "")
                 vars += " format " + '"'+ elemV.getFormato() + '"';   
                 vars += " no-undo.  \n";
@@ -110,19 +118,22 @@ function guardarPlantilla(){
 
     dia.then(file => {
         if (file.filePath === undefined){
-            alert("Ha ocurrido un error al guardar el archivo");
+            displayMsg("Ha ocurrido un error al guardar el archivo");
+            //alert("Ha ocurrido un error al guardar el archivo");
             return;
         }
         fs.writeFile(file.filePath, code, function(err) {
             if (err) {
-                alert(err);
+                displayMsg(err);
+                //alert(err);
             }
             else{
                 let fileName = getFileName(file.filePath);
                 nuevaPlantilla.setFileName(fileName);
                 $("#title").empty();
                 $("#title").append(nuevaPlantilla.getFileName());
-                alert("Guardado correctamente");
+                displayMsg("Guardado correctamente");
+                /* alert("Guardado correctamente"); */
             }
             
         });
@@ -148,8 +159,9 @@ function guardarPlantilla(){
     //code = code.replace(/(?:\r\n|\r|\n)/g, '<br />');
     code = code.split("\n").join(" <br> ");
     $('#codeView').html(code);
+    $('.line-numbers').empty();
     for(let i = 1; i<= count; i++){
-        $('.line-numbers').append(''+i+'<br>')
+        $('.line-numbers').append(''+i+'<br>');
     }
  }
  function getFileName(filePath){

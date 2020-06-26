@@ -35,7 +35,7 @@ LiteralCadena = "\"" texto:([^\"]*) "\"" {
 return texto.join("")
 }
 
-FinalFrame= "with" _ s:OpcionSideLabels? _ t:OpcionTitle?_ {
+FinalFrame= "with"? _ s:OpcionSideLabels? _ t:OpcionTitle?_ {
 return t
 }
 OpcionTitle = "title" __ value:LiteralCadena {

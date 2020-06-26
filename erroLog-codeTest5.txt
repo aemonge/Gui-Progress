@@ -1,0 +1,9 @@
+Comenzamos a leer el archivo 
+>OK:Se añade nuevo Frame de entrada con nombre: panel1 con titulo: ejemplo1 con id:1
+>Empezamos a crear la variable de entrada: zfsdafsad con label: zfsdafsad
+>>OK:Se agrega correctamente la variable: zfsdafsad con id: 1 con label: zfsdafsad de tipo: integer con formato: ->,>>>,>>9 con valor inicial: 8 en fila: 7 en columna: 32
+------------------------------------------------------------
+>OK:Se añade nuevo Frame de salida con nombre: asdf con titulo:  con id:2
+>Empezamos a crear la variable de salida: asdfsadf con label: asdfsadf de tipo: logical con formato:  con valor inicial: true
+>>OK:Se agrega correctamente la variable: asdfsadf con id: 1 con label: asdfsadf de tipo: logical con formato:  con valor inicial: true
+------------------------------------------------------------
