@@ -23,7 +23,7 @@ OpcionLabel = "label" __ cadena:LiteralCadena {
 return { type: "label", label: cadena }
 }
 
-OpcionInit = "init" __ result:(LiteralCadena/Integer/Logical) {
+OpcionInit = "init" __ result:(LiteralCadena/Decimal/Integer/Logical) {
 return { type: "init", value: result }
 }
 
@@ -34,7 +34,10 @@ return { type: "format", format: cadena }
 LiteralCadena = "\"" texto:([^\"]*) "\"" {
 return texto.join("")
 }
-Logical = "true" / "false"
+Logical "" = "true" / "false"
+Decimal = Integer "."+ Integer{
+	return text();
+    }   
 Integer "integer"
   = _ [0-9]+ { return parseInt(text(), 10); }
 

@@ -20,7 +20,7 @@ function generarTablas(){
             elemF.getVariables().forEach(function (elemV, indexV, array) {    
                 tempTable += "   field " + elemV.getNombre() +" as " + elemV.getTipo();
                 if(elemV.getInitial() != ""){
-                    if (elemV.getTipo() == "character")
+                    if (elemV.getTipo() == "character" || elemV.getTipo() == "date")
                         tempTable += " init " + '"' +elemV.getInitial() + '"';
                     else
                         tempTable += " init " + elemV.getInitial();
@@ -45,7 +45,7 @@ function generarVariables(){
                 if (haveVars == false) haveVars= true;
                 vars += "define variable " + elemV.getNombre() +" as " + elemV.getTipo();
                 if(elemV.getInitial() != ""){
-                    if (elemV.getTipo() == "character")
+                    if (elemV.getTipo() == "character" || elemV.getTipo() == "date")
                         vars += " init " + '"' +elemV.getInitial() + '"';
                     else
                         vars += " init " + elemV.getInitial();

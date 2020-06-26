@@ -88,7 +88,7 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         
         validaciones["ini"]=!isNaN(varInfo["initial"]);
         if(validaciones["ini"]){
-            varInfo["tam"]=Math.max(8,varInfo["initial"].length);
+            varInfo["tam"]=Math.max(8,varInfo["initial"].toString().length);
             varInfo["initial"]=parseInt(varInfo["initial"]).toFixed();
         }
         
@@ -130,6 +130,10 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
             validaciones["ini"]="character";
         }
     }
+    else if(varInfo["type"]=="logical"){
+        if (varInfo["initial"] != "true" && varInfo["initial"] != "false")
+            validaciones["ini"]="logical";
+    }
     if(validaciones["nombre"]=="vacio"){
         callback("Nombre de variable vacío, debe rellenar este campo");
     }else if(validaciones["nombre"]=="repetido"){
@@ -144,30 +148,32 @@ exports.validateNewVar = function validateNewVar(varInfo, idFrame, callback){
         callback("Valor decimal debe ser un número");
     }else if(validaciones["ini"]=="character"){
         callback("El formato debe ser un número entero");
+    }else if(validaciones["ini"]=="logical"){
+        callback("El valor inicial debe ser true o false para variables logical");
     }else{
-
         callback("Ok");
     }
-    
     
 }
 
 function isValidDate(dateString,format)
-{
+{   
+    console.log("date que me llega: ", dateString);
+    console.log("formato que me llega: ", format);
     var parts = dateString.split("/");
-    if(format=="dd/mm/yyyy"){
+    if(format=="dd/mm/yyyy" || format=="dd/mm/yy"){
         if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
             return false;
         var day = parseInt(parts[0], 10);
         var month = parseInt(parts[1], 10);
         var year = parseInt(parts[2], 10);
-    }else if(format=="mm/dd/yyyy"){
+    }else if(format=="mm/dd/yyyy" || format=="mm/dd/yy"){
         if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString) )
             return false;
         var day = parseInt(parts[1], 10);
         var month = parseInt(parts[0], 10);
         var year = parseInt(parts[2], 10);
-    }else if(format=="yyyy/mm/dd"){
+    }else if(format=="yyyy/mm/dd" || format=="yy/mm/dd"){
         if(!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(dateString)){
             return false;
         }

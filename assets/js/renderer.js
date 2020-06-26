@@ -182,7 +182,7 @@ if(frames.size!=0 && frames!=null && frames!=undefined){
                   varInfo.movido=obj.movido;
                   flog+=">>OK:Se agrega correctamente la variable: "+varInfo["name"]+" con id: "+varInfo['id']+" con label: "+varInfo['label']+" de tipo: "+varInfo['type']+" con formato: "+varInfo['format']+" con valor inicial: "+varInfo['initial']+" en fila: "+varInfo['row']+" en columna: "+varInfo['col']+"\n";
                 }else{
-                  flog+=(">>NOK:Error al crear la variable"+varInfo["name"]+" en el Frame: "+idFrame+" con error: "+message+"\n");
+                  flog+=(">>NOK:Error al crear la variable "+varInfo["name"]+" en el Frame: "+idFrame+" con error: "+message+"\n");
                 }
               });
 
@@ -203,7 +203,7 @@ if(frames.size!=0 && frames!=null && frames!=undefined){
         
       }else{
         //añadir comentario en el log.
-        flog+=(">NOK:Error al crear el frame"+fr+" con error: "+message+"\n")
+        flog+=(">NOK:Error al crear el frame "+fr+" con error: "+message+"\n")
         
         
       }
@@ -244,25 +244,29 @@ function preparaDatos(varInfo){
     else
       varInfo["initial"]=parseInt(varInfo["initial"]);
     //obligamos este formato
-    varInfo["format"]="->,>>>,>>9"
+    varInfo["format"]="->,>>>,>>9";
+    varInfo["tam"] = 8;
   }
   if(varInfo["type"]=="decimal"){
     if(varInfo["format"]==""  )
-      varInfo["decimal"]=1
+      varInfo["decimal"]=1;
     else varInfo["decimal"]=parseInt(getFormat(varInfo));
     if( isNaN(parseFloat(varInfo["initial"])))
       varInfo["initial"]=0;
     else
       varInfo["initial"]=parseFloat(varInfo["initial"]);
-    
+    varInfo["tam"] =  8;
   }
   if(varInfo["type"]=="character"){
     varInfo["format"]=parseInt(getFormat(varInfo));
-    varInfo["tam"]=varInfo["format"];
-
+    varInfo["tam"] = 8;
   }
   if(varInfo["type"]=="date"){
     varInfo["tam"]=10;
+  }
+  if(varInfo["type"]=="logical"){
+    //varInfo["initial"] = '"' + varInfo["initial"] + '"';
+    varInfo["tam"]=8;
   }
   return varInfo;
 }

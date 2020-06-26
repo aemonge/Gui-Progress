@@ -1027,7 +1027,7 @@ function editarVariable(idVar){
       label: document.getElementById('labelVariable').value,
       initial: document.getElementById('valorInicial').value,
       format: $("#fDate option:selected").attr('value'),
-      tam: 8
+      tam: 10
     }
   }
   if(varInfo.label == "")
