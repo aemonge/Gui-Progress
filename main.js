@@ -31,15 +31,9 @@ function createWindow(){
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
-  if (platform === 'darwin') {
-    globalShortcut.register('Command+Option+I', () => {
-      mainWindow.webContents.openDevTools()
-    })
-  } else if (platform === 'linux' || platform === 'win32') {
-    globalShortcut.register('Control+Shift+I', () => {
-      mainWindow.webContents.openDevTools()
-    })
-  }
+  let keyCombination = (( platform !== 'linux' || platform !== 'win32' ) ? 'Command' : 'Control' ) + '+Shift+I';
+  globalShortcut.register(keyCombination, mainWindow.webContents.openDevTools);
+  
   mainWindow.once('ready-to-show', () => {
     mainWindow.setMenu(null)
     mainWindow.show()
